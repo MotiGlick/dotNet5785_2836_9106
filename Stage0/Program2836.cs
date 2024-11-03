@@ -1,11 +1,14 @@
-﻿partial class Program
+﻿
+namespace Stage0
 {
-    private static void Main(string[] args)
+    partial class Program
     {
-        Console.WriteLine("Hello, World!");
-        Welcome2836();
-        Welcome9106();
-        Console.ReadKey();
+        private static void Main(string[] args)
+        {
+            Console.WriteLine("Hello, World!");
+            Welcome2836();
+            Welcome9106();
+            Console.ReadKey();
 
         }
         static partial void Welcome9106();
