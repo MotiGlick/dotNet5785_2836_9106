@@ -9,31 +9,52 @@ public class CallImplementation : ICall
 {
     public void Create(Call item)
     {
-        throw new NotImplementedException();
+        List<DO.Call> list = DataSource.Calls;
+        int newId = Config.NextAssignmentId;
+        Call copy = item with { Id = newId };
+        list.Add(copy);
+        /////////////////////////////////////////////////////////return int
     }
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        List<DO.Call> list = DataSource.Calls;
+        Call? foundAssignment = list.Find(Call => Call.Id == id);
+        if (foundAssignment == null)
+        {
+            throw new NotImplementedException("An object of type Call with such an ID does not exist");
+        }
+        list.Remove(foundAssignment);
     }
 
     public void DeleteAll()
     {
-        throw new NotImplementedException();
+        List<DO.Call> list = DataSource.Calls;
+        list.Clear();
     }
 
     public Call? Read(int id)
     {
-        throw new NotImplementedException();
+        List<DO.Call> list = DataSource.Calls;
+        Call? foundAssignment = list.Find(Call => Call.Id == id);
+        return foundAssignment;
     }
 
     public List<Call> ReadAll()
     {
-        throw new NotImplementedException();
+        return new List<Call>(DataSource.Calls);
     }
 
     public void Update(Call item)
     {
-        throw new NotImplementedException();
+        List<DO.Call> list = DataSource.Calls;
+        Call? foundAssignment = list.Find(Call => Call.Id == item.Id);
+        if (foundAssignment == null)
+        {
+            throw new NotImplementedException("An object of type Call with such an ID does not exist");
+        }
+        list.Remove(foundAssignment);
+        list.Add(item);
+
     }
 }
