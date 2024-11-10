@@ -20,8 +20,6 @@ public record Assignment
     DateTime CallTime,
     DateTime? TotalTime,
     CallType? type
-
-
 )
 {
     public Assignment():this(0,0,0,DateTime.Now,DateTime.Now, CallType.DeliverFood) { }
