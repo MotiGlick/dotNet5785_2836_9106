@@ -11,31 +11,52 @@ public class VolunteerImplementation : IVolunteer
 {
     public void Create(Volunteer item)
     {
-        throw new NotImplementedException();
+        if (Read(item.Id) == null)
+        {
+            List<DO.Volunteer> list = DataSource.Volunteers;
+            list.Add(item);
+            //return item.Id;
+        }
+
+        else
+            throw new NotImplementedException("An object of type Volunteer with such an ID already exist");
     }
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        List<DO.Volunteer> list = DataSource.Volunteers;
+        Volunteer? foundVolunteer = list.Find(Volunteer => Volunteer.Id == id);
+        if (foundVolunteer == null) 
+            throw new NotImplementedException("An object of type Volunteer with such an ID does not exist");
+        list.Remove(foundVolunteer);
     }
 
     public void DeleteAll()
     {
-        throw new NotImplementedException();
+        List<DO.Volunteer> list = DataSource.Volunteers;
+        list.Clear();   
     }
 
     public Volunteer? Read(int id)
     {
-        throw new NotImplementedException();
+        List<DO.Volunteer> list = DataSource.Volunteers;
+        Volunteer? foundVolunteer = list.Find(Volunteer => Volunteer.Id == id);
+        if (foundVolunteer == null)  return null; 
+        return foundVolunteer;
     }
 
     public List<Volunteer> ReadAll()
     {
-        throw new NotImplementedException();
+        return new List<Volunteer>(DataSource.Volunteers);
     }
 
     public void Update(Volunteer item)
     {
-        throw new NotImplementedException();
+        List<DO.Volunteer> list = DataSource.Volunteers;
+        Volunteer? foundVolunteer = list.Find(Volunteer => Volunteer.Id == item.Id);
+        if (foundVolunteer == null)
+                throw new ArgumentException("An object of type Volunteer with such an ID does not exist");
+        list.Remove(foundVolunteer);
+        list.Add(item);
     }
 }
