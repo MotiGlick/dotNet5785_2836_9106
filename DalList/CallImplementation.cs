@@ -22,11 +22,11 @@ public class CallImplementation : ICall
         Call? foundAssignment = list.Find(Call => Call.Id == id);
         if (foundAssignment == null)
         {
-            throw new NotImplementedException("An object of type Call with such an ID does not exist");
+            throw new Exception($"An object of type Call with ID={id} does not exist");
         }
         list.Remove(foundAssignment);
     }
-
+    
     public void DeleteAll()
     {
         List<DO.Call> list = DataSource.Calls;
@@ -51,7 +51,7 @@ public class CallImplementation : ICall
         Call? foundAssignment = list.Find(Call => Call.Id == item.Id);
         if (foundAssignment == null)
         {
-            throw new NotImplementedException("An object of type Call with such an ID does not exist");
+            throw new Exception($"An object of type Call with such an ID={item.Id} does not exist");
         }
         list.Remove(foundAssignment);
         list.Add(item);

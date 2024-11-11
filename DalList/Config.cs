@@ -6,10 +6,12 @@
 internal static class Config
 {
     internal const int startNextCallId = 0;  // Initial call ID
+
     private static int nextCallId = startNextCallId;  // Current call ID
     internal static int NextCallId { get => nextCallId++; }  // Returns and increments the call ID
 
     internal const int startnextAssignmentId = 10;  // Initial assignment ID
+
     private static int nextAssignmentId = startnextAssignmentId;  // Current assignment ID
     internal static int NextAssignmentId { get => nextAssignmentId++; }  // Returns and increments the assignment ID
 

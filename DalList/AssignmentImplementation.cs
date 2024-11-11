@@ -25,7 +25,7 @@ public class AssignmentImplementation : IAssignment
         Assignment? foundAssignment = list.Find(Assignment => Assignment.Id == id);
         if (foundAssignment == null)
         {
-            throw new NotImplementedException("An object of type Assignment with such an ID does not exist");
+            throw new Exception($"An object of type Assignment with  ID={id} does not exist");
         }
         list.Remove(foundAssignment);
     }
@@ -54,7 +54,7 @@ public class AssignmentImplementation : IAssignment
         Assignment? foundAssignment = list.Find(Assignment => Assignment.Id == item.Id);
         if (foundAssignment == null)
         {
-            throw new NotImplementedException("An object of type Assignment with such an ID does not exist");
+            throw new Exception($"An object of type Assignment with  ID={item.Id} does not exist");
         }
         list.Remove(foundAssignment);
         list.Add(item);
