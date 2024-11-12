@@ -3,7 +3,19 @@
  
 
 namespace DO;
-public enum CallType { DeliverFood,makingFood}
+public enum CallType
+{
+    ProvideTransportation,
+    MedicalAssistance,
+    EmotionalSupport,
+    PrescriptionPickup,
+    HomeCare,
+    HospitalVisit,
+    TherapySession,
+    DeliverMedicine,
+    CleaningAssistance, 
+}
+
 
 
 /// <summary>
@@ -31,5 +43,5 @@ public record Call
 )
 {
 
-    public Call() : this(0, CallType.DeliverFood, string.Empty, null, 0.0, 0.0, DateTime.Now, null) { }
+    public Call() : this(0, CallType.ProvideTransportation, string.Empty, null, 0.0, 0.0, DateTime.Now, null) { }
 }
