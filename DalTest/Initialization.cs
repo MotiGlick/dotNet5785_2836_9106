@@ -13,7 +13,78 @@ public static class Initialization
     private static IConfig? s_dalConfig; //stage 1
 
     private static readonly Random s_rand = new();
-    
+
+
+    private static void creatCall()
+    {
+        string[] CallAddresses = new string[]
+    {
+    "23 Jaffa Street, Jerusalem", "15 King George Street, Jerusalem", "37 HaNeviim Street, Jerusalem", "78 Hebron Road, Jerusalem", "42 Herzl Boulevard, Jerusalem",
+    "40 Agripas Street, Jerusalem", "29 Gaza Street, Jerusalem", "9 Emek Refaim Street, Jerusalem", "18 Keren Hayesod Street, Jerusalem", "10 Shlomzion Hamalka Street, Jerusalem",
+    "5 David HaMelech Street, Jerusalem", "33 Ben Yehuda Street, Jerusalem", "25 HaPalmach Street, Jerusalem", "12 Derech Beit Lechem, Jerusalem", "50 Sderot Ben Gurion, Jerusalem",
+    "22 Azza Street, Jerusalem", "16 Rachel Imeinu Street, Jerusalem", "7 Derech HaAtsmaut, Jerusalem", "60 Yitzhak Rabin Boulevard, Jerusalem", "3 HaTzanchanim Street, Jerusalem",
+    "45 Mount Scopus, Jerusalem", "8 Shmuel HaNavi Street, Jerusalem", "11 Shivtei Israel Street, Jerusalem", "28 Rehov Hillel, Jerusalem", "4 Ben Maimon Street, Jerusalem",
+    "17 Ussishkin Street, Jerusalem", "2 HaPisga Street, Jerusalem", "32 Beit HaKerem Street, Jerusalem", "6 Sderot Eshkol, Jerusalem", "14 Jabotinsky Street, Jerusalem",
+    "19 HaAri Street, Jerusalem", "36 Betzalel Street, Jerusalem", "24 Rehov Mevo HaGalil, Jerusalem", "9 Ma'alot Street, Jerusalem", "21 Sderot Shazar, Jerusalem",
+    "13 Shai Agnon Street, Jerusalem", "27 Haganah Street, Jerusalem", "53 Hamelech Shlomo Street, Jerusalem", "39 Hanassi Street, Jerusalem", "18 Kiryat Moshe Street, Jerusalem",
+    "41 Agron Street, Jerusalem", "31 Pierre Koenig Street, Jerusalem", "29 French Hill, Jerusalem", "6 Shlomo HaMelech Street, Jerusalem", "37 Ein Kerem Street, Jerusalem",
+    "49 Herzog Street, Jerusalem", "20 Strauss Street, Jerusalem", "34 Lincoln Street, Jerusalem", "11 Haneviim Street, Jerusalem", "56 Malha Road, Jerusalem"
+    };
+
+        double[] Calllatitude = new double[]
+    {
+    31.7833, 31.7798, 31.7832, 31.7487, 31.7903, 31.7835, 31.7839, 31.7612, 31.7743, 31.7806,
+    31.7783, 31.7834, 31.7647, 31.7641, 31.7785, 31.7765, 31.7566, 31.7717, 31.7782, 31.7821,
+    31.7943, 31.7986, 31.7826, 31.7792, 31.7819, 31.7687, 31.7780, 31.7754, 31.7972, 31.7665,
+    31.7789, 31.7798, 31.7693, 31.7700, 31.7726, 31.7856, 31.7714, 31.7737, 31.7822, 31.7881,
+    31.7698, 31.7519, 31.7997, 31.7767, 31.7673, 31.7720, 31.7784, 31.7761, 31.7689, 31.7512
+    };
+
+        double[] Calllongitude = new double[]
+        {
+    35.2196, 35.2193, 35.2174, 35.2127, 35.2060, 35.2150, 35.2117, 35.2178, 35.2167, 35.2222,
+    35.2248, 35.2201, 35.2156, 35.2234, 35.2104, 35.2215, 35.2103, 35.2238, 35.2046, 35.2149,
+    35.2431, 35.2227, 35.2145, 35.2123, 35.2233, 35.2137, 35.2172, 35.2205, 35.2308, 35.2180,
+    35.2178, 35.2225, 35.2098, 35.2089, 35.2147, 35.2165, 35.2148, 35.2192, 35.2103, 35.2156,
+    35.2222, 35.2084, 35.2221, 35.2157, 35.2170, 35.2187, 35.2149, 35.2234, 35.2116, 35.2049
+        };
+
+        string[] callDescriptions = 
+{
+    "ProvideTransportation: Assistance with transportation for those who need it.",
+    "MedicalAssistance: Help with medical needs or emergencies.",
+    "EmotionalSupport: Providing emotional support and companionship.",
+    "HomeCare: Assistance with tasks around the home for daily living.",
+    "HospitalVisit: Visiting individuals in the hospital for support or check-in.",
+    "DeliverMedicine: Delivery of prescribed medications to individuals.",
+    "CleaningAssistance: Help with cleaning tasks in the home."
+};
+
+        //int day = s_rand.Next(1, 30);
+        DateTime start = s_dalConfig.Clock.AddDays(-14);
+        int range = (s_dalConfig.Clock - start).Days;
+
+        DateTime end = s_dalConfig.Clock.AddDays(+14);
+        int limit = (end -s_dalConfig.Clock).Days;
+
+        DateTime expired = s_dalConfig.Clock.AddDays(0);
+        int expiredLimit = -5;
+
+        for (int i = 0; i < 45; i++)
+        {
+            int t = s_rand.Next(0, 6);
+           
+            s_dalCall!.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start.AddDays(s_rand.Next(range)), end.AddDays(s_rand.Next(limit))));
+        }
+        for (int i = 45; i < 50; i++) {
+            int t = s_rand.Next(0, 6);
+
+            s_dalCall!.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start.AddDays(s_rand.Next(range)), s_dalConfig.Clock.AddDays(-1)));
+        }
+
+    }
+
+   
     private static void creatVolunteer()
     {
 
@@ -80,6 +151,22 @@ public static class Initialization
 
     }
 
+    private static void creatAssignment()
+    {
+        
+    }
+//    public record Assignment
+//(
+//    int Id,
+//    int CallId,
+//    int VolunteerId,
+//    DateTime CallTime,
+//    DateTime? TotalTime,
+//    CallStatus? type
+//)
+//    {
+//        public Assignment() : this(0, 0, 0, DateTime.Now, DateTime.Now, null) { }
+//    }
 
 }
 
