@@ -8,12 +8,10 @@ public enum CallType
     ProvideTransportation,
     MedicalAssistance,
     EmotionalSupport,
-    PrescriptionPickup,
     HomeCare,
     HospitalVisit,
-    TherapySession,
     DeliverMedicine,
-    CleaningAssistance, 
+    CleaningAssistance,
 }
 
 
