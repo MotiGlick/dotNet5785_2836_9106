@@ -15,8 +15,8 @@ public static class Initialization
     private static readonly Random s_rand = new();
 
 
-   
-   
+
+
     private static void creatVolunteer()
     {
 
@@ -50,7 +50,7 @@ public static class Initialization
                35.2242, 35.2323, 35.2407, 35.2134, 35.2279};
 
 
-
+        
 
 
         for (int i = 0; i < VolunteerNames.Length; i++)
@@ -60,45 +60,99 @@ public static class Initialization
             double distanec;
 
             do
-                id = s_rand.Next(20000000,40000000);
+                id = s_rand.Next(20000000, 40000000);
             while (s_dalVolunteer!.Read(id) != null);
 
-            distanec = (double)s_rand.Next(0,100000);
+            distanec = (double)s_rand.Next(0, 100000);
 
-            s_dalVolunteer!.Create(new(id, VolunteerNames[i], VolunteerPhones[i], VolunteerEmails[i], 
+            s_dalVolunteer!.Create(new(id, VolunteerNames[i], VolunteerPhones[i], VolunteerEmails[i],
                 VolunteerPasswords[i], VolunteerAddresses[i], VolunteerLatitudes[i], VolunteerLongitudes[i],
-                distanec, job.volunteer,true ,distanceType.Air));
+                distanec, job.volunteer, true, distanceType.Air));
         }
 
 
 
-{
+        {
             //creat manager
             int id;
-        do
-            id = s_rand.Next(20000000, 40000000);
-        while (s_dalVolunteer!.Read(id) != null);
-        s_dalVolunteer!.Create(new(id, "Moti glick", "0527540619", "moti_glick@gmail.com",
-                "00324366"," 21 HaVaad HaLeumi St, Jerusalem", 31.7853, 35.2137, 100, job.manager, true, distanceType.Air));}
+            do
+                id = s_rand.Next(20000000, 40000000);
+            while (s_dalVolunteer!.Read(id) != null);
+            s_dalVolunteer!.Create(new(id, "Moti glick", "0527540619", "moti_glick@gmail.com",
+                    "00324366", " 21 HaVaad HaLeumi St, Jerusalem", 31.7853, 35.2137, 100, job.manager, true, distanceType.Air));
+        }
 
     }
 
     private static void creatAssignment()
     {
-        
+
+        List<Call> CList = s_dalCall.ReadAll();
+        List<Volunteer> VList = s_dalVolunteer.ReadAll();
+
+        for (int i = 0; i < 20; i++)//Volunteers who handled a lot calls
+        {
+            int randNum = s_rand.Next(0, 5);
+
+           
+
+              DateTime CallStartTime = CList[i].CallTime;
+              DateTime? CallEndTime = CList[i].TotalTime;
+            DateTime AssignmentTime = GetRandomDate(CallStartTime, CallEndTime);
+            DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
+
+            s_dalAssignment!.Create(new(0, CList[i].Id, VList[randNum].Id, AssignmentTime, AssignmentTotalTime, (CallStatus)randNum));
+        }
+
+
+        for (int i = 20; i < 45; i++)//Volunteers who handled a few calls
+        {
+            int randNum = s_rand.Next(6, 13);
+
+
+            DateTime CallStartTime = CList[i].CallTime;
+            DateTime? CallEndTime = CList[i].TotalTime;
+            DateTime AssignmentTime = GetRandomDate(CallStartTime, CallEndTime);
+            DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
+
+
+            s_dalAssignment!.Create(new(0, CList[i].Id, VList[randNum].Id, AssignmentTime, AssignmentTotalTime, (CallStatus)randNum));
+        }
+
     }
-    //    public record Assignment
-    //(
-    //    int Id,
-    //    int CallId,
-    //    int VolunteerId,
-    //    DateTime CallTime,
-    //    DateTime? TotalTime,
-    //    CallStatus? type
-    //)
-    //    {
-    //        public Assignment() : this(0, 0, 0, DateTime.Now, DateTime.Now, null) { }
-    //    }
+
+
+    static DateTime GetRandomDate(DateTime start, DateTime? end)//function for random date ,we use Chat GPT
+    {
+        // אם end הוא null, מחזירים את start
+        if (!end.HasValue)
+        {
+            return start;
+        }
+
+        // מחשבים את ההפרש בזמן בין שני התאריכים
+        TimeSpan timeSpan = end.Value - start;
+
+        // יוצרים אובייקט אקראי
+        Random random = new Random();
+
+        // מגרילים מספר אקראי בטווח משך הזמן
+        int randomDays = random.Next(0, (int)timeSpan.TotalDays);
+
+        // מוסיפים את הימים האקראיים לתאריך ההתחלה כדי לקבל את התאריך האקראי
+        return start.AddDays(randomDays);
+    }
+
+
+
+
+
+
+
+
+
+
+
     private static void creatCall()
     {
         string[] CallAddresses = new string[]
@@ -168,6 +222,37 @@ public static class Initialization
         }
 
     }
+
+
+
+    public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig) //stage 1
+    {
+        // בדיקה שהפרמטרים אינם null והצבה למשתני הגישה
+        s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object 'Student' cannot be null!");
+        s_dalCall = dalCall ?? throw new NullReferenceException("DAL object 'Course' cannot be null!");
+        s_dalAssignment = dalAssignment ?? throw new NullReferenceException("DAL object 'Link' cannot be null!");
+        s_dalConfig = dalConfig ?? throw new NullReferenceException("DAL object 'Config' cannot be null!");
+
+
+        Console.WriteLine("Reset Configuration values and List values...");
+        s_dalConfig.Reset(); 
+        s_dalAssignment.DeleteAll(); 
+        s_dalVolunteer.DeleteAll();
+        s_dalCall.DeleteAll();
+
+
+
+        // אתחול רשימות
+        Console.WriteLine("Initializing Students list...");
+        creatVolunteer();
+
+        Console.WriteLine("Initializing Courses list...");
+        creatCall();
+
+        Console.WriteLine("Initializing Links list...");
+        creatAssignment();
+    }
+
 
 
 }
