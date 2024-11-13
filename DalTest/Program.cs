@@ -131,23 +131,6 @@ namespace DalTest
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             //תת תפריט עבור ישויות
             static void ShowSubMenu(int x)
             {
@@ -199,7 +182,7 @@ namespace DalTest
                                     CreateVolunteerFromInput();
                                 else if (x == 2)
                                     CreateCallFromInput();
-                                else if(x == 3)
+                                else if (x == 3)
                                     CreateAssignmentFromInput();
 
                             }
@@ -278,75 +261,81 @@ namespace DalTest
             }
 
 
-             static Call CreateCallFromInput()
+
+
+
+
+
+            static void CreateCallFromInput()
             {
 
+                Console.WriteLine("Please enter the following details for the Call:");
 
 
 
+                Console.Write("Call Type (ProvideTransportation, Emergency,ProvideTransportation, MedicalAssistance, EmotionalSupport, HomeCare, HospitalVisit, DeliverMedicine, CleaningAssistance): ");
+
+                CallType type = Enum.TryParse(Console.ReadLine(), out CallType parsedType) ? parsedType : CallType.ProvideTransportation;
+
+                Console.Write("Call Address: ");
+                string callAddress = Console.ReadLine() ?? "";
+
+                Console.Write("Description (optional): ");
+                string? description = Console.ReadLine();
+
+                Console.Write("Latitude: ");
+                double latitude = double.TryParse(Console.ReadLine(), out var latValue) ? latValue : 0.0;
+
+                Console.Write("Longitude: ");
+                double longitude = double.TryParse(Console.ReadLine(), out var lonValue) ? lonValue : 0.0;
+
+                Console.Write("Call Time (yyyy-mm-dd hh:mm:ss): ");
+                DateTime callTime = DateTime.TryParse(Console.ReadLine(), out var parsedCallTime) ? parsedCallTime : DateTime.Now;
+
+                Console.Write("Total Time (optional, yyyy-mm-dd hh:mm:ss): ");
+                DateTime? totalTime = DateTime.TryParse(Console.ReadLine(), out var parsedTotalTime) ? parsedTotalTime : (DateTime?)null;
+
+
+
+                s_dalCall.Create(new(0, type, callAddress, description, latitude, longitude, callTime, totalTime));
 
             }
 
 
-            static Volunteer CreateAssignmentFromInput()
-            {
 
-            }
-
-            static Volunteer CreateVolunteerFromInput()
-            {
-                Console.WriteLine("Please enter the following details for the Volunteer:");
-
-                Console.Write("ID: ");
-                int id = int.Parse(Console.ReadLine());
-
-                Console.Write("Name: ");
-                string name = Console.ReadLine() ?? "";
-
-                Console.Write("Phone Number: ");
-                string phoneNumber = Console.ReadLine() ?? "";
-
-                Console.Write("Email: ");
-                string email = Console.ReadLine() ?? "";
-
-                Console.Write("Password (optional): ");
-                string? password = Console.ReadLine();
-
-                Console.Write("Address (optional): ");
-                string? address = Console.ReadLine();
-
-                Console.Write("Latitude (optional): ");
-                double? latitude = double.TryParse(Console.ReadLine(), out var latValue) ? latValue : null;
-
-                Console.Write("Longitude (optional): ");
-                double? longitude = double.TryParse(Console.ReadLine(), out var lonValue) ? lonValue : null;
-
-                Console.Write("Maximum Distance (optional): ");
-                double? maximumDistance = double.TryParse(Console.ReadLine(), out var distValue) ? distValue : null;
-
-                Console.Write("Duty (Volunteer, Coordinator, etc.): ");
-                Job duty = Enum.TryParse(Console.ReadLine(), out Job parsedDuty) ? parsedDuty : Job.Volunteer;
-                Console.Write("Is Active (true/false): ");
-                bool isActive = bool.TryParse(Console.ReadLine(), out var activeValue) && activeValue;
-
-                Console.Write("Distance Type (Air, Road): ");
-                DistanceType distance = Enum.TryParse(Console.ReadLine(), out DistanceType parsedDistance) ? parsedDistance : DistanceType.Air;
-                return new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance);
-            }
         }
+
+
+
+
+
+
+        static void CreateAssignmentFromInput()
+        {
+
+            Console.Write("Call ID: ");
+            int callId = int.TryParse(Console.ReadLine(), out var parsedCallId) ? parsedCallId : 0;
+
+            Console.Write("Volunteer ID: ");
+            int volunteerId = int.TryParse(Console.ReadLine(), out var parsedVolunteerId) ? parsedVolunteerId : 0;
+
+            Console.Write("Assignment Time (yyyy-mm-dd hh:mm:ss): ");
+            DateTime assignmentTime = DateTime.TryParse(Console.ReadLine(), out var parsedAssignmentTime) ? parsedAssignmentTime : DateTime.Now;
+
+            Console.Write("Assignment Total Time (optional, yyyy-mm-dd hh:mm:ss): ");
+            DateTime? assignmentTotalTime = DateTime.TryParse(Console.ReadLine(), out var parsedTotalTime) ? parsedTotalTime : (DateTime?)null;
+
+            Console.Write("Call Status (HandledOnTime, SelfCancellation, ManagerCancellation, ExpiredCancellation): ");
+            CallStatus? type = Enum.TryParse(Console.ReadLine(), out CallStatus parsedType) ? parsedType : null;
+
+            s_dalAssignment.Create(new(0, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
+
+        }
+
+      
     }
 }
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 
