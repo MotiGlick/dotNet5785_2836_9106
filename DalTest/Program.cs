@@ -1,6 +1,8 @@
 ﻿using Dal;
 using DalApi;
 using DO;
+using System.Net;
+using System.Xml.Linq;
 
 namespace DalTest
 {
@@ -196,7 +198,13 @@ namespace DalTest
                             try
                             {
                                 Console.WriteLine("Enter object ID to display:");
-                                // קריאה לפונקציה להצגת האובייקט לפי מזהה (למשל: ReadObjectById())
+                                string id = Console.ReadLine();
+                                if (x == 1)
+                                    s_dalVolunteer.Read(id);
+                                else if (x == 2)
+                                    s_dalCall.Read(id);///////////////////
+                                else if (x == 3)
+                                    s_dalAssignment.Read(id);
                             }
                             catch (Exception ex)
                             {
@@ -208,7 +216,12 @@ namespace DalTest
                             try
                             {
                                 Console.WriteLine("Displaying all objects...");
-                                // קריאה לפונקציה להצגת כל האובייקטים (למשל: ReadAllObjects())
+                                if (x == 1)
+                                    s_dalVolunteer.ReadAll();
+                                else if (x == 2)
+                                    s_dalCall.ReadAll();
+                                else if (x == 3)
+                                    s_dalAssignment.ReadAll();
                             }
                             catch (Exception ex)
                             {
@@ -220,7 +233,13 @@ namespace DalTest
                             try
                             {
                                 Console.WriteLine("Enter object ID to update:");
-                                // קריאה לפונקציה לעדכון האובייקט (למשל: UpdateObject())
+                                int id = ChackId();
+                                if (x == 1)
+                                    s_dalVolunteer.Update(id);
+                                else if (x == 2)
+                                    s_dalCall.Update(id);
+                                else if (x == 3)
+                                    s_dalAssignment.Update(id);
                             }
                             catch (Exception ex)
                             {
@@ -231,34 +250,59 @@ namespace DalTest
                         case SubMenuOption.Delete:
                             try
                             {
-                                Console.WriteLine("Enter object ID to delete:");
-                                // קריאה לפונקציה למחיקת האובייקט לפי מזהה (למשל: DeleteObjectById())
+
+                                if (x == 1)
+                                    s_dalVolunteer.Delete();
+                                else if (x == 2)
+                                    s_dalCall.Delete();
+                                else if (x == 3)
+                                    s_dalAssignment.Delete();
+                            }
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine("An error occurred while deleting the object: " + ex.Message);
-                            }
-                            break;
+                        Console.WriteLine("An error occurred while deleting the object: " + ex.Message);
+                    }
+                    break;
 
                         case SubMenuOption.DeleteAll:
-                            try
-                            {
-                                Console.WriteLine("Deleting all objects...");
-                                // קריאה לפונקציה למחיקת כל האובייקטים (למשל: DeleteAllObjects())
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine("An error occurred while deleting all objects: " + ex.Message);
-                            }
-                            break;
+                        try
+                        {
+                            Console.WriteLine("Deleting all objects...");
+                            if (x == 1)
+                                s_dalVolunteer.DeleteAll();
+                            else if (x == 2)
+                                s_dalCall.DeleteAll();
+                            else if (x == 3)
+                                s_dalAssignment.DeleteAll();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("An error occurred while deleting all objects: " + ex.Message);
+                        }
+                        break;
 
-                        default:
-                            Console.WriteLine("Invalid Option");
-                            break;
+                    default:
+                        Console.WriteLine("Invalid Option");
+                        break;
                     }
 
                 } while (!exitSubMenu);
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -307,7 +351,48 @@ namespace DalTest
 
 
 
+        static void CreateVolunteerFromInput()
+        {
 
+            Console.WriteLine("Please enter the following details for the Volunteer:");
+            Console.Write("Call Type (ProvideTransportation, Emergency,ProvideTransportation, MedicalAssistance, EmotionalSupport, HomeCare, HospitalVisit, DeliverMedicine, CleaningAssistance): ");
+
+            CallType type = Enum.TryParse(Console.ReadLine(), out CallType parsedType) ? parsedType : CallType.ProvideTransportation;
+
+            Console.Write("Call Address: ");
+            string callAddress = Console.ReadLine() ?? "";
+
+            Console.Write("Description (optional): ");
+            string? description = Console.ReadLine();
+
+            Console.Write("Latitude: ");
+            double latitude = double.TryParse(Console.ReadLine(), out var latValue) ? latValue : 0.0;
+
+            Console.Write("Longitude: ");
+            double longitude = double.TryParse(Console.ReadLine(), out var lonValue) ? lonValue : 0.0;
+
+            Console.Write("Call Time (yyyy-mm-dd hh:mm:ss): ");
+            DateTime callTime = DateTime.TryParse(Console.ReadLine(), out var parsedCallTime) ? parsedCallTime : DateTime.Now;
+
+            Console.Write("Total Time (optional, yyyy-mm-dd hh:mm:ss): ");
+            DateTime? totalTime = DateTime.TryParse(Console.ReadLine(), out var parsedTotalTime) ? parsedTotalTime : (DateTime?)null;
+
+
+
+            Console.Write("Duty (Volunteer, Coordinator, etc.): ");
+            job duty = Enum.TryParse(Console.ReadLine(), out job parsedDuty) ? parsedDuty : job.volunteer;
+
+            Console.Write("Is Active (true/false): ");
+            bool isActive = bool.TryParse(Console.ReadLine(), out var activeValue) && activeValue;
+            s_dalCall.Create(new(0, type, callAddress, description, latitude, longitude, callTime, totalTime));
+
+            Console.Write("Distance Type (Air, Road): ");
+            distanceType distance = Enum.TryParse(Console.ReadLine(), out distanceType parsedDistance) ? parsedDistance : distanceType.Air;
+            s_dalVolunteer.Create(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
+
+
+
+        }
 
 
         static void CreateAssignmentFromInput()
@@ -332,12 +417,10 @@ namespace DalTest
 
         }
 
-      
+
     }
 }
-}
-
-
+//}
 
 
 
