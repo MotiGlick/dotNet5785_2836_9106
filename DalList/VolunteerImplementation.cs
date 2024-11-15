@@ -19,7 +19,7 @@ public class VolunteerImplementation : IVolunteer
         }
 
         else
-            throw new Exception($"An object of type Volunteer with  ID={ item.Id}already exist");
+            throw new Exception($"An object of type Volunteer with  ID = { item.Id} already exist");
     }
 
     public void Delete(int id)
@@ -27,7 +27,7 @@ public class VolunteerImplementation : IVolunteer
         List<DO.Volunteer> list = DataSource.Volunteers;
         Volunteer? foundVolunteer = list.Find(Volunteer => Volunteer.Id == id);
         if (foundVolunteer == null) 
-            throw new Exception($"An object of type Volunteer with ID={id} does not exist");
+            throw new Exception($"An object of type Volunteer with ID = {id} does not exist");
         list.Remove(foundVolunteer);
     }
 
@@ -55,7 +55,7 @@ public class VolunteerImplementation : IVolunteer
         List<DO.Volunteer> list = DataSource.Volunteers;
         Volunteer? foundVolunteer = list.Find(Volunteer => Volunteer.Id == item.Id);
         if (foundVolunteer == null)
-                throw new Exception($"An object of type Volunteer with ID={item.Id} does not exist");
+                throw new Exception($"An object of type Volunteer with ID = {item.Id} does not exist");
         list.Remove(foundVolunteer);
         list.Add(item);
     }
