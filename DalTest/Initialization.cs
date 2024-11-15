@@ -5,6 +5,10 @@ using DalApi;
 using DO;
 using System.Xml.Linq;
 
+
+/// <summary>
+/// 
+/// </summary>
 public static class Initialization
 {
     private static IVolunteer? s_dalVolunteer; //stage 1
@@ -56,6 +60,7 @@ public static class Initialization
         for (int i = 0; i < VolunteerNames.Length; i++)
         {
             int id;
+
             //Distance in meters
             double distanec;
 
@@ -142,10 +147,6 @@ public static class Initialization
         // מוסיפים את הימים האקראיים לתאריך ההתחלה כדי לקבל את התאריך האקראי
         return start.AddDays(randomDays);
     }
-
-
-
-
 
 
 
