@@ -5,5 +5,10 @@ namespace DalApi;
 public interface IConfig
 {
     DateTime Clock { get; set; }
+    int NextCallId { get; }
+
+    int NextAssignmentId { get; }
+
+    TimeSpan RiskRange { get; set; }
     void Reset();
 }
