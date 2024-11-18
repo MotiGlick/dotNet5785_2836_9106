@@ -3,16 +3,7 @@
  
 
 namespace DO;
-public enum CallType
-{
-    ProvideTransportation,
-    MedicalAssistance,
-    EmotionalSupport,
-    HomeCare,
-    HospitalVisit,
-    DeliverMedicine,
-    CleaningAssistance,
-}
+
 
 
 

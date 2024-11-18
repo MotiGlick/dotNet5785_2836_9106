@@ -1,14 +1,7 @@
 ﻿
 
 namespace DO;
-/// <summary>
-/// Defines job roles for a volunteer.
-/// </summary>
-public enum job { manager, volunteer }
-/// <summary>
-/// Specifies types of distances relevant to the volunteer's duties.
-/// </summary>
-public enum distanceType { Air, walk, car }
+
 /// <summary>
 /// A volunteer entity represents a volunteer with all of their accessories.
 /// </summary>
