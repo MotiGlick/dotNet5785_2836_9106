@@ -3,6 +3,10 @@
 namespace DalApi;
 
 using DO;
+
+/// <summary>
+/// interface for Assignment objects in the DAL
+/// </summary>
 public interface IAssignment
 {
     void Create(Assignment item); //Creates new entity object in DAL
