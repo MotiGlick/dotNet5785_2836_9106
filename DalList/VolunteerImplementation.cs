@@ -7,7 +7,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Implementation of the IVolunteer interface for managing Volunteer entities.
 /// </summary>
-public class VolunteerImplementation : IVolunteer
+internal class VolunteerImplementation : IVolunteer
 {
     /// <summary>
     /// Creates a new Volunteer entity and adds it to the data source.

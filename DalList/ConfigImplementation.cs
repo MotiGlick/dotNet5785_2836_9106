@@ -4,7 +4,7 @@ using DalApi;
 /// <summary>
 /// Implementation of the IConfig interface for managing application configuration.
 /// </summary>
-public class ConfigImplementation : IConfig
+internal class ConfigImplementation : IConfig
 {
     /// <summary>
     /// Gets or sets the global clock value.
