@@ -8,11 +8,13 @@ using System.Xml.Linq;
 /// </summary>
 public static class Initialization
 {
-    // Private static fields for different data access layers
-    private static IVolunteer? s_dalVolunteer; // Data access layer for Volunteer (stage 1)
-    private static ICall? s_dalCall; // Data access layer for Call (stage 1)
-    private static IAssignment? s_dalAssignment; // Data access layer for Assignment (stage 1)
-    private static IConfig? s_dalConfig; // Data access layer for general configuration (stage 1)
+
+    //// Private static fields for different data access layers
+    //private static IVolunteer? s_dalVolunteer; // Data access layer for Volunteer (stage 1)
+    //private static ICall? s_dalCall; // Data access layer for Call (stage 1)
+    //private static IAssignment? s_dalAssignment; // Data access layer for Assignment (stage 1)
+    //private static IConfig? s_dalConfig; // Data access layer for general configuration (stage 1)
+    private static IDal? s_dal; //stage 2
 
     // Random object for generating random values
     private static readonly Random s_rand = new();
@@ -63,13 +65,13 @@ public static class Initialization
             // Generate a unique volunteer ID
             do
                 id = s_rand.Next(20000000, 40000000);
-            while (s_dalVolunteer!.Read(id) != null);
+            while (s_dal.Volunteer!.Read(id) != null);
 
             // Randomly generate the volunteer's distance
             distanec = (double)s_rand.Next(0, 100000);
 
             // Create and add the volunteer to the data access layer
-            s_dalVolunteer!.Create(new(id, VolunteerNames[i], VolunteerPhones[i], VolunteerEmails[i],
+            s_dal.Volunteer!.Create(new(id, VolunteerNames[i], VolunteerPhones[i], VolunteerEmails[i],
                 VolunteerPasswords[i], VolunteerAddresses[i], VolunteerLatitudes[i], VolunteerLongitudes[i],
                 distanec, job.volunteer, true, distanceType.Air));
         }
@@ -79,10 +81,10 @@ public static class Initialization
             int id;
             do
                 id = s_rand.Next(20000000, 40000000);
-            while (s_dalVolunteer!.Read(id) != null);
+            while (s_dal.Volunteer!.Read(id) != null);
 
             // Add the manager to the data access layer
-            s_dalVolunteer!.Create(new(id, "Moti glick", "0527540619", "moti_glick@gmail.com",
+            s_dal.Volunteer!.Create(new(id, "Moti glick", "0527540619", "moti_glick@gmail.com",
                     "00324366", " 21 HaVaad HaLeumi St, Jerusalem", 31.7853, 35.2137, 100, job.manager, true, distanceType.Air));
         }
     }
@@ -92,8 +94,8 @@ public static class Initialization
     private static void creatAssignment()
     {
         // Retrieve lists of all calls and volunteers
-        List<Call> CList = s_dalCall.ReadAll();
-        List<Volunteer> VList = s_dalVolunteer.ReadAll();
+        List<Call> CList = s_dal.Call.ReadAll();
+        List<Volunteer> VList = s_dal.Volunteer.ReadAll();
 
         // Loop for creating assignments for volunteers who handled many calls
         for (int i = 0; i < 20; i++)
@@ -109,7 +111,7 @@ public static class Initialization
             DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
 
             // Create an assignment and add it to the data access layer
-            s_dalAssignment!.Create(new(0, CList[i].Id, VList[randNum].Id, AssignmentTime, AssignmentTotalTime, (CallStatus)randNum));
+            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum].Id, AssignmentTime, AssignmentTotalTime, (CallStatus)randNum));
         }
 
         // Loop for creating assignments for volunteers who handled fewer calls
@@ -126,7 +128,7 @@ public static class Initialization
             DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
 
             // Create an assignment and add it to the data access layer
-            s_dalAssignment!.Create(new(0, CList[i].Id, VList[randNum].Id, AssignmentTime, AssignmentTotalTime, (CallStatus)randNum));
+            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum].Id, AssignmentTime, AssignmentTotalTime, (CallStatus)randNum));
         }
     }
 
@@ -207,14 +209,14 @@ public static class Initialization
     };
 
         // Set the start and end dates for the call range.
-        DateTime start = s_dalConfig.Clock.AddDays(-14);
-        int range = (s_dalConfig.Clock - start).Days;
+        DateTime start = s_dal.Config.Clock.AddDays(-14);
+        int range = (s_dal.Config.Clock - start).Days;
 
-        DateTime end = s_dalConfig.Clock.AddDays(+14);
-        int limit = (end - s_dalConfig.Clock).Days;
+        DateTime end = s_dal.Config.Clock.AddDays(+14);
+        int limit = (end - s_dal.Config.Clock).Days;
 
         // Set the expiration date
-        DateTime expired = s_dalConfig.Clock.AddDays(0);
+        DateTime expired = s_dal.Config.Clock.AddDays(0);
         int expiredLimit = -5;
 
         // Loop to create 45 active calls
@@ -223,7 +225,7 @@ public static class Initialization
             int t = s_rand.Next(0, 6); // Random type of call
 
             // Create a call with random address, description, coordinates, and dates
-            s_dalCall!.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start.AddDays(s_rand.Next(range)), end.AddDays(s_rand.Next(limit))));
+            s_dal.Call!.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start.AddDays(s_rand.Next(range)), end.AddDays(s_rand.Next(limit))));
         }
 
         // Loop to create 5 expired calls
@@ -232,7 +234,7 @@ public static class Initialization
             int t = s_rand.Next(0, 6); // Random type of call
 
             // Create an expired call with random address, description, coordinates, and dates
-            s_dalCall!.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start.AddDays(s_rand.Next(range)), s_dalConfig.Clock.AddDays(-1)));
+            s_dal!.Call.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start.AddDays(s_rand.Next(range)), s_dal.Config.Clock.AddDays(-1)));
         }
     }
 
@@ -244,20 +246,23 @@ public static class Initialization
     /// <param name="dalAssignment">Assignment data access object</param>
     /// <param name="dalConfig">Configuration data access object</param>
     /// <exception cref="NullReferenceException">Thrown when any parameter is null</exception>
-    public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig)
+    public static void Do(IDal dal)
     {
-        // Check parameters are not null and assign to internal fields
-        s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object 'Student' cannot be null!");
-        s_dalCall = dalCall ?? throw new NullReferenceException("DAL object 'Course' cannot be null!");
-        s_dalAssignment = dalAssignment ?? throw new NullReferenceException("DAL object 'Link' cannot be null!");
-        s_dalConfig = dalConfig ?? throw new NullReferenceException("DAL object 'Config' cannot be null!");
+        //s_dal = dalVolunteer ?? throw new NullReferenceException("DAL object 'Student' cannot be null!");
+        //s_dal = dalCall ?? throw new NullReferenceException("DAL object 'Course' cannot be null!");
+        //s_dal = dalAssignment ?? throw new NullReferenceException("DAL object 'Link' cannot be null!");
+        //s_dal = dalConfig ?? throw new NullReferenceException("DAL object 'Config' cannot be null!");
+        //// Check parameters are not null and assign to internal fields
+        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
 
+
+        //s_dalConfig.Reset();
+        //s_dalAssignment.DeleteAll();
+        //s_dalVolunteer.DeleteAll();
+        //s_dalCall.DeleteAll();
         // Reset configurations and delete all existing data
         Console.WriteLine("Reset Configuration values and List values...");
-        s_dalConfig.Reset();
-        s_dalAssignment.DeleteAll();
-        s_dalVolunteer.DeleteAll();
-        s_dalCall.DeleteAll();
+        s_dal.ResetDB();//stage 2
 
         // Initialize the lists of volunteers, calls, and assignments
         Console.WriteLine("Initializing Students list...");
