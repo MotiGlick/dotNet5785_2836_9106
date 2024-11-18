@@ -278,17 +278,22 @@ namespace DalTest
             }
 
 
-             static void CreateCallFromInput()
+             static Call CreateCallFromInput()
             {
+
+
+
+
+
             }
 
 
-            static void CreateAssignmentFromInput()
+            static Volunteer CreateAssignmentFromInput()
             {
 
             }
 
-            static void CreateVolunteerFromInput()
+            static Volunteer CreateVolunteerFromInput()
             {
                 Console.WriteLine("Please enter the following details for the Volunteer:");
 
@@ -320,16 +325,13 @@ namespace DalTest
                 double? maximumDistance = double.TryParse(Console.ReadLine(), out var distValue) ? distValue : null;
 
                 Console.Write("Duty (Volunteer, Coordinator, etc.): ");
-                job duty = Enum.TryParse(Console.ReadLine(), out job parsedDuty) ? parsedDuty : job.volunteer;
-
+                Job duty = Enum.TryParse(Console.ReadLine(), out Job parsedDuty) ? parsedDuty : Job.Volunteer;
                 Console.Write("Is Active (true/false): ");
                 bool isActive = bool.TryParse(Console.ReadLine(), out var activeValue) && activeValue;
 
                 Console.Write("Distance Type (Air, Road): ");
-                distanceType distance = Enum.TryParse(Console.ReadLine(), out distanceType parsedDistance) ? parsedDistance : distanceType.Air;
-                s_dalVolunteer.Create(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
-
-
+                DistanceType distance = Enum.TryParse(Console.ReadLine(), out DistanceType parsedDistance) ? parsedDistance : DistanceType.Air;
+                return new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance);
             }
         }
     }
