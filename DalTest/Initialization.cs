@@ -18,9 +18,6 @@ public static class Initialization
 
     private static readonly Random s_rand = new();
 
-
-
-
     private static void creatVolunteer()
     {
 
@@ -53,10 +50,6 @@ public static class Initialization
                35.2211, 35.2256, 35.2119, 35.2213, 35.2280,
                35.2242, 35.2323, 35.2407, 35.2134, 35.2279};
 
-
-        
-
-
         for (int i = 0; i < VolunteerNames.Length; i++)
         {
             int id;
@@ -74,8 +67,6 @@ public static class Initialization
                 VolunteerPasswords[i], VolunteerAddresses[i], VolunteerLatitudes[i], VolunteerLongitudes[i],
                 distanec, job.volunteer, true, distanceType.Air));
         }
-
-
 
         {
             //creat manager
@@ -98,8 +89,6 @@ public static class Initialization
         for (int i = 0; i < 20; i++)//Volunteers who handled a lot calls
         {
             int randNum = s_rand.Next(0, 5);
-
-           
 
               DateTime CallStartTime = CList[i].CallTime;
               DateTime? CallEndTime = CList[i].TotalTime;
@@ -147,12 +136,6 @@ public static class Initialization
         // מוסיפים את הימים האקראיים לתאריך ההתחלה כדי לקבל את התאריך האקראי
         return start.AddDays(randomDays);
     }
-
-
-
-
-
-
 
     private static void creatCall()
     {

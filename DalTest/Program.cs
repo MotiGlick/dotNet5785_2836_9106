@@ -48,12 +48,6 @@ namespace DalTest
             ResetAllConfigValues
         }
 
-
-
-
-
-
-
         static void Main(string[] args)
         {
             try
@@ -207,17 +201,33 @@ namespace DalTest
                                 if (entity == "Volunteer")
                                 {
                                     Volunteer? unUpdated = s_dalVolunteer.Read(id);
-                                    s_dalVolunteer.Update(unUpdated);
+                                    if (unUpdated != null)
+                                    {
+                                        Console.WriteLine(unUpdated);
+                                        s_dalVolunteer.Update(unUpdated);
+
+                                    }
                                 }
                                 else if (entity == "Call")
                                 {
                                     Call? unUpdated = s_dalCall.Read(id);
-                                    s_dalCall.Update(unUpdated);
+
+                                    if (unUpdated != null)
+                                    {
+                                        Console.WriteLine(unUpdated);
+                                        s_dalCall.Update(unUpdated);
+                                    }
                                 }
                                 else if (entity == "Assignment")
                                 {
+
                                     Assignment unUpdated = s_dalAssignment.Read(id);
-                                    s_dalAssignment.Update(unUpdated);
+                                    if (unUpdated != null)
+                                    {
+                                        Console.WriteLine(unUpdated);
+                                        s_dalAssignment.Update(unUpdated);
+
+                                    }
                                 }
                                 break;
 
@@ -307,18 +317,11 @@ namespace DalTest
                             break;
 
                         case ConfigMenu.SetNewConfigValue:
-                            //Console.Write("Enter the name of the configuration variable: ");
-                            //string configVarName = Console.ReadLine();
-                            //Console.Write("Enter the new value: ");
-                            //string newValue = Console.ReadLine();
-                            //s_dalConfig.Set(configVarName, newValue);
-                            //Console.WriteLine($"Configuration variable '{configVarName}' set to '{newValue}'.");
+                            SetNewConfig();
                             break;
 
                         case ConfigMenu.DisplayCurrentConfigValue:
-                            //Console.Write("Enter the name of the configuration variable to display: ");
-                            //string varNameToDisplay = Console.ReadLine();
-                            //Console.WriteLine($"Current value of '{varNameToDisplay}': {s_dalConfig.Get(varNameToDisplay)}");
+                            ShowConfig();
                             break;
 
                         case ConfigMenu.ResetAllConfigValues:
@@ -333,15 +336,6 @@ namespace DalTest
 
                 }
             }
-
-
-
-
-
-
-
-
-
 
             static void showData(string data)
             {
@@ -423,6 +417,54 @@ namespace DalTest
 
             }
 
+            static void SetNewConfig()
+            {
+                Console.Write("Enter the name of the configuration variable: (Clock,RiskRange)");
+                string configVarName = Console.ReadLine();
+                Console.Write("Enter the new value: ");
+                string newValue = Console.ReadLine();
+
+                if (configVarName == "Clock")
+                {
+                    DateTime newClockValue = DateTime.Parse(newValue);
+                    s_dalConfig.Clock = newClockValue;
+                    Console.WriteLine($"Configuration variable '{configVarName}' set to '{newValue}'.");
+                }
+                else if (configVarName == "RiskRange")
+                {
+                    TimeSpan newRiskRangeValue = TimeSpan.Parse(newValue);
+
+                    s_dalConfig.RiskRange = newRiskRangeValue;
+                    Console.WriteLine($"Configuration variable '{configVarName}' set to '{newValue}'.");
+
+                }
+
+            }
+
+            static void ShowConfig()
+            {
+                Console.Write("Enter the name of the configuration variable: (Clock,RiskRange,AssignmentId,CallId)");
+                string configVarName = Console.ReadLine();
+
+
+                if (configVarName == "Clock")
+                {
+                    Console.WriteLine($"Clock : {s_dalConfig.Clock}");
+                }
+                else if (configVarName == "RiskRange")
+                {
+                    Console.WriteLine($"RiskRange : {s_dalConfig.RiskRange}");
+
+                }
+                else if (configVarName == "AssignmentId")
+                {
+                    Console.WriteLine($"AssignmentId : {s_dalConfig.NextAssignmentId}");
+                }
+                else if (configVarName == "CallId")
+                {
+                    Console.WriteLine($"AssignmentId : {s_dalConfig.NextCallId}");
+                }
+            }
 
             static void CreatEntityFromInput(string entity)
             {
@@ -521,15 +563,8 @@ namespace DalTest
                     DateTime? totalTime = DateTime.TryParse(Console.ReadLine(), out var parsedTotalTime) ? parsedTotalTime : (DateTime?)null;
 
                     s_dalCall.Create(new(0, type, callAddress, description, latitude, longitude, callTime, totalTime));
-
-
                 }
             }
-
-
-
-
-
         }
     }
 }
