@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Implementation of the IAssignment interface for managing Assignment entities.
 /// </summary>
-public class AssignmentImplementation : IAssignment
+internal class AssignmentImplementation : IAssignment
 {
     /// <summary>
     /// Creates a new Assignment entity with a unique ID and adds it to the data source.

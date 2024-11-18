@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Implementation of the ICall interface for managing Call entities.
 /// </summary>
-public class CallImplementation : ICall
+internal class CallImplementation : ICall
 {
     /// <summary>
     /// Creates a new Call entity with a unique ID and adds it to the data source.
