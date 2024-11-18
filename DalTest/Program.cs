@@ -14,40 +14,6 @@ namespace DalTest
         private static IAssignment? s_dalAssignment = new AssignmentImplementation();
         private static IConfig? s_dalConfig = new ConfigImplementation();
 
-        public enum MainMenuOption
-        {
-            Exit,                // יציאה מהתפריט הראשי
-            VolunteerMenu,       // הצגת תת-תפריט עבור מתנדב 
-            CallMenu,            // הצגת תת-תפריט עבור קריאה 
-            AssignmentMenu,      // הצגת תת-תפריט עבור משימה 
-            InitializeData,      // ביצוע אתחול של הנתונים
-            ShowAllData,         // הצגת כל הנתונים
-            ConfigurationMenu,   // הצגת תת-תפריט עבור ישות תצורה
-            ResetDatabase        // איפוס בסיס נתונים ואיפוס נתוני התצורה
-        }
-        public enum SubMenuOption
-        {
-            Exit,         // יציאה מתת-התפריט
-            Create,       // הוספת אובייקט חדש מטיפוס הישות לרשימה
-            Read,         // תצוגת אובייקט ע"פ מזהה
-            ReadAll,      // תצוגת רשימת כל האובייקטים מטיפוס הישות
-            Update,       // עדכון נתוני אובייקט קיים
-            Delete,       // מחיקת אובייקט קיים מהרשימה
-            DeleteAll     // מחיקת כל האובייקטים ברשימה
-        }
-
-        public enum ConfigMenu
-        {
-            Exit,
-            AdvanceClockMinute,
-            AdvanceClockHour,
-            AdvanceClockDay,
-            DisplayCurrentClock,
-            SetNewConfigValue,
-            DisplayCurrentConfigValue,
-            ResetAllConfigValues
-        }
-
         static void Main(string[] args)
         {
             try
