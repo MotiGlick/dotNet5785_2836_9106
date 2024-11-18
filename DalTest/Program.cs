@@ -2,6 +2,7 @@
 using DalApi;
 using DO;
 using System.Net;
+using System.Security.Cryptography;
 using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -135,7 +136,7 @@ namespace DalTest
                             case SubMenuOption.Create:
 
                                 Console.WriteLine($"Creating a new {entity}...");
-                                CreatEntityFromInput(entity);
+                                EntityFromInput(entity, "Create", 0);
 
                                 break;
 
@@ -169,37 +170,15 @@ namespace DalTest
                             case SubMenuOption.Update:
                                 Console.WriteLine($"Enter {entity} ID to update:");
                                 id = int.Parse(Console.ReadLine() ?? "0");
-                                if (entity == "Volunteer")
+
+                                Volunteer? unUpdated = s_dalVolunteer.Read(id);
+                                if (unUpdated != null)
                                 {
-                                    Volunteer? unUpdated = s_dalVolunteer.Read(id);
-                                    if (unUpdated != null)
-                                    {
-                                        Console.WriteLine(unUpdated);
-                                        s_dalVolunteer.Update(unUpdated);
+                                    Console.WriteLine(unUpdated);
+                                    EntityFromInput(entity, "update", id);
 
-                                    }
                                 }
-                                else if (entity == "Call")
-                                {
-                                    Call? unUpdated = s_dalCall.Read(id);
 
-                                    if (unUpdated != null)
-                                    {
-                                        Console.WriteLine(unUpdated);
-                                        s_dalCall.Update(unUpdated);
-                                    }
-                                }
-                                else if (entity == "Assignment")
-                                {
-
-                                    Assignment unUpdated = s_dalAssignment.Read(id);
-                                    if (unUpdated != null)
-                                    {
-                                        Console.WriteLine(unUpdated);
-                                        s_dalAssignment.Update(unUpdated);
-
-                                    }
-                                }
                                 break;
 
                             case SubMenuOption.Delete:
@@ -464,10 +443,12 @@ namespace DalTest
             }
 
             /// <summary>
-            /// Creates an entity based on the provided type (Assignment, Volunteer, or Call) and inputs the necessary details from the user.
+            /// Handles the creation, update, or deletion of an entity based on user input.
             /// </summary>
-            /// <param name="entity">The type of entity to create (e.g., "Assignment", "Volunteer", "Call").</param>
-            static void CreatEntityFromInput(string entity)
+            /// <param name="entity">The type of entity to be processed ("Volunteer", "Call", "Assignment").</param>
+            /// <param name="oparaton">The operation to be performed ("Create", "Update", "Delete").</param>
+            /// <param name="oldId">The ID of the entity to be updated or deleted. For creation, this can be ignored.</param>
+            static void EntityFromInput(string entity, string oparaton, int oldId)
             {
                 if (entity == "Assignment")
                 {
@@ -488,15 +469,25 @@ namespace DalTest
                     Console.Write("Call Status (HandledOnTime, SelfCancellation, ManagerCancellation, ExpiredCancellation): ");
                     CallStatus? type = Enum.TryParse(Console.ReadLine(), out CallStatus parsedType) ? parsedType : null;
 
-                    s_dalAssignment.Create(new(0, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
+
+                    if (oparaton == "Create")
+                        s_dalAssignment.Create(new(0, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
+                    else if (oparaton == "update")
+                        s_dalAssignment.Update(new(oldId, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
+
                 }
 
                 if (entity == "Volunteer")
                 {
                     Console.WriteLine("Please enter the following details for the Volunteer:");
+                    int id=0;
+                    if (oparaton == "Create")
+                    {
 
-                    Console.Write("ID: ");
-                    int id = int.Parse(Console.ReadLine() ?? "0");
+                        Console.Write("ID: ");
+                         id = int.Parse(Console.ReadLine() ?? "0");
+
+                    }
 
                     Console.Write("Name: ");
                     string name = Console.ReadLine() ?? "";
@@ -531,7 +522,11 @@ namespace DalTest
                     Console.Write("Distance Type (Air, Road): ");
                     distanceType distance = Enum.TryParse(Console.ReadLine(), out distanceType parsedDistance) ? parsedDistance : distanceType.Air;
 
-                    s_dalVolunteer.Create(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
+
+                    if (oparaton == "Create")
+                        s_dalVolunteer.Create(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
+                    else if (oparaton == "update")
+                        s_dalVolunteer.Update(new Volunteer(oldId, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
                 }
 
                 if (entity == "Call")
@@ -559,10 +554,13 @@ namespace DalTest
                     Console.Write("Total Time (optional, yyyy-mm-dd hh:mm:ss): ");
                     DateTime? totalTime = DateTime.TryParse(Console.ReadLine(), out var parsedTotalTime) ? parsedTotalTime : (DateTime?)null;
 
-                    s_dalCall.Create(new(0, type, callAddress, description, latitude, longitude, callTime, totalTime));
+
+                    if (oparaton == "Create")
+                        s_dalCall.Create(new(0, type, callAddress, description, latitude, longitude, callTime, totalTime));
+                    else if (oparaton == "update")
+                        s_dalCall.Update(new(oldId, type, callAddress, description, latitude, longitude, callTime, totalTime));
                 }
             }
-
 
 
         }
