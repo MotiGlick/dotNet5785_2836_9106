@@ -48,6 +48,11 @@ namespace DalTest
             ResetAllConfigValues
         }
 
+        /// <summary>
+        /// This method displays the main menu and handles user input to navigate through various submenus
+        /// and perform actions such as initializing data, showing all data, and resetting the database.
+        /// </summary>
+        /// <param name="args">Command-line arguments passed to the application.</param>
         static void Main(string[] args)
         {
             try
@@ -56,6 +61,8 @@ namespace DalTest
 
                 do
                 {
+
+                    //main menu
                     Console.WriteLine("Main Menu:");
                     Console.WriteLine("0. Exit");
                     Console.WriteLine("1. Show Submenu for  Volunteer");
@@ -130,7 +137,10 @@ namespace DalTest
 
 
 
-            //תת תפריט עבור ישויות
+            /// <summary>
+            /// Displays a submenu for the specified entity and handles user input to perform CRUD operations.
+            /// </summary>
+            /// <param name="entity">The name of the entity for which the submenu is displayed ( "Volunteer", "Call", "Assignment").</param>
             static void ShowSubMenu(string entity)
             {
                 bool exitSubMenu = false;
@@ -269,8 +279,11 @@ namespace DalTest
 
 
 
-
-
+            /// <summary>
+            /// Displays the configuration submenu for managing system settings and configuration variables.
+            /// Allows the user to perform various actions such as advancing the system clock, 
+            /// displaying or setting configuration values, and resetting them.
+            /// </summary>
             static void DisplayConfigSubMenu()
             {
                 bool exit = false;
@@ -337,6 +350,19 @@ namespace DalTest
                 }
             }
 
+
+
+
+
+
+
+
+
+
+            /// <summary>
+            /// Displays data for a specific entity type: Volunteer, Call, Assignment, or All.
+            /// </summary>
+            /// <param name="data">The type of data to display ( "Volunteer", "Call", "Assignment", "All").</param>
             static void showData(string data)
             {
                 bool flag1 = false, flag2 = false, flag3 = false;
@@ -379,10 +405,16 @@ namespace DalTest
                         Console.WriteLine(item + "\n");
                     }
                 }
-
             }
 
 
+
+
+
+            /// <summary>
+            /// Resets data for specific entities: Volunteer, Call, Assignment, config, or All.
+            /// </summary>
+            /// <param name="data">The type of data to reset (e.g., "Volunteer", "Call", "Assignment", "config", "All").</param>
             static void resetData(string data)
             {
                 bool flag1 = false, flag2 = false, flag3 = false, flag4 = false;
@@ -414,9 +446,14 @@ namespace DalTest
 
                 if (flag4)
                     s_dalConfig.Reset();
-
             }
 
+
+
+
+            /// <summary>
+            /// Sets a new value for a configuration variable (Clock, RiskRange).
+            /// </summary>
             static void SetNewConfig()
             {
                 Console.Write("Enter the name of the configuration variable: (Clock,RiskRange)");
@@ -433,19 +470,19 @@ namespace DalTest
                 else if (configVarName == "RiskRange")
                 {
                     TimeSpan newRiskRangeValue = TimeSpan.Parse(newValue);
-
                     s_dalConfig.RiskRange = newRiskRangeValue;
                     Console.WriteLine($"Configuration variable '{configVarName}' set to '{newValue}'.");
-
                 }
-
             }
 
+
+            /// <summary>
+            /// Displays the current values of the configuration variables: Clock, RiskRange, AssignmentId, and CallId.
+            /// </summary>
             static void ShowConfig()
             {
                 Console.Write("Enter the name of the configuration variable: (Clock,RiskRange,AssignmentId,CallId)");
                 string configVarName = Console.ReadLine();
-
 
                 if (configVarName == "Clock")
                 {
@@ -454,7 +491,6 @@ namespace DalTest
                 else if (configVarName == "RiskRange")
                 {
                     Console.WriteLine($"RiskRange : {s_dalConfig.RiskRange}");
-
                 }
                 else if (configVarName == "AssignmentId")
                 {
@@ -466,6 +502,10 @@ namespace DalTest
                 }
             }
 
+            /// <summary>
+            /// Creates an entity based on the provided type (Assignment, Volunteer, or Call) and inputs the necessary details from the user.
+            /// </summary>
+            /// <param name="entity">The type of entity to create (e.g., "Assignment", "Volunteer", "Call").</param>
             static void CreatEntityFromInput(string entity)
             {
                 if (entity == "Assignment")
@@ -492,7 +532,6 @@ namespace DalTest
 
                 if (entity == "Volunteer")
                 {
-
                     Console.WriteLine("Please enter the following details for the Volunteer:");
 
                     Console.Write("ID: ");
@@ -532,13 +571,10 @@ namespace DalTest
                     distanceType distance = Enum.TryParse(Console.ReadLine(), out distanceType parsedDistance) ? parsedDistance : distanceType.Air;
 
                     s_dalVolunteer.Create(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
-
-
                 }
 
                 if (entity == "Call")
                 {
-
                     Console.WriteLine("Please enter the following details for the Call:");
 
                     Console.Write("Call Type (ProvideTransportation, Emergency,ProvideTransportation, MedicalAssistance, EmotionalSupport, HomeCare, HospitalVisit, DeliverMedicine, CleaningAssistance): ");
@@ -565,6 +601,9 @@ namespace DalTest
                     s_dalCall.Create(new(0, type, callAddress, description, latitude, longitude, callTime, totalTime));
                 }
             }
+
+
+
         }
     }
 }
