@@ -55,7 +55,7 @@ internal class AssignmentImplementation : IAssignment
     public Assignment? Read(int id)
     {
         List<DO.Assignment> list = DataSource.Assignments;
-        Assignment? foundAssignment = list.Find(Assignment => Assignment.Id == id);
+        Assignment? foundAssignment = list.FirstOrDefault(Assignment => Assignment.Id == id);
         return foundAssignment;
     }
 
