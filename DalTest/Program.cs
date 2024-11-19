@@ -11,11 +11,8 @@ namespace DalTest
     internal class Program
     {
 
-        private static IVolunteer? s_dalVolunteer = new VolunteerImplementation();
-        private static ICall? s_dalCall = new CallImplementation();
-        private static IAssignment? s_dalAssignment = new AssignmentImplementation();
-        private static IConfig? s_dalConfig = new ConfigImplementation();
-
+        
+        static readonly IDal s_dal = new DalList();
         static void Main(string[] args)
         {
             try
@@ -64,7 +61,7 @@ namespace DalTest
 
                         case MainMenuOption.InitializeData:
                             Console.WriteLine("Initializing Data...");
-                            Initialization.Do(s_dalVolunteer, s_dalCall, s_dalAssignment, s_dalConfig);
+                            Initialization.Do(s_dal);
                             break;
 
                         case MainMenuOption.ShowAllData:
@@ -147,11 +144,11 @@ namespace DalTest
                                 int id = int.Parse(Console.ReadLine() ?? "0");
 
                                 if (entity == "Volunteer")
-                                    Console.WriteLine(s_dalVolunteer.Read(id));
+                                    Console.WriteLine(s_dal.Volunteer.Read(id));
                                 else if (entity == "Call")
-                                    Console.WriteLine(s_dalCall.Read(id));
+                                    Console.WriteLine(s_dal.Call.Read(id));
                                 else if (entity == "Assignment")
-                                    Console.WriteLine(s_dalAssignment.Read(id));
+                                    Console.WriteLine(s_dal.Assignment.Read(id));
                                 break;
 
                             case SubMenuOption.ReadAll:
@@ -172,7 +169,7 @@ namespace DalTest
                                 Console.WriteLine($"Enter {entity} ID to update:");
                                 id = int.Parse(Console.ReadLine() ?? "0");
 
-                                Volunteer? unUpdated = s_dalVolunteer.Read(id);
+                                Volunteer? unUpdated = s_dal.Volunteer.Read(id);
                                 if (unUpdated != null)
                                 {
                                     Console.WriteLine(unUpdated);
@@ -186,11 +183,11 @@ namespace DalTest
                                 Console.WriteLine($"Enter {entity} ID to delete:");
                                 id = int.Parse(Console.ReadLine() ?? "0");
                                 if (entity == "Volunteer")
-                                    s_dalVolunteer.Delete(id);
+                                    s_dal.Volunteer.Delete(id);
                                 else if (entity == "Call")
-                                    s_dalCall.Delete(id);
+                                    s_dal.Call.Delete(id);
                                 else if (entity == "Assignment")
-                                    s_dalAssignment.Delete(id);
+                                    s_dal.Assignment.Delete(id);
                                 break;
 
                             case SubMenuOption.DeleteAll:
@@ -252,22 +249,22 @@ namespace DalTest
                             break;
 
                         case ConfigMenu.AdvanceClockMinute:
-                            s_dalConfig.Clock = s_dalConfig.Clock.AddMinutes(1);
+                            s_dal.Config.Clock = s_dal.Config.Clock.AddMinutes(1);
                             Console.WriteLine("Advanced system clock by one minute.");
                             break;
 
                         case ConfigMenu.AdvanceClockHour:
-                            s_dalConfig.Clock = s_dalConfig.Clock.AddHours(1);
+                            s_dal.Config.Clock = s_dal.Config.Clock.AddHours(1);
                             Console.WriteLine("Advanced system clock by one hour.");
                             break;
 
                         case ConfigMenu.AdvanceClockDay:
-                            s_dalConfig.Clock = s_dalConfig.Clock.AddDays(1);
+                            s_dal.Config.Clock = s_dal.Config.Clock.AddDays(1);
                             Console.WriteLine("Advanced system clock by one day.");
                             break;
 
                         case ConfigMenu.DisplayCurrentClock:
-                            Console.WriteLine($"Current system clock: {s_dalConfig.Clock}");
+                            Console.WriteLine($"Current system clock: {s_dal.Config.Clock}");
                             break;
 
                         case ConfigMenu.SetNewConfigValue:
@@ -324,7 +321,7 @@ namespace DalTest
                 if (flag1 == true)
                 {
                     Console.WriteLine("Volunteers:");
-                    foreach (var item in s_dalVolunteer.ReadAll())
+                    foreach (var item in s_dal.Volunteer.ReadAll())
                     {
                         Console.WriteLine(item + "\n");
                     }
@@ -333,7 +330,7 @@ namespace DalTest
                 if (flag2 == true)
                 {
                     Console.WriteLine("Calls:");
-                    foreach (var item in s_dalCall.ReadAll())
+                    foreach (var item in s_dal.Call.ReadAll())
                     {
                         Console.WriteLine(item + "\n");
                     }
@@ -341,7 +338,7 @@ namespace DalTest
                 if (flag3 == true)
                 {
                     Console.WriteLine("Assignment:");
-                    foreach (var item in s_dalAssignment.ReadAll())
+                    foreach (var item in s_dal.Assignment.ReadAll())
                     {
                         Console.WriteLine(item + "\n");
                     }
@@ -377,16 +374,16 @@ namespace DalTest
                 }
 
                 if (flag1)
-                    s_dalVolunteer.DeleteAll();
+                    s_dal.Volunteer.DeleteAll();
 
                 if (flag2)
-                    s_dalCall.DeleteAll();
+                    s_dal.Call.DeleteAll();
 
                 if (flag3)
-                    s_dalAssignment.DeleteAll();
+                    s_dal.Assignment.DeleteAll();
 
                 if (flag4)
-                    s_dalConfig.Reset();
+                    s_dal.Config.Reset();
             }
 
 
@@ -405,13 +402,13 @@ namespace DalTest
                 if (configVarName == "Clock")
                 {
                     DateTime newClockValue = DateTime.Parse(newValue);
-                    s_dalConfig.Clock = newClockValue;
+                    s_dal.Config.Clock = newClockValue;
                     Console.WriteLine($"Configuration variable '{configVarName}' set to '{newValue}'.");
                 }
                 else if (configVarName == "RiskRange")
                 {
                     TimeSpan newRiskRangeValue = TimeSpan.Parse(newValue);
-                    s_dalConfig.RiskRange = newRiskRangeValue;
+                    s_dal.Config.RiskRange = newRiskRangeValue;
                     Console.WriteLine($"Configuration variable '{configVarName}' set to '{newValue}'.");
                 }
             }
@@ -427,19 +424,19 @@ namespace DalTest
 
                 if (configVarName == "Clock")
                 {
-                    Console.WriteLine($"Clock : {s_dalConfig.Clock}");
+                    Console.WriteLine($"Clock : {s_dal.Config.Clock}");
                 }
                 else if (configVarName == "RiskRange")
                 {
-                    Console.WriteLine($"RiskRange : {s_dalConfig.RiskRange}");
+                    Console.WriteLine($"RiskRange : {s_dal.Config.RiskRange}");
                 }
                 else if (configVarName == "AssignmentId")
                 {
-                    Console.WriteLine($"AssignmentId : {s_dalConfig.NextAssignmentId}");
+                    Console.WriteLine($"AssignmentId : {s_dal.Config.NextAssignmentId}");
                 }
                 else if (configVarName == "CallId")
                 {
-                    Console.WriteLine($"AssignmentId : {s_dalConfig.NextCallId}");
+                    Console.WriteLine($"AssignmentId : {s_dal.Config.NextCallId}");
                 }
             }
 
@@ -472,9 +469,9 @@ namespace DalTest
 
 
                     if (oparaton == "Create")
-                        s_dalAssignment.Create(new(0, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
+                        s_dal.Assignment.Create(new(0, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
                     else if (oparaton == "update")
-                        s_dalAssignment.Update(new(oldId, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
+                        s_dal.Assignment.Update(new(oldId, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
 
                 }
 
@@ -525,9 +522,9 @@ namespace DalTest
 
 
                     if (oparaton == "Create")
-                        s_dalVolunteer.Create(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
+                        s_dal.Volunteer.Create(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
                     else if (oparaton == "update")
-                        s_dalVolunteer.Update(new Volunteer(oldId, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
+                        s_dal.Volunteer.Update(new Volunteer(oldId, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
                 }
 
                 if (entity == "Call")
@@ -557,9 +554,9 @@ namespace DalTest
 
 
                     if (oparaton == "Create")
-                        s_dalCall.Create(new(0, type, callAddress, description, latitude, longitude, callTime, totalTime));
+                        s_dal.Call.Create(new(0, type, callAddress, description, latitude, longitude, callTime, totalTime));
                     else if (oparaton == "update")
-                        s_dalCall.Update(new(oldId, type, callAddress, description, latitude, longitude, callTime, totalTime));
+                        s_dal.Call.Update(new(oldId, type, callAddress, description, latitude, longitude, callTime, totalTime));
                 }
             }
 
