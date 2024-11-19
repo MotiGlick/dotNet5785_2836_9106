@@ -60,7 +60,7 @@ internal class VolunteerImplementation : IVolunteer
     public Volunteer? Read(int id)
     {
         List<DO.Volunteer> list = DataSource.Volunteers;
-        Volunteer? foundVolunteer = list.Find(Volunteer => Volunteer.Id == id);
+        Volunteer? foundVolunteer = list.FirstOrDefault(Volunteer => Volunteer.Id == id);
         return foundVolunteer;
     }
 

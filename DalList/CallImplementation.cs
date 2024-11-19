@@ -53,7 +53,7 @@ internal class CallImplementation : ICall
     public Call? Read(int id)
     {
         List<DO.Call> list = DataSource.Calls;
-        Call? foundAssignment = list.Find(Call => Call.Id == id);
+        Call? foundAssignment = list.FirstOrDefault(Call => Call.Id == id);
         return foundAssignment;
     }
 
