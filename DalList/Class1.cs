@@ -1,7 +1,7 @@
-﻿namespace DalList
-{
-    internal class Class1
-    {
+﻿//namespace DalList
+//{
+//    internal class Class1
+//    {
 
-    }
-}
+//    }
+//}

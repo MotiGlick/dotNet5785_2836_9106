@@ -13,7 +13,7 @@ namespace Dal;
 /// DalList class provides implementations for the IDal interface.
 /// It manages the CRUD operations for Volunteer, Call, Assignment, and Config entities.
 /// </summary>
-sealed internal class DalList : IDal
+sealed public class DalList : IDal
 {
     public IVolunteer Volunteer { get; } = new VolunteerImplementation();
     public ICall Call { get; } = new CallImplementation();

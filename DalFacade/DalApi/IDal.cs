@@ -13,6 +13,7 @@ namespace DalApi
         ICall Call {  get;}
         IConfig Config {  get;}
         void ResetDB();
+
     }
 
 }
