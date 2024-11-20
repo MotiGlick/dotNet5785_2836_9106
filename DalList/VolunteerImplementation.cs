@@ -68,11 +68,9 @@ internal class VolunteerImplementation : IVolunteer
     /// Reads all Volunteer entities from the data source.
     /// </summary>
     /// <returns>A list of all Volunteer entities.</returns>
-    public List<Volunteer> ReadAll()
-    {
-        return new List<Volunteer>(DataSource.Volunteers);
-    }
-
+    public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null) => filter == null
+            ? DataSource.Volunteers.Select(item => item)
+            : DataSource.Volunteers.Where(filter);
     /// <summary>
     /// Updates an existing Volunteer entity by replacing it with the provided entity.
     /// </summary>
@@ -88,5 +86,11 @@ internal class VolunteerImplementation : IVolunteer
         }
         list.Remove(foundVolunteer);
         list.Add(item);
+    }
+
+    public Volunteer? Read(Func<Volunteer, bool> filter)
+    {
+
+        return DataSource.Volunteers.FirstOrDefault(filter);
     }
 }

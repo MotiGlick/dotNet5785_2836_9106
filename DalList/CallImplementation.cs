@@ -2,6 +2,7 @@
 using DalApi;
 using DO;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Implementation of the ICall interface for managing Call entities.
@@ -61,10 +62,13 @@ internal class CallImplementation : ICall
     /// Reads all Call entities from the data source.
     /// </summary>
     /// <returns>A list of all Call entities.</returns>
-    public List<Call> ReadAll()
-    {
-        return new List<Call>(DataSource.Calls);
-    }
+    public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null) => filter == null
+            ? DataSource.Calls.Select(item => item)
+            : DataSource.Calls.Where(filter);
+    //public List<Call> ReadAll()
+    //{
+    //    return new List<Call>(DataSource.Calls);
+    //}
 
     /// <summary>
     /// Updates an existing Call entity by replacing it with the provided entity.
@@ -81,5 +85,11 @@ internal class CallImplementation : ICall
         }
         list.Remove(foundAssignment);
         list.Add(item);
+    }
+
+    public Call? Read(Func<Call, bool> filter)
+    {
+
+        return DataSource.Calls.FirstOrDefault(filter);
     }
 }

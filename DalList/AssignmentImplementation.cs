@@ -63,10 +63,14 @@ internal class AssignmentImplementation : IAssignment
     /// Reads all Assignment entities from the data source.
     /// </summary>
     /// <returns>A list of all Assignment entities.</returns>
-    public List<Assignment> ReadAll()
-    {
-        return new List<Assignment>(DataSource.Assignments);
-    }
+    public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null) 
+            => filter == null
+            ? DataSource.Assignments.Select(item => item)
+            : DataSource.Assignments.Where(filter);
+    //public List<Assignment> ReadAll()
+    //{
+    //    return new List<Assignment>(DataSource.Assignments);
+    //}
 
     /// <summary>
     /// Updates an existing Assignment entity by replacing it with the provided entity.
@@ -83,6 +87,12 @@ internal class AssignmentImplementation : IAssignment
         }
         list.Remove(foundAssignment);
         list.Add(item);
+    }
+
+    public Assignment? Read(Func<Assignment, bool> filter)
+    {
+        
+        return DataSource.Assignments.FirstOrDefault(filter);
     }
 }
 
