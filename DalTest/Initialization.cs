@@ -94,8 +94,8 @@ public static class Initialization
     private static void creatAssignment()
     {
         // Retrieve lists of all calls and volunteers
-        List<Call> CList = s_dal.Call.ReadAll();
-        List<Volunteer> VList = s_dal.Volunteer.ReadAll();
+        List<Call> CList = (List<Call>)s_dal.Call.ReadAll();
+        List<Volunteer> VList = (List<Volunteer>) s_dal.Volunteer.ReadAll();
 
         // Loop for creating assignments for volunteers who handled many calls
         for (int i = 0; i < 20; i++)
