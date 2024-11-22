@@ -32,7 +32,7 @@ internal class CallImplementation : ICall
         Call? foundAssignment = list.Find(Call => Call.Id == id);
         if (foundAssignment == null)
         {
-            throw new Exception($"An object of type Call with ID={id} does not exist");
+            throw new DalDoesNotExistException($"Call with ID={id} does not exist");
         }
         list.Remove(foundAssignment);
     }
@@ -65,10 +65,8 @@ internal class CallImplementation : ICall
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null) => filter == null
             ? DataSource.Calls.Select(item => item)
             : DataSource.Calls.Where(filter);
-    //public List<Call> ReadAll()
-    //{
-    //    return new List<Call>(DataSource.Calls);
-    //}
+    
+
 
     /// <summary>
     /// Updates an existing Call entity by replacing it with the provided entity.
@@ -81,7 +79,7 @@ internal class CallImplementation : ICall
         Call? foundAssignment = list.Find(Call => Call.Id == item.Id);
         if (foundAssignment == null)
         {
-            throw new Exception($"An object of type Call with such an ID={item.Id} does not exist");
+            throw new DalDoesNotExistException($"Call with ID={item.Id} does not exist");
         }
         list.Remove(foundAssignment);
         list.Add(item);
