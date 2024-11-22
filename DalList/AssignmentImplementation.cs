@@ -33,7 +33,7 @@ internal class AssignmentImplementation : IAssignment
         Assignment? foundAssignment = list.Find(Assignment => Assignment.Id == id);
         if (foundAssignment == null)
         {
-            throw new Exception($"An object of type Assignment with ID={id} does not exist");
+            throw new DalDoesNotExistException($"Assignment with ID={id} does not exist");
         }
         list.Remove(foundAssignment);
     }
@@ -67,10 +67,7 @@ internal class AssignmentImplementation : IAssignment
             => filter == null
             ? DataSource.Assignments.Select(item => item)
             : DataSource.Assignments.Where(filter);
-    //public List<Assignment> ReadAll()
-    //{
-    //    return new List<Assignment>(DataSource.Assignments);
-    //}
+ 
 
     /// <summary>
     /// Updates an existing Assignment entity by replacing it with the provided entity.
@@ -83,15 +80,14 @@ internal class AssignmentImplementation : IAssignment
         Assignment? foundAssignment = list.Find(Assignment => Assignment.Id == item.Id);
         if (foundAssignment == null)
         {
-            throw new Exception($"An object of type Assignment with ID={item.Id} does not exist");
+            throw new DalDoesNotExistException($"Assignment with ID={item.Id} does not exist");
         }
         list.Remove(foundAssignment);
         list.Add(item);
     }
 
     public Assignment? Read(Func<Assignment, bool> filter)
-    {
-        
+    { 
         return DataSource.Assignments.FirstOrDefault(filter);
     }
 }

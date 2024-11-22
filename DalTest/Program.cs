@@ -2,6 +2,7 @@
 using DalApi;
 using DO;
 using System.Net;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -11,110 +12,113 @@ namespace DalTest
     internal class Program
     {
 
-        
+
+
+
         static readonly IDal s_dal = new DalList();
         static void Main(string[] args)
         {
-            try
-            {
-                int choice;
 
-                do
+
+
+
+
+            int choice = 0;
+            do
+            {
+                Console.WriteLine("Main Menu:");
+                Console.WriteLine("0. Exit");
+                Console.WriteLine("1. Show Submenu for  Volunteer");
+                Console.WriteLine("2. Show Submenu for Call");
+                Console.WriteLine("3. Show Submenu for Assignment");
+                Console.WriteLine("4. Initialize Data");
+                Console.WriteLine("5. Show All Data");
+                Console.WriteLine("6. Show Submenu for Configuration");
+                Console.WriteLine("7. Reset Database");
+
+
+                choice = int.Parse(Console.ReadLine() ?? "0");
+                MainMenuOption selectedOption = (MainMenuOption)choice; // Convert the choice to enum
+
+
+                switch (selectedOption)
                 {
+                    case MainMenuOption.Exit:
+                        Console.WriteLine("Exiting...");
+                        break;
 
-                    //main menu
-                    Console.WriteLine("Main Menu:");
-                    Console.WriteLine("0. Exit");
-                    Console.WriteLine("1. Show Submenu for  Volunteer");
-                    Console.WriteLine("2. Show Submenu for Call");
-                    Console.WriteLine("3. Show Submenu for Assignment");
-                    Console.WriteLine("4. Initialize Data");
-                    Console.WriteLine("5. Show All Data");
-                    Console.WriteLine("6. Entity Configuration");
-                    Console.WriteLine("7. Reset Database");
+                    case MainMenuOption.VolunteerMenu:
+                        Console.WriteLine("Showing Submenu for Volunteer...");
+                        try
+                        {
+                            volunteerMenu();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                        break;
 
+                    case MainMenuOption.CallMenu:
+                        Console.WriteLine("Showing Submenu for Call...");
+                        callMenu();
+                        break;
 
-                    choice = int.Parse(Console.ReadLine() ?? "0");
-                    MainMenuOption selectedOption = (MainMenuOption)choice; // Convert the choice to enum
+                    case MainMenuOption.AssignmentMenu:
+                        Console.WriteLine("Showing Submenu for  Assignment...");
+                        AssignmentMenu();
+                        break;
 
+                    case MainMenuOption.InitializeData:
+                        Console.WriteLine("Initializing Data...");
+                        Initialization.Do(s_dal);
+                        break;
 
-                    switch (selectedOption)
-                    {
-                        case MainMenuOption.Exit:
-                            Console.WriteLine("Exiting...");
-                            break;
+                    case MainMenuOption.ShowAllData:
+                        Console.WriteLine("Showing All Data...");
+                        showData("All");
+                        break;
 
-                        case MainMenuOption.VolunteerMenu:
-                            Console.WriteLine("Showing Submenu for Volunteer...");
-                            ShowSubMenu("Volunteer");
-                            break;
+                    case MainMenuOption.ConfigurationMenu:
+                        Console.WriteLine("Showing Submenu for  Configuration...");
+                        ConfigSubMenu();
+                        break;
 
-                        case MainMenuOption.CallMenu:
-                            Console.WriteLine("Showing Submenu for Call...");
-                            ShowSubMenu("Call");
-                            break;
+                    case MainMenuOption.ResetDatabase:
+                        Console.WriteLine("Resetting Database...");
+                        resetData("All");
+                        break;
 
-                        case MainMenuOption.AssignmentMenu:
-                            Console.WriteLine("Showing Submenu for  Assignment...");
-                            ShowSubMenu("Assignment");
-                            break;
+                    default:
+                        Console.WriteLine("Invalid Option");
+                        break;
+                }
 
-                        case MainMenuOption.InitializeData:
-                            Console.WriteLine("Initializing Data...");
-                            Initialization.Do(s_dal);
-                            break;
-
-                        case MainMenuOption.ShowAllData:
-                            Console.WriteLine("Showing All Data...");
-                            showData("All");
-                            break;
-
-                        case MainMenuOption.ConfigurationMenu:
-                            Console.WriteLine("Showing Submenu for  Configuration...");
-                            DisplayConfigSubMenu();
-                            break;
-
-                        case MainMenuOption.ResetDatabase:
-                            Console.WriteLine("Resetting Database...");
-                            resetData("All");
-                            break;
-
-                        default:
-                            Console.WriteLine("Invalid Option");
-                            break;
-                    }
-
-                } while (choice != 0); // התנאי ליציאה מהלולאה
-
-            }
-            catch (Exception ex)
-            {
-                // טיפול בחריגה
-                Console.WriteLine(ex.Message);
-            }
+            } while (choice != 0); // התנאי ליציאה מהלולאה
 
 
 
 
 
-            /// <summary>
-            /// Displays a submenu for the specified entity and handles user input to perform CRUD operations.
-            /// </summary>
-            /// <param name="entity">The name of the entity for which the submenu is displayed ( "Volunteer", "Call", "Assignment").</param>
-            static void ShowSubMenu(string entity)
+
+
+
+
+            static void volunteerMenu()
             {
                 bool exitSubMenu = false;
+
 
                 do
                 {
                     Console.WriteLine("Submenu Options:");
                     Console.WriteLine("0. Exit Submenu");
-                    Console.WriteLine($"1. Create a new {entity}");
-                    Console.WriteLine($"2. Display an {entity} by ID");
-                    Console.WriteLine($"3. Display all {entity}s");
-                    Console.WriteLine($"4. Update an existing {entity}");
-                    Console.WriteLine($"5. Delete an existing {entity}");
-                    Console.WriteLine($"6. Delete all {entity}s");
+                    Console.WriteLine($"1. Create a new volunteer");
+                    Console.WriteLine($"2. Display an volunteer by ID");
+                    Console.WriteLine($"3. Display all volunteers");
+                    Console.WriteLine($"4. Update an existing volunteer");
+                    Console.WriteLine($"5. Delete an existing volunteer");
+                    Console.WriteLine($"6. Delete all volunteers");
                     Console.Write("Please enter your choice: \n");
                     int choice = int.Parse(Console.ReadLine() ?? "0");
 
@@ -133,71 +137,137 @@ namespace DalTest
 
                             case SubMenuOption.Create:
 
-                                Console.WriteLine($"Creating a new {entity}...");
-                                EntityFromInput(entity, "Create", 0);
+                                Console.WriteLine($"Creating a new volunteer...");
+                                createEntity("Volunteer");
 
                                 break;
 
                             case SubMenuOption.Read:
 
-                                Console.WriteLine($"Enter {entity} ID to display:");
+                                Console.WriteLine($"Enter volunteer ID to display:");
                                 int id = int.Parse(Console.ReadLine() ?? "0");
+                                Console.WriteLine(s_dal.Volunteer.Read(id));
 
-                                if (entity == "Volunteer")
-                                    Console.WriteLine(s_dal.Volunteer.Read(id));
-                                else if (entity == "Call")
-                                    Console.WriteLine(s_dal.Call.Read(id));
-                                else if (entity == "Assignment")
-                                    Console.WriteLine(s_dal.Assignment.Read(id));
                                 break;
 
                             case SubMenuOption.ReadAll:
 
-                                Console.WriteLine($"Displaying all {entity}s...");
+                                Console.WriteLine($"Displaying all volunteers...");
+                                showData("Volunteer");
 
-                                if (entity == "Volunteer")
-                                    showData("Volunteer");
-
-                                else if (entity == "Call")
-                                    showData("Call");
-
-                                else if (entity == "Assignment")
-                                    showData("Assignment");
                                 break;
 
                             case SubMenuOption.Update:
-                                Console.WriteLine($"Enter {entity} ID to update:");
-                                id = int.Parse(Console.ReadLine() ?? "0");
 
-                                Volunteer? unUpdated = s_dal.Volunteer.Read(id);
-                                if (unUpdated != null)
-                                {
-                                    Console.WriteLine(unUpdated);
-                                    EntityFromInput(entity, "update", id);
+                                updateEntity("Volunteer");
 
-                                }
 
                                 break;
 
                             case SubMenuOption.Delete:
-                                Console.WriteLine($"Enter {entity} ID to delete:");
+
+
+                                Console.WriteLine($"Enter volunteer ID to delete:");
                                 id = int.Parse(Console.ReadLine() ?? "0");
-                                if (entity == "Volunteer")
-                                    s_dal.Volunteer.Delete(id);
-                                else if (entity == "Call")
-                                    s_dal.Call.Delete(id);
-                                else if (entity == "Assignment")
-                                    s_dal.Assignment.Delete(id);
+                                s_dal.Volunteer.Delete(id);
+
+
                                 break;
 
                             case SubMenuOption.DeleteAll:
-                                Console.WriteLine("Deleting all objects...");
-                                if (entity == "Volunteer")
-                                    resetData("Volunteer");
-                                else if (entity == "Call")
-                                    resetData("Call");
-                                else if (entity == "Assignment")
-                                    resetData("Assignment");
+
+                                Console.WriteLine("Deleting all volunteers...");
+                                resetData("Volunteer");
+
+                                break;
+
+                            default:
+                                Console.WriteLine("Invalid Option");
+                                break;
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+                } while (!exitSubMenu);
+            }
+
+
+
+            static void callMenu()
+            {
+                bool exitSubMenu = false;
+
+                do
+                {
+                    Console.WriteLine("Submenu Options:");
+                    Console.WriteLine("0. Exit Submenu");
+                    Console.WriteLine($"1. Create a new call");
+                    Console.WriteLine($"2. Display an call by ID");
+                    Console.WriteLine($"3. Display all calls");
+                    Console.WriteLine($"4. Update an existing call");
+                    Console.WriteLine($"5. Delete an existing call");
+                    Console.WriteLine($"6. Delete all calls");
+                    Console.Write("Please enter your choice: \n");
+                    int choice = int.Parse(Console.ReadLine() ?? "0");
+
+                    SubMenuOption selectedOption = (SubMenuOption)choice;// Convert the choice to enum
+
+
+                    try
+                    {
+                        switch (selectedOption)
+                        {
+                            case SubMenuOption.Exit:
+
+                                Console.WriteLine("Exiting Submenu...");
+                                exitSubMenu = true;
+                                break;
+
+                            case SubMenuOption.Create:
+
+                                Console.WriteLine($"Creating a new call...");
+                                createEntity("Call");
+
+                                break;
+
+                            case SubMenuOption.Read:
+
+                                Console.WriteLine($"Enter call ID to display:");
+                                int id = int.Parse(Console.ReadLine() ?? "0");
+                                Console.WriteLine(s_dal.Call.Read(id));
+
+                                break;
+
+                            case SubMenuOption.ReadAll:
+
+                                Console.WriteLine($"Displaying all calls...");
+                                showData("Call");
+
+                                break;
+
+                            case SubMenuOption.Update:
+                                
+                                updateEntity("Call");
+
+                                break;
+
+                            case SubMenuOption.Delete:
+
+                                Console.WriteLine($"Enter call ID to delete:");
+                                id = int.Parse(Console.ReadLine() ?? "0");
+                                s_dal.Call.Delete(id);
+
+                                break;
+
+                            case SubMenuOption.DeleteAll:
+
+                                Console.WriteLine("Deleting all calls...");
+                                resetData("Call");
+
                                 break;
 
                             default:
@@ -215,6 +285,92 @@ namespace DalTest
             }
 
 
+            static void AssignmentMenu()
+            {
+                bool exitSubMenu = false;
+
+                do
+                {
+                    Console.WriteLine("Submenu Options:");
+                    Console.WriteLine("0. Exit Submenu");
+                    Console.WriteLine($"1. Create a new assignment");
+                    Console.WriteLine($"2. Display an assignment by ID");
+                    Console.WriteLine($"3. Display all assignments");
+                    Console.WriteLine($"4. Update an existing assignment");
+                    Console.WriteLine($"5. Delete an existing assignment");
+                    Console.WriteLine($"6. Delete all assignments");
+                    Console.Write("Please enter your choice: \n");
+                    int choice = int.Parse(Console.ReadLine() ?? "0");
+
+                    SubMenuOption selectedOption = (SubMenuOption)choice;// Convert the choice to enum
+
+
+                    try
+                    {
+                        switch (selectedOption)
+                        {
+                            case SubMenuOption.Exit:
+
+                                Console.WriteLine("Exiting Submenu...");
+                                exitSubMenu = true;
+                                break;
+
+                            case SubMenuOption.Create:
+
+                                Console.WriteLine($"Creating a new assignment...");
+                                createEntity("Assignment");
+
+                                break;
+
+                            case SubMenuOption.Read:
+
+                                Console.WriteLine($"Enter assignment ID to display:");
+                                int id = int.Parse(Console.ReadLine() ?? "0");
+                                Console.WriteLine(s_dal.Assignment.Read(id));
+
+                                break;
+
+                            case SubMenuOption.ReadAll:
+
+                                Console.WriteLine($"Displaying all assignments...");
+                                showData("Assignment");
+
+                                break;
+
+                            case SubMenuOption.Update:
+
+                                updateEntity("Assignment");
+
+                                break;
+
+                            case SubMenuOption.Delete:
+
+                                Console.WriteLine($"Enter assignment ID to delete:");
+                                id = int.Parse(Console.ReadLine() ?? "0");
+                                s_dal.Assignment.Delete(id);
+
+                                break;
+                                                                        
+                            case SubMenuOption.DeleteAll:
+
+                                Console.WriteLine("Deleting all assignments...");
+                                resetData("Assignment");
+
+                                break;
+
+                            default:
+                                Console.WriteLine("Invalid Option");
+                                break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+
+                } while (!exitSubMenu);
+            }
 
 
             /// <summary>
@@ -222,12 +378,12 @@ namespace DalTest
             /// Allows the user to perform various actions such as advancing the system clock, 
             /// displaying or setting configuration values, and resetting them.
             /// </summary>
-            static void DisplayConfigSubMenu()
+            static void ConfigSubMenu()
             {
                 bool exit = false;
                 while (!exit)
                 {
-                    Console.WriteLine("\nConfiguration Submenu:");
+                    Console.WriteLine("Configuration Submenu:");
                     Console.WriteLine("0 - Exit Submenu");
                     Console.WriteLine("1 - Advance system clock by one minute");
                     Console.WriteLine("2 - Advance system clock by one hour");
@@ -236,7 +392,7 @@ namespace DalTest
                     Console.WriteLine("5 - Set a new value for a configuration variable");
                     Console.WriteLine("6 - Display current value of a configuration variable");
                     Console.WriteLine("7 - Reset values for all configuration variables");
-                    Console.Write("Please enter your choice: ");
+                    Console.Write("Please enter your choice: \n");
 
                     int choice = int.Parse(Console.ReadLine() ?? "0");
                     ConfigMenu selectedOption = (ConfigMenu)choice;
@@ -291,12 +447,6 @@ namespace DalTest
 
 
 
-
-
-
-
-
-
             /// <summary>
             /// Displays data for a specific entity type: Volunteer, Call, Assignment, or All.
             /// </summary>
@@ -344,9 +494,6 @@ namespace DalTest
                     }
                 }
             }
-
-
-
 
 
             /// <summary>
@@ -440,16 +587,87 @@ namespace DalTest
                 }
             }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             /// <summary>
-            /// Handles the creation, update, or deletion of an entity based on user input.
+            /// update of an entity based on user input.
             /// </summary>
             /// <param name="entity">The type of entity to be processed ("Volunteer", "Call", "Assignment").</param>
-            /// <param name="oparaton">The operation to be performed ("Create", "Update", "Delete").</param>
-            /// <param name="oldId">The ID of the entity to be updated or deleted. For creation, this can be ignored.</param>
-            static void EntityFromInput(string entity, string oparaton, int oldId)
+            static void updateEntity(string entity)
             {
+                if (entity == "Volunteer")
+                {
+
+                    Console.WriteLine($"Enter volunteer ID to update:");
+                    int id = int.Parse(Console.ReadLine() ?? "0");
+                    Volunteer? unUpdated = s_dal.Volunteer.Read(id);
+                    if (unUpdated != null)
+                    {
+                        Console.WriteLine(unUpdated);
+                    }
+                    Console.WriteLine("Please enter the following details for update the Volunteer:");
+
+                    Console.Write("Name: ");
+                    string name = Console.ReadLine() ?? "";
+
+                    Console.Write("Phone Number: ");
+                    string phoneNumber = Console.ReadLine() ?? "";
+
+                    Console.Write("Email: ");
+                    string email = Console.ReadLine() ?? "";
+
+                    Console.Write("Password (optional): ");
+                    string? password = Console.ReadLine();
+
+                    Console.Write("Address (optional): ");
+                    string? address = Console.ReadLine();
+
+                    Console.Write("Latitude (optional): ");
+                    double? latitude = double.TryParse(Console.ReadLine(), out var latValue) ? latValue : null;
+
+                    Console.Write("Longitude (optional): ");
+                    double? longitude = double.TryParse(Console.ReadLine(), out var lonValue) ? lonValue : null;
+
+                    Console.Write("Maximum Distance (optional): ");
+                    double? maximumDistance = double.TryParse(Console.ReadLine(), out var distValue) ? distValue : null;
+
+                    Console.Write("Duty (Volunteer, manager): ");
+                    job duty = Enum.TryParse(Console.ReadLine(), out job parsedDuty) ? parsedDuty : job.volunteer;
+
+                    Console.Write("Is Active (true/false): ");
+                    bool isActive = bool.TryParse(Console.ReadLine(), out var activeValue) && activeValue;
+
+                    Console.Write("Distance Type (Air, Road): ");
+                    distanceType distance = Enum.TryParse(Console.ReadLine(), out distanceType parsedDistance) ? parsedDistance : distanceType.Air;
+                    
+                    s_dal.Volunteer.Update(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
+
+
+                }
+
                 if (entity == "Assignment")
                 {
+
+                    Console.WriteLine($"Enter Assignment ID to update:");
+                    int id = int.Parse(Console.ReadLine() ?? "0");
+                    Assignment? unUpdated = s_dal.Assignment.Read(id);
+                    if (unUpdated != null)
+                    {
+                        Console.WriteLine(unUpdated);
+
+                    }
                     Console.WriteLine("Please enter the following details for the Assignment:");
 
                     Console.Write("Call ID: ");
@@ -468,24 +686,107 @@ namespace DalTest
                     CallStatus? type = Enum.TryParse(Console.ReadLine(), out CallStatus parsedType) ? parsedType : null;
 
 
-                    if (oparaton == "Create")
-                        s_dal.Assignment.Create(new(0, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
-                    else if (oparaton == "update")
-                        s_dal.Assignment.Update(new(oldId, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
+                    s_dal.Assignment.Update(new(0, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
+
+
+                }
+
+                if (entity == "Call")
+                {
+
+
+                    Console.WriteLine($"Enter call ID to update:");
+                    int id = int.Parse(Console.ReadLine() ?? "0");
+                    Call? unUpdated = s_dal.Call.Read(id);
+                    if (unUpdated != null)
+                    {
+                        Console.WriteLine(unUpdated);
+                    }
+                    Console.WriteLine("Please enter the following details for the Call:");
+                    Console.Write("Call Type (ProvideTransportation, Emergency,ProvideTransportation, MedicalAssistance, EmotionalSupport, HomeCare, HospitalVisit, DeliverMedicine, CleaningAssistance): ");
+                    CallType type = Enum.TryParse(Console.ReadLine(), out CallType parsedType) ? parsedType : CallType.ProvideTransportation;
+
+                    Console.Write("Call Address: ");
+                    string callAddress = Console.ReadLine() ?? "";
+
+                    Console.Write("Description (optional): ");
+                    string? description = Console.ReadLine();
+
+                    Console.Write("Latitude: ");
+                    double latitude = double.TryParse(Console.ReadLine(), out var latValue) ? latValue : 0.0;
+
+                    Console.Write("Longitude: ");
+                    double longitude = double.TryParse(Console.ReadLine(), out var lonValue) ? lonValue : 0.0;
+
+                    Console.Write("Call Time (yyyy-mm-dd hh:mm:ss): ");
+                    DateTime callTime = DateTime.TryParse(Console.ReadLine(), out var parsedCallTime) ? parsedCallTime : DateTime.Now;
+
+                    Console.Write("Total Time (optional, yyyy-mm-dd hh:mm:ss): ");
+                    DateTime? totalTime = DateTime.TryParse(Console.ReadLine(), out var parsedTotalTime) ? parsedTotalTime : (DateTime?)null;
+
+                    s_dal.Call.Update(new(0, type, callAddress, description, latitude, longitude, callTime, totalTime));
+
+                }
+
+
+
+            }
+
+
+
+
+
+
+
+
+
+            /// <summary>
+            /// creation of an entity based on user input.
+            /// </summary>
+            /// <param name="entity">The type of entity to be processed ("Volunteer", "Call", "Assignment").</param>
+            static void createEntity(string entity)
+            {
+                if (entity == "Assignment")
+                {
+
+
+                    Console.WriteLine("Please enter the following details for the Assignment:");
+
+                    Console.Write("Call ID: ");
+                    int callId = int.Parse(Console.ReadLine() ?? "0");
+
+                    Console.Write("Volunteer ID: ");
+                    int volunteerId = int.Parse(Console.ReadLine() ?? "0");
+
+                    Console.Write("Assignment Time (yyyy-mm-dd hh:mm:ss): ");
+                    DateTime assignmentTime = DateTime.Parse(Console.ReadLine() ?? "0");
+
+                    Console.Write("Assignment Total Time (optional, yyyy-mm-dd hh:mm:ss): ");
+                    DateTime? assignmentTotalTime = DateTime.Parse(Console.ReadLine() ?? "0");
+
+                    Console.Write("Call Status (HandledOnTime, SelfCancellation, ManagerCancellation, ExpiredCancellation): ");
+                    CallStatus? type = Enum.TryParse(Console.ReadLine(), out CallStatus parsedType) ? parsedType : null;
+
+                    s_dal.Assignment.Create(new(0, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
+
+
+
+
+
+
 
                 }
 
                 if (entity == "Volunteer")
                 {
+
+
+
                     Console.WriteLine("Please enter the following details for the Volunteer:");
-                    int id=0;
-                    if (oparaton == "Create")
-                    {
 
-                        Console.Write("ID: ");
-                         id = int.Parse(Console.ReadLine() ?? "0");
 
-                    }
+                    Console.Write("ID: ");
+                    int id = int.Parse(Console.ReadLine() ?? "0");
 
                     Console.Write("Name: ");
                     string name = Console.ReadLine() ?? "";
@@ -520,17 +821,16 @@ namespace DalTest
                     Console.Write("Distance Type (Air, Road): ");
                     distanceType distance = Enum.TryParse(Console.ReadLine(), out distanceType parsedDistance) ? parsedDistance : distanceType.Air;
 
+                    s_dal.Volunteer.Create(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
 
-                    if (oparaton == "Create")
-                        s_dal.Volunteer.Create(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
-                    else if (oparaton == "update")
-                        s_dal.Volunteer.Update(new Volunteer(oldId, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
+
                 }
 
                 if (entity == "Call")
                 {
-                    Console.WriteLine("Please enter the following details for the Call:");
 
+
+                    Console.WriteLine("Please enter the following details for the Call:");
                     Console.Write("Call Type (ProvideTransportation, Emergency,ProvideTransportation, MedicalAssistance, EmotionalSupport, HomeCare, HospitalVisit, DeliverMedicine, CleaningAssistance): ");
                     CallType type = Enum.TryParse(Console.ReadLine(), out CallType parsedType) ? parsedType : CallType.ProvideTransportation;
 
@@ -552,13 +852,16 @@ namespace DalTest
                     Console.Write("Total Time (optional, yyyy-mm-dd hh:mm:ss): ");
                     DateTime? totalTime = DateTime.TryParse(Console.ReadLine(), out var parsedTotalTime) ? parsedTotalTime : (DateTime?)null;
 
+                    s_dal.Call.Create(new(0, type, callAddress, description, latitude, longitude, callTime, totalTime));
 
-                    if (oparaton == "Create")
-                        s_dal.Call.Create(new(0, type, callAddress, description, latitude, longitude, callTime, totalTime));
-                    else if (oparaton == "update")
-                        s_dal.Call.Update(new(oldId, type, callAddress, description, latitude, longitude, callTime, totalTime));
+
+
                 }
+
             }
+
+
+
 
 
         }
@@ -567,7 +870,7 @@ namespace DalTest
 
 
 
- 
+
 
 
 

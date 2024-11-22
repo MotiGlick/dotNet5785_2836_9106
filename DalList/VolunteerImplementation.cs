@@ -16,6 +16,8 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="Exception">Thrown if a Volunteer with the same ID already exists.</exception>
     public void Create(Volunteer item)
     {
+
+        
         if (Read(item.Id) == null)
         {
             List<DO.Volunteer> list = DataSource.Volunteers;
@@ -23,7 +25,7 @@ internal class VolunteerImplementation : IVolunteer
         }
         else
         {
-            throw new Exception($"An object of type Volunteer with ID = {item.Id} already exists");
+            throw new DalAlreadyExistsException($"Volunteer with  ID={item.Id}  already exists");
         }
     }
 
@@ -38,7 +40,7 @@ internal class VolunteerImplementation : IVolunteer
         Volunteer? foundVolunteer = list.Find(Volunteer => Volunteer.Id == id);
         if (foundVolunteer == null)
         {
-            throw new Exception($"An object of type Volunteer with ID = {id} does not exist");
+            throw new DalDoesNotExistException($"Volunteer with ID = {id} does not exist");
         }
         list.Remove(foundVolunteer);
     }
@@ -71,23 +73,26 @@ internal class VolunteerImplementation : IVolunteer
     public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null) => filter == null
             ? DataSource.Volunteers.Select(item => item)
             : DataSource.Volunteers.Where(filter);
+
     /// <summary>
     /// Updates an existing Volunteer entity by replacing it with the provided entity.
     /// </summary>
-    /// <param name="item">The updated Volunteer entity.</param>
-    /// <exception cref="Exception">Thrown if the Volunteer with the specified ID does not exist.</exception>
+    /// <param name="item"></param>
+    /// <exception cref="DalDoesNotExistException">Thrown if the Volunteer with the specified ID does not exist</exception>
     public void Update(Volunteer item)
     {
+        
         List<DO.Volunteer> list = DataSource.Volunteers;
         Volunteer? foundVolunteer = list.Find(Volunteer => Volunteer.Id == item.Id);
         if (foundVolunteer == null)
         {
-            throw new Exception($"An object of type Volunteer with ID = {item.Id} does not exist");
+            throw new DalDoesNotExistException($"Volunteer with  ID={item.Id} does not exist");
+
         }
         list.Remove(foundVolunteer);
         list.Add(item);
     }
-
+   
     public Volunteer? Read(Func<Volunteer, bool> filter)
     {
 
