@@ -33,6 +33,8 @@ public record Volunteer
     distanceType distance = distanceType.Air
 )
 {
-        // Default constructor
-        public Volunteer() : this(0, "", "", "", null, null, null, null, null, job.volunteer, true, distanceType.Air) { }
+    
+    // Default constructor
+    public Volunteer() : this(0, "", "", "", null, null, null, null, null, job.volunteer, true, distanceType.Air) { }
+    //public Volunteer() : this(0) { }
 }

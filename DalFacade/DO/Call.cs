@@ -31,6 +31,6 @@ public record Call
     DateTime? TotalTime
 )
 {
-
+    //public Call() : this(0) { }
     public Call() : this(0, CallType.ProvideTransportation, string.Empty, null, 0.0, 0.0, DateTime.Now, null) { }
 }
