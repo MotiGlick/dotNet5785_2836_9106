@@ -34,9 +34,9 @@ internal class CallImplementation : ICall
 
     public Call? Read(int id)
     {
-        XElement? studentElem =
+        XElement? callElem =
         XMLTools.LoadListFromXMLElement(Config.s_calls_xml).Elements().FirstOrDefault(st => (int?)st.Element("Id") == id);
-        return studentElem is null ? null : getCall(studentElem);
+        return callElem is null ? null : getCall(callElem);
     }
 
     public Call? Read(Func<Call, bool> filter)
@@ -48,8 +48,8 @@ internal class CallImplementation : ICall
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null)
     {
 
-        IEnumerable<Call> volunteers = XMLTools.LoadListFromXMLElement(Config.s_calls_xml) .Elements().Select(s => getCall(s));
-        return filter is null ? volunteers : volunteers.Where(filter);
+        IEnumerable<Call> calls = XMLTools.LoadListFromXMLElement(Config.s_calls_xml) .Elements().Select(s => getCall(s));
+        return filter is null ? calls : calls.Where(filter);
 
     }
 
