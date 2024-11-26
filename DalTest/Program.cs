@@ -14,9 +14,8 @@ namespace DalTest
     {
 
 
-
-
-        static readonly IDal s_dal = new DalList();
+        // static readonly IDal s_dal = new DalList();
+        static readonly IDal s_dal = new DalXml(); //stage 3
         static void Main(string[] args)
         {
 
