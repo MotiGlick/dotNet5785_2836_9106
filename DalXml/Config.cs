@@ -6,41 +6,63 @@
 
 namespace Dal;
 
+
+/// <summary>
+/// Provides configuration settings for the application, including file paths and system values.
+/// This class manages configuration values such as the next available IDs for calls and assignments, the system clock, and risk range.
+/// It interacts with the configuration file to load and store these settings.
+/// </summary>
 internal class Config
 {
 
+    // The file path for the data configuration XML files.
     internal const string s_data_config_xml = "data-config.xml";
     internal const string s_volunteers_xml = "volunteers.xml";
     internal const string s_calls_xml = "calls.xml";
     internal const string s_assignments_xml = "assignments.xml";
 
-
+    /// <summary>
+    /// Gets the next available call ID from the configuration file and increments it.
+    /// </summary>
     internal static int NextCallId
     {
         get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextCallId");
         private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextCallId", value);
     }
 
+    /// <summary>
+    /// Gets the next available assignment ID from the configuration file and increments it.
+    /// </summary>
     internal static int NextAssignmentId
     {
         get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextAssignmentId");
         private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextAssignmentId", value);
     }
 
+    /// <summary>
+    /// Gets or sets the system clock from the configuration file.
+    /// This represents the current time in the system.
+    /// </summary>
     internal static DateTime Clock
     {
         get => XMLTools.GetConfigDateVal(s_data_config_xml, "Clock");
         set => XMLTools.SetConfigDateVal(s_data_config_xml, "Clock", value);
     }
 
+    /// <summary>
+    /// Gets or sets the risk range from the configuration file.
+    /// This represents the time window used for calculating risk.
+    /// </summary>
     internal static TimeSpan RiskRange
     {
         get => XMLTools.GetConfigSpanVal(s_data_config_xml, "RiskRange");
         set => XMLTools.SetConfigSpanVal(s_data_config_xml, "RiskRange", value);
     }
-    
 
 
+    /// <summary>
+    /// Resets the configuration values to their default settings.
+    /// </summary>
     internal static void Reset()
     {
         NextCallId = 0;

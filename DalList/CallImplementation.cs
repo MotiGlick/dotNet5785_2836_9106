@@ -16,7 +16,7 @@ internal class CallImplementation : ICall
     public void Create(Call item)
     {
         List<DO.Call> list = DataSource.Calls;
-        int newId = Config.NextAssignmentId;
+        int newId = Config.NextCallId;         /////////
         Call copy = item with { Id = newId };
         list.Add(copy);
     }
@@ -85,6 +85,13 @@ internal class CallImplementation : ICall
         list.Add(item);
     }
 
+    /// <summary>
+    /// Reads the first call that matches the specified filter.
+    /// </summary>
+    /// <param name="filter">A function that defines the condition to match a call.</param>
+    /// <returns>
+    /// The first Call that matches the filter, or null if no matching call is found.
+    /// </returns>
     public Call? Read(Func<Call, bool> filter)
     {
 

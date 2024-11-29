@@ -86,6 +86,13 @@ internal class AssignmentImplementation : IAssignment
         list.Add(item);
     }
 
+    /// <summary>
+    /// Reads the first assignment that matches the specified filter.
+    /// </summary>
+    /// <param name="filter">A function that defines the condition to match an assignment.</param>
+    /// <returns>
+    /// The first <see cref="Assignment"/> that matches the filter, or <c>null</c> if no matching assignment is found.
+    /// </returns>
     public Assignment? Read(Func<Assignment, bool> filter)
     { 
         return DataSource.Assignments.FirstOrDefault(filter);

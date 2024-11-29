@@ -1,87 +1,154 @@
 ﻿
-
-namespace Dal;
+using Dal;
 using DalApi;
 using DO;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
 using System.Xml.Linq;
 
+
+/// <summary>
+/// Implementation of the IAssignment interface for managing Assignment records in the data store.
+/// Provides methods for creating, reading, updating, and deleting Assignments in the XML data store.
+/// </summary>
 internal class AssignmentImplementation : IAssignment
 {
-    
-   
-
+    /// <summary>
+    /// Creates a new assignment and adds it to the XML data store.
+    /// </summary>
+    /// <param name="item">The assignment to be created.</param>
     public void Create(Assignment item)
-    {
-        List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
-        int newId = Config.NextAssignmentId;
-        Assignment copy = item with { Id = newId };
-        Assignments.Add(copy);
-        XMLTools.SaveListToXMLSerializer(Assignments, Config.s_assignments_xml);
+    {      
+        XElement assignmentsXml = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
+        XElement newAssignmentElement = new XElement("Assignment",
+            new XElement("Id", Config.NextAssignmentId),
+            new XElement("CallId", item.CallId),
+            new XElement("VolunteerId", item.VolunteerId),
+            new XElement("AssignmentTime", item.AssignmentTime),
+            new XElement("AssignmentTotalTime", item.AssignmentTotalTime),
+            new XElement("Type", item.type.ToString())
+        );
+        assignmentsXml.Add(newAssignmentElement);
+        XMLTools.SaveListToXMLElement(assignmentsXml, Config.s_assignments_xml);
     }
 
+    /// <summary>
+    /// Deletes an assignment by its ID from the XML data store.
+    /// </summary>
+    /// <param name="id">The ID of the assignment to be deleted.</param>
+    /// <exception cref="DalDoesNotExistException">Thrown if the assignment does not exist in the data store.</exception>
     public void Delete(int id)
     {
-        List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
-        if (Assignments.RemoveAll(it => it.Id == id) == 0)
+        XElement assignmentsXml = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
+        XElement assignmentToRemove = assignmentsXml.Elements().FirstOrDefault(e => (int)e.Element("Id") == id);
+
+        if (assignmentToRemove != null)
+        {
+            assignmentToRemove.Remove();
+            XMLTools.SaveListToXMLElement(assignmentsXml, Config.s_assignments_xml);
+        }
+        else
+        {
             throw new DalDoesNotExistException($"Assignment with ID={id} does Not exist");
-        XMLTools.SaveListToXMLSerializer(Assignments, Config.s_assignments_xml);
+        }
     }
 
+    /// <summary>
+    /// Deletes all assignments from the XML data store.
+    /// </summary>
     public void DeleteAll()
     {
-        XMLTools.SaveListToXMLSerializer(new List<Assignment>(), Config.s_assignments_xml);
+        XMLTools.SaveListToXMLElement(new XElement("Assignments"), Config.s_assignments_xml);
     }
 
+
+
+
+    /// <summary>
+    /// Reads an assignment by its ID from the XML data store.
+    /// </summary>
+    /// <param name="id">The ID of the assignment to be read.</param>
+    /// <returns>The assignment with the specified ID, or null if not found.</returns>
     public Assignment? Read(int id)
     {
-        XElement? AssignmentElem =
-        XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().FirstOrDefault(st => (int?)st.Element("Id") == id);
-        return AssignmentElem is null ? null : getAssignment(AssignmentElem);
+        XElement assignmentsXml = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
+        XElement assignmentElement= assignmentsXml.Elements().FirstOrDefault(e => (int)e.Element("Id") == id);
+        return assignmentElement != null ? GetAssignmentFromXElement(assignmentElement) : null;
     }
 
+    /// <summary>
+    /// Reads an assignment based on a filter function from the XML data store.
+    /// </summary>
+    /// <param name="filter">A filter function to apply to the assignments.</param>
+    /// <returns>The first assignment that matches the filter, or null if no assignment matches.</returns>
     public Assignment? Read(Func<Assignment, bool> filter)
     {
-
-        return XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().Select(s => getAssignment(s)).FirstOrDefault(filter);
+        XElement assignmentsXml = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
+        Assignment assignment = assignmentsXml.Elements().Select(e => GetAssignmentFromXElement(e)).FirstOrDefault(filter);
+        return assignment;
     }
 
+    /// <summary>
+    /// Reads all assignments from the XML data store, optionally filtered by a given filter function.
+    /// </summary>
+    /// <param name="filter">An optional filter function to apply to the assignments.</param>
+    /// <returns>An enumerable collection of assignments that match the filter, or all assignments if no filter is provided.</returns>
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
     {
+        XElement assignmentsXml = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
+        var assignments = assignmentsXml.Elements()
+            .Select(e => GetAssignmentFromXElement(e));
 
-        IEnumerable<Assignment> assignments = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml).Elements().Select(s => getAssignment(s));
-        return filter is null ? assignments : assignments.Where(filter);
-
+        return filter == null ? assignments : assignments.Where(filter);
     }
 
 
+    /// <summary>
+    /// Updates an existing assignment in the XML data store.
+    /// </summary>
+    /// <param name="item">The assignment to be updated.</param>
+    /// <exception cref="DalDoesNotExistException">Thrown if the assignment does not exist in the data store.</exception>
     public void Update(Assignment item)
     {
-        List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
-        if (Assignments.RemoveAll(it => it.Id == item.Id) == 0)
+        XElement assignmentsXml = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
+        XElement assignmentElement = assignmentsXml.Elements().FirstOrDefault(e => (int)e.Element("Id") == item.Id);
+
+        if (assignmentElement != null)
+        {
+            assignmentElement.SetElementValue("CallId", item.CallId);
+            assignmentElement.SetElementValue("VolunteerId", item.VolunteerId);
+            assignmentElement.SetElementValue("AssignmentTime", item.AssignmentTime);
+            assignmentElement.SetElementValue("AssignmentTotalTime", item.AssignmentTotalTime);
+            assignmentElement.SetElementValue("Type", item.type.ToString());
+
+            XMLTools.SaveListToXMLElement(assignmentsXml, Config.s_assignments_xml);
+        }
+        else
+        {
             throw new DalDoesNotExistException($"Assignment with ID={item.Id} does Not exist");
-        Assignments.Add(item);
-        XMLTools.SaveListToXMLSerializer(Assignments, Config.s_assignments_xml);
+        }
     }
 
-
-    static Assignment getAssignment(XElement s)
+    /// <summary>
+    /// Converts an XElement to an Assignment object.
+    /// </summary>
+    /// <param name="element">The XElement to be converted.</param>
+    /// <returns>The corresponding Assignment object.</returns>
+    private Assignment GetAssignmentFromXElement(XElement element)
     {
-        return new DO.Assignment()
+        return new Assignment
         {
-            Id = s.ToIntNullable("Id") ?? throw new FormatException("can't convert id"),
-            CallId  = (int)s.ToIntNullable("CallId") ,
-            VolunteerId = (int)s.ToIntNullable("VolunteerId"),
-            AssignmentTime = (DateTime)s.ToDateTimeNullable("AssignmentTime"),//?? // throw new FormatException("can't convert CallTime"),
-            AssignmentTotalTime = s.ToDateTimeNullable("AssignmentTotalTime"),
-            type = s.ToEnumNullable<CallStatus>("type") ?? CallStatus.ExpiredCancellation,
-
+            Id = element.ToIntNullable("Id") ?? throw new FormatException("can't convert id"),
+            CallId = element.ToIntNullable("CallId")??throw new FormatException("can't convert CallId"),
+            VolunteerId = element.ToIntNullable("VolunteerId") ?? throw new FormatException("can't convert VolunteerId"),
+            AssignmentTime = element.ToDateTimeNullable("AssignmentTime")?? throw new FormatException("can't convert AssignmentTime"),
+            AssignmentTotalTime = element.ToDateTimeNullable("AssignmentTotalTime")??null,
+            type = element.ToEnumNullable<CallStatus>("Type")?? null,
         };
     }
 }
 
+
+    
+
+   
 
    

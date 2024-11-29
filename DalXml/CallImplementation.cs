@@ -1,24 +1,37 @@
 ﻿
-
 namespace Dal;
 using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 
+
+/// <summary>
+/// Implementation of the ICall interface for managing call records in the data store.
+/// Provides methods for creating, reading, updating, and deleting calls in the XML data store.
+/// </summary>
 internal class CallImplementation : ICall
 {
+    /// <summary>
+    /// Creates a new call and adds it to the XML data store.
+    /// </summary>
+    /// <param name="item">The call to be created.</param>
     public void Create(Call item)
     {
         List<Call> Calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
-        int newId = Config.NextAssignmentId;
+        int newId = Config.NextCallId;
         Call copy = item with { Id = newId };
         Calls.Add(copy);
         XMLTools.SaveListToXMLSerializer(Calls, Config.s_calls_xml);
     }
 
+
+    /// <summary>
+    /// Deletes a call by its ID from the XML data store.
+    /// </summary>
+    /// <param name="id">The ID of the call to be deleted.</param>
+    /// <exception cref="DalDoesNotExistException">Thrown if the call does not exist in the data store.</exception>
     public void Delete(int id)
     {
         List<Call> Calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -27,60 +40,69 @@ internal class CallImplementation : ICall
         XMLTools.SaveListToXMLSerializer(Calls, Config.s_calls_xml);
     }
 
+
+    /// <summary>
+    /// Deletes all calls from the XML data store.
+    /// </summary>
     public void DeleteAll()
     {
         XMLTools.SaveListToXMLSerializer(new List<Call>(), Config.s_calls_xml);
     }
 
+
+    /// <summary>
+    /// Reads a call by its ID from the XML data store.
+    /// </summary>
+    /// <param name="id">The ID of the call to be read.</param>
+    /// <returns>The call with the specified ID, or null if not found.</returns>
     public Call? Read(int id)
     {
-        XElement? callElem =
-        XMLTools.LoadListFromXMLElement(Config.s_calls_xml).Elements().FirstOrDefault(st => (int?)st.Element("Id") == id);
-        return callElem is null ? null : getCall(callElem);
+        List<Call> Calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
+        return Calls.FirstOrDefault(Call => Call.Id == id);
     }
 
+
+    /// <summary>
+    /// Reads a call based on a filter function from the XML data store.
+    /// </summary>
+    /// <param name="filter">A filter function to apply to the calls.</param>
+    /// <returns>The first call that matches the filter, or null if no call matches.</returns>
     public Call? Read(Func<Call, bool> filter)
     {
-
-        return XMLTools.LoadListFromXMLElement(Config.s_calls_xml).Elements().Select(s => getCall(s)).FirstOrDefault(filter);
+        List<Call> Calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
+        return Calls.FirstOrDefault(filter);
     }
 
+
+    /// <summary>
+    /// Reads all calls from the XML data store, optionally filtered by a given filter function.
+    /// </summary>
+    /// <param name="filter">An optional filter function to apply to the calls.</param>
+    /// <returns>An enumerable collection of calls that match the filter, or all calls if no filter is provided.</returns>
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null)
     {
-
-        IEnumerable<Call> calls = XMLTools.LoadListFromXMLElement(Config.s_calls_xml) .Elements().Select(s => getCall(s));
-        return filter is null ? calls : calls.Where(filter);
-
+        List<Call> Calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
+        return filter is null ? Calls : Calls.Where(filter);
     }
 
 
+    /// <summary>
+    /// Updates an existing call in the XML data store.
+    /// </summary>
+    /// <param name="item">The call to be updated.</param>
+    /// <exception cref="DalDoesNotExistException">Thrown if the call does not exist in the data store.</exception>
     public void Update(Call item)
     {
         List<Call> Calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
-        if (Calls.RemoveAll(it => it.Id == item.Id) == 0)
+        Call? foundAssignment = Calls.Find(Call => Call.Id == item.Id);
+        if (foundAssignment == null)
+        {
             throw new DalDoesNotExistException($"Call with ID={item.Id} does Not exist");
+        }
+        Calls.Remove(foundAssignment);
         Calls.Add(item);
         XMLTools.SaveListToXMLSerializer(Calls, Config.s_calls_xml);
     }
-
-
-    static Call getCall(XElement s)
-    {
-        return new DO.Call()
-        {
-            Id = s.ToIntNullable("Id") ?? throw new FormatException("can't convert id"),
-            type = s.ToEnumNullable<CallType>("type") ?? CallType.HomeCare,
-            CallAddress = (string?)s.Element("CallAddress") ?? "",
-            Description = (string?)s.Element("Description") ?? null,
-            Latitude = s.ToDoubleNullable("Latitude") ?? 0,//throw new FormatException("can't convert Latitude"),
-            Longitude = s.ToDoubleNullable("Longitude") ?? 0,// throw new FormatException("can't convert Longitude"),
-            CallTime = (DateTime)s.ToDateTimeNullable("CallTime"),//?? // throw new FormatException("can't convert CallTime"),
-            TotalTime = s.ToDateTimeNullable("TotalTime")
-
-
-        };
-    }
-
 }
 
 

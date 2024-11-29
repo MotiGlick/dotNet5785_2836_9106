@@ -1,4 +1,6 @@
-﻿namespace DO;
+﻿
+
+namespace DO;
 
 /// <summary>
 /// Enum representing the main menu options in the system.
@@ -82,6 +84,7 @@ public enum distanceType
     walk,  // Walking distance
     car    // Driving distance
 }
+
 
 /// <summary>
 /// Enum for the status of a call after it has been handled or closed.

@@ -1,5 +1,4 @@
 ﻿namespace Dal;
-
 using DalApi;
 using DO;
 using System.Collections.Generic;
@@ -92,7 +91,14 @@ internal class VolunteerImplementation : IVolunteer
         list.Remove(foundVolunteer);
         list.Add(item);
     }
-   
+
+    /// <summary>
+    /// Reads the first volunteer that matches the specified filter.
+    /// </summary>
+    /// <param name="filter">A function that defines the condition to match a volunteer.</param>
+    /// <returns>
+    /// The first Volunteer that matches the filter, or null if no matching volunteer is found.
+    /// </returns>
     public Volunteer? Read(Func<Volunteer, bool> filter)
     {
 

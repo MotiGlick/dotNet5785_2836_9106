@@ -1,6 +1,7 @@
 ﻿namespace Dal;
 
 using DO;
+using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -18,24 +19,26 @@ static class XMLTools
     public static void SaveListToXMLSerializer<T>(List<T> list, string xmlFileName) where T : class
     {
         string xmlFilePath = s_xmlDir + xmlFileName;
-
         try
         {
             using FileStream file = new(xmlFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
             new XmlSerializer(typeof(List<T>)).Serialize(file, list);
+           
         }
         catch (Exception ex)
         {
             throw new DalXMLFileLoadCreateException($"fail to create xml file: {s_xmlDir + xmlFilePath}, {ex.Message}");
         }
+
     }
     public static List<T> LoadListFromXMLSerializer<T>(string xmlFileName) where T : class
     {
         string xmlFilePath = s_xmlDir + xmlFileName;
-
+       
         try
         {
             if (!File.Exists(xmlFilePath)) return new();
+
             using FileStream file = new(xmlFilePath, FileMode.Open);
             XmlSerializer x = new(typeof(List<T>));
             return x.Deserialize(file) as List<T> ?? new();
@@ -66,7 +69,7 @@ static class XMLTools
         string xmlFilePath = s_xmlDir + xmlFileName;
 
         try
-        {
+        { 
             if (File.Exists(xmlFilePath))
                 return XElement.Load(xmlFilePath);
             XElement rootElem = new(xmlFileName);
@@ -102,18 +105,20 @@ static class XMLTools
         return dt;
     }
     /// <summary>
-    /// 
+    ///  Retrieves the value of a specified XML element
+    ///  Throws an exception if the value cannot be converted.
     /// </summary>
-    /// <param name="xmlFileName"></param>
-    /// <param name="elemName"></param>
-    /// <returns></returns>
-    /// <exception cref="FormatException"></exception>
-    public static TimeSpan GetConfigSpanVal(string xmlFileName, string elemName)////////////
+    /// <param name="xmlFileName">The name of the XML file to read from</param>
+    /// <param name="elemName">The name of the element to retrieve</param>
+    /// <returns>The  value of the specified element</returns>
+    /// <exception cref="FormatException">Thrown if the element's value cannot be converted</exception>
+    public static TimeSpan GetConfigSpanVal(string xmlFileName, string elemName)
     {
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
         TimeSpan dt = root.ToTimeSpanNullable(elemName) ?? throw new FormatException($"can't convert:  {xmlFileName}, {elemName}");
         return dt;
     }
+   
     public static void SetConfigIntVal(string xmlFileName, string elemName, int elemVal)
     {
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
@@ -129,11 +134,11 @@ static class XMLTools
 
 
     /// <summary>
-    /// 
+    /// Updates the value of a specified XML element with a given <see cref="TimeSpan"/> value.
     /// </summary>
-    /// <param name="xmlFileName"></param>
-    /// <param name="elemName"></param>
-    /// <param name="elemVal"></param>
+    /// <param name="xmlFileName">The name of the XML file to update</param>
+    /// <param name="elemName">The name of the element to modify</param>
+    /// <param name="elemVal">The  value to set for the element.</param>
     public static void SetConfigSpanVal(string xmlFileName, string elemName, TimeSpan elemVal)
     {
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
@@ -141,7 +146,7 @@ static class XMLTools
         XMLTools.SaveListToXMLElement(root, xmlFileName);
     }
     #endregion
-
+  
 
     #region ExtensionFuctions
     public static T? ToEnumNullable<T>(this XElement element, string name) where T : struct, Enum =>
@@ -152,12 +157,12 @@ static class XMLTools
         double.TryParse((string?)element.Element(name), out var result) ? (double?)result : null;
     public static int? ToIntNullable(this XElement element, string name) =>
         int.TryParse((string?)element.Element(name), out var result) ? (int?)result : null;
+
     /// <summary>
-    /// 
+    /// Converts the value of a specified XML element to a nullable <see cref="TimeSpan"/>.
     /// </summary>
-    /// <param name="element"></param>
-    /// <param name="name"></param>
-    /// <returns></returns>
+    /// <param name="element">The XML element containing the value to convert</param>
+    /// <param name="name">The name of the child element to retrieve the value fro</param>
     public static TimeSpan? ToTimeSpanNullable(this XElement element, string name) =>
         TimeSpan.TryParse((string?)element.Element(name), out var result) ? (TimeSpan?)result : null;
 

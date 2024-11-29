@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace DalApi
 {
+    /// <summary>
+    /// Generic interface for performing CRUD (Create, Read, Update, Delete) operations 
+    /// on data entities in the Data Access Layer (DAL). 
+    /// </summary>
+    /// <typeparam name="T">The type of the entity the operations are performed on</typeparam>
     public interface ICrud<T> where T : class
     {
         void Create(T item); //Creates new entity object in DAL
