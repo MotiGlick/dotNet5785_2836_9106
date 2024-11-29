@@ -13,8 +13,7 @@ namespace DalTest
     internal class Program
     {
 
-
-        // static readonly IDal s_dal = new DalList();
+        //static readonly IDal s_dal = new DalList();
         static readonly IDal s_dal = new DalXml(); //stage 3
         static void Main(string[] args)
         {
@@ -102,8 +101,9 @@ namespace DalTest
 
 
 
-
-
+            /// <summary>
+            /// Submenu for handling volunteer actions.
+            /// </summary>
             static void volunteerMenu()
             {
                 bool exitSubMenu = false;
@@ -197,6 +197,9 @@ namespace DalTest
 
 
 
+            /// <summary>
+            /// Submenu for handling call actions.
+            /// </summary>
             static void callMenu()
             {
                 bool exitSubMenu = false;
@@ -285,6 +288,10 @@ namespace DalTest
             }
 
 
+
+            /// <summary>
+            /// Submenu for handling Assignment actions.
+            /// </summary>
             static void AssignmentMenu()
             {
                 bool exitSubMenu = false;
@@ -448,7 +455,7 @@ namespace DalTest
 
 
             /// <summary>
-            /// Displays data for a specific entity type: Volunteer, Call, Assignment, or All.
+            /// Displays data for a specific entity type: Volunteer, Call, Assignment, or all of them.
             /// </summary>
             /// <param name="data">The type of data to display ( "Volunteer", "Call", "Assignment", "All").</param>
             static void showData(string data)

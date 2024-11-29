@@ -268,13 +268,13 @@ public static class Initialization
         s_dal.ResetDB();//stage 2
 
         // Initialize the lists of volunteers, calls, and assignments
-        Console.WriteLine("Initializing Students list...");
+        Console.WriteLine("Initializing Volunteers list...");
         creatVolunteer();
 
-        Console.WriteLine("Initializing Courses list...");
+        Console.WriteLine("Initializing Calls list...");
         creatCall();
 
-        Console.WriteLine("Initializing Links list...");
+        Console.WriteLine("Initializing Assignments list...");
         creatAssignment();
     }
 

@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace DalApi
 {
+    /// <summary>
+    /// Interface for the Data Access Layer (DAL).
+    /// Provides access to the system's entities and configuration.
+    /// </summary>
     public interface IDal
     {
         IVolunteer Volunteer{get;}
