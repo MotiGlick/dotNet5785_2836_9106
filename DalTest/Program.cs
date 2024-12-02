@@ -18,22 +18,18 @@ namespace DalTest
         static void Main(string[] args)
         {
 
-
-
-
-
             int choice = 0;
             do
             {
                 Console.WriteLine("Main Menu:");
-                Console.WriteLine("0. Exit");
-                Console.WriteLine("1. Show Submenu for  Volunteer");
-                Console.WriteLine("2. Show Submenu for Call");
-                Console.WriteLine("3. Show Submenu for Assignment");
-                Console.WriteLine("4. Initialize Data");
-                Console.WriteLine("5. Show All Data");
-                Console.WriteLine("6. Show Submenu for Configuration");
-                Console.WriteLine("7. Reset Database");
+                Console.WriteLine("0 - Exit");
+                Console.WriteLine("1 - Submenu for  Volunteer");
+                Console.WriteLine("2 - Submenu for Call");
+                Console.WriteLine("3 - Submenu for Assignment");
+                Console.WriteLine("4 - Initialize Data");
+                Console.WriteLine("5 - Show All Data");
+                Console.WriteLine("6 - Submenu for Configuration");
+                Console.WriteLine("7 - Reset Database");
 
 
                 choice = int.Parse(Console.ReadLine() ?? "0");
@@ -46,45 +42,31 @@ namespace DalTest
                         Console.WriteLine("Exiting...");
                         break;
 
-                    case MainMenuOption.VolunteerMenu:
-                        Console.WriteLine("Showing Submenu for Volunteer...");
-                        try
-                        {
-                            volunteerMenu();
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
+                    case MainMenuOption.VolunteerMenu:                    
+                            volunteerMenu();                     
                         break;
 
-                    case MainMenuOption.CallMenu:
-                        Console.WriteLine("Showing Submenu for Call...");
+                    case MainMenuOption.CallMenu:                    
                         callMenu();
                         break;
 
-                    case MainMenuOption.AssignmentMenu:
-                        Console.WriteLine("Showing Submenu for  Assignment...");
+                    case MainMenuOption.AssignmentMenu:                      
                         AssignmentMenu();
                         break;
 
                     case MainMenuOption.InitializeData:
-                        Console.WriteLine("Initializing Data...");
                         Initialization.Do(s_dal);
                         break;
 
-                    case MainMenuOption.ShowAllData:
-                        Console.WriteLine("Showing All Data...");
+                    case MainMenuOption.ShowAllData:                     
                         showData("All");
                         break;
 
-                    case MainMenuOption.ConfigurationMenu:
-                        Console.WriteLine("Showing Submenu for  Configuration...");
+                    case MainMenuOption.ConfigurationMenu:                        
                         ConfigSubMenu();
                         break;
 
-                    case MainMenuOption.ResetDatabase:
-                        Console.WriteLine("Resetting Database...");
+                    case MainMenuOption.ResetDatabase:                       
                         resetData("All");
                         break;
 
@@ -93,10 +75,7 @@ namespace DalTest
                         break;
                 }
 
-            } while (choice != 0); // התנאי ליציאה מהלולאה
-
-
-
+            } while (choice != 0); 
 
 
 
@@ -112,13 +91,13 @@ namespace DalTest
                 do
                 {
                     Console.WriteLine("Submenu Options:");
-                    Console.WriteLine("0. Exit Submenu");
-                    Console.WriteLine($"1. Create a new volunteer");
-                    Console.WriteLine($"2. Display an volunteer by ID");
-                    Console.WriteLine($"3. Display all volunteers");
-                    Console.WriteLine($"4. Update an existing volunteer");
-                    Console.WriteLine($"5. Delete an existing volunteer");
-                    Console.WriteLine($"6. Delete all volunteers");
+                    Console.WriteLine("0 - Exit Submenu");
+                    Console.WriteLine($"1 - Create a new volunteer");
+                    Console.WriteLine($"2 - Display an volunteer by ID");
+                    Console.WriteLine($"3 - Display all volunteers");
+                    Console.WriteLine($"4 - Update an existing volunteer");
+                    Console.WriteLine($"5 - Delete an existing volunteer");
+                    Console.WriteLine($"6 - Delete all volunteers");
                     Console.Write("Please enter your choice: \n");
                     int choice = int.Parse(Console.ReadLine() ?? "0");
 
@@ -130,55 +109,38 @@ namespace DalTest
                         switch (selectedOption)
                         {
                             case SubMenuOption.Exit:
-
                                 Console.WriteLine("Exiting Submenu...");
                                 exitSubMenu = true;
                                 break;
 
                             case SubMenuOption.Create:
-
                                 Console.WriteLine($"Creating a new volunteer...");
                                 createEntity("Volunteer");
-
                                 break;
 
                             case SubMenuOption.Read:
-
                                 Console.WriteLine($"Enter volunteer ID to display:");
                                 int id = int.Parse(Console.ReadLine() ?? "0");
                                 Console.WriteLine(s_dal.Volunteer.Read(id));
-
                                 break;
 
-                            case SubMenuOption.ReadAll:
-
-                                Console.WriteLine($"Displaying all volunteers...");
+                            case SubMenuOption.ReadAll:                                
                                 showData("Volunteer");
-
                                 break;
+
 
                             case SubMenuOption.Update:
-
                                 updateEntity("Volunteer");
-
-
                                 break;
 
                             case SubMenuOption.Delete:
-
-
                                 Console.WriteLine($"Enter volunteer ID to delete:");
                                 id = int.Parse(Console.ReadLine() ?? "0");
                                 s_dal.Volunteer.Delete(id);
-
-
                                 break;
 
-                            case SubMenuOption.DeleteAll:
-
-                                Console.WriteLine("Deleting all volunteers...");
+                            case SubMenuOption.DeleteAll:                             
                                 resetData("Volunteer");
-
                                 break;
 
                             default:
@@ -207,13 +169,13 @@ namespace DalTest
                 do
                 {
                     Console.WriteLine("Submenu Options:");
-                    Console.WriteLine("0. Exit Submenu");
-                    Console.WriteLine($"1. Create a new call");
-                    Console.WriteLine($"2. Display an call by ID");
-                    Console.WriteLine($"3. Display all calls");
-                    Console.WriteLine($"4. Update an existing call");
-                    Console.WriteLine($"5. Delete an existing call");
-                    Console.WriteLine($"6. Delete all calls");
+                    Console.WriteLine("0 - Exit Submenu");
+                    Console.WriteLine($"1 - Create a new call");
+                    Console.WriteLine($"2 - Display an call by ID");
+                    Console.WriteLine($"3 - Display all calls");
+                    Console.WriteLine($"4 - Update an existing call");
+                    Console.WriteLine($"5 - Delete an existing call");
+                    Console.WriteLine($"6 - Delete all calls");
                     Console.Write("Please enter your choice: \n");
                     int choice = int.Parse(Console.ReadLine() ?? "0");
 
@@ -225,52 +187,36 @@ namespace DalTest
                         switch (selectedOption)
                         {
                             case SubMenuOption.Exit:
-
                                 Console.WriteLine("Exiting Submenu...");
                                 exitSubMenu = true;
                                 break;
 
-                            case SubMenuOption.Create:
-
-                                Console.WriteLine($"Creating a new call...");
+                            case SubMenuOption.Create:                             
                                 createEntity("Call");
-
                                 break;
 
                             case SubMenuOption.Read:
-
                                 Console.WriteLine($"Enter call ID to display:");
                                 int id = int.Parse(Console.ReadLine() ?? "0");
                                 Console.WriteLine(s_dal.Call.Read(id));
-
                                 break;
 
-                            case SubMenuOption.ReadAll:
-
-                                Console.WriteLine($"Displaying all calls...");
+                            case SubMenuOption.ReadAll:                              
                                 showData("Call");
-
                                 break;
 
-                            case SubMenuOption.Update:
-                                
+                            case SubMenuOption.Update:                                
                                 updateEntity("Call");
-
                                 break;
 
                             case SubMenuOption.Delete:
-
                                 Console.WriteLine($"Enter call ID to delete:");
                                 id = int.Parse(Console.ReadLine() ?? "0");
                                 s_dal.Call.Delete(id);
-
                                 break;
 
-                            case SubMenuOption.DeleteAll:
-
-                                Console.WriteLine("Deleting all calls...");
+                            case SubMenuOption.DeleteAll:                              
                                 resetData("Call");
-
                                 break;
 
                             default:
@@ -299,13 +245,13 @@ namespace DalTest
                 do
                 {
                     Console.WriteLine("Submenu Options:");
-                    Console.WriteLine("0. Exit Submenu");
-                    Console.WriteLine($"1. Create a new assignment");
-                    Console.WriteLine($"2. Display an assignment by ID");
-                    Console.WriteLine($"3. Display all assignments");
-                    Console.WriteLine($"4. Update an existing assignment");
-                    Console.WriteLine($"5. Delete an existing assignment");
-                    Console.WriteLine($"6. Delete all assignments");
+                    Console.WriteLine("0 - Exit Submenu");
+                    Console.WriteLine($"1 - Create a new assignment");
+                    Console.WriteLine($"2 - Display an assignment by ID");
+                    Console.WriteLine($"3 - Display all assignments");
+                    Console.WriteLine($"4 - Update an existing assignment");
+                    Console.WriteLine($"5 - Delete an existing assignment");
+                    Console.WriteLine($"6 - Delete all assignments");
                     Console.Write("Please enter your choice: \n");
                     int choice = int.Parse(Console.ReadLine() ?? "0");
 
@@ -317,52 +263,37 @@ namespace DalTest
                         switch (selectedOption)
                         {
                             case SubMenuOption.Exit:
-
                                 Console.WriteLine("Exiting Submenu...");
                                 exitSubMenu = true;
                                 break;
 
-                            case SubMenuOption.Create:
-
-                                Console.WriteLine($"Creating a new assignment...");
+                            case SubMenuOption.Create:                             
                                 createEntity("Assignment");
-
                                 break;
 
-                            case SubMenuOption.Read:
 
+                            case SubMenuOption.Read:
                                 Console.WriteLine($"Enter assignment ID to display:");
                                 int id = int.Parse(Console.ReadLine() ?? "0");
                                 Console.WriteLine(s_dal.Assignment.Read(id));
-
                                 break;
 
-                            case SubMenuOption.ReadAll:
-
-                                Console.WriteLine($"Displaying all assignments...");
+                            case SubMenuOption.ReadAll:                               
                                 showData("Assignment");
-
                                 break;
 
                             case SubMenuOption.Update:
-
                                 updateEntity("Assignment");
-
                                 break;
 
                             case SubMenuOption.Delete:
-
                                 Console.WriteLine($"Enter assignment ID to delete:");
                                 id = int.Parse(Console.ReadLine() ?? "0");
                                 s_dal.Assignment.Delete(id);
-
                                 break;
                                                                         
-                            case SubMenuOption.DeleteAll:
-
-                                Console.WriteLine("Deleting all assignments...");
+                            case SubMenuOption.DeleteAll:                             
                                 resetData("Assignment");
-
                                 break;
 
                             default:
@@ -395,10 +326,12 @@ namespace DalTest
                     Console.WriteLine("1 - Advance system clock by one minute");
                     Console.WriteLine("2 - Advance system clock by one hour");
                     Console.WriteLine("3 - Advance system clock by one day");
-                    Console.WriteLine("4 - Display current system clock value");
-                    Console.WriteLine("5 - Set a new value for a configuration variable");
-                    Console.WriteLine("6 - Display current value of a configuration variable");
-                    Console.WriteLine("7 - Reset values for all configuration variables");
+                    Console.WriteLine("4 - Advance system clock by one month");
+                    Console.WriteLine("5 - Advance system clock by one year");
+                    Console.WriteLine("6 - Display current system clock value");
+                    Console.WriteLine("7 - Set a new value for a configuration variable");
+                    Console.WriteLine("8 - Display current value of a configuration variable");
+                    Console.WriteLine("9 - Reset values for all configuration variables");
                     Console.Write("Please enter your choice: \n");
 
                     int choice = int.Parse(Console.ReadLine() ?? "0");
@@ -425,6 +358,14 @@ namespace DalTest
                             s_dal.Config.Clock = s_dal.Config.Clock.AddDays(1);
                             Console.WriteLine("Advanced system clock by one day.");
                             break;
+                        case ConfigMenu.AdvanceClockMonth:
+                            s_dal.Config.Clock = s_dal.Config.Clock.AddMonths(1);
+                            Console.WriteLine("Advanced system clock by one month.");
+                            break;
+                        case ConfigMenu.AdvanceClockYear:
+                            s_dal.Config.Clock = s_dal.Config.Clock.AddYears(1);
+                            Console.WriteLine("Advanced system clock by one year.");
+                            break;
 
                         case ConfigMenu.DisplayCurrentClock:
                             Console.WriteLine($"Current system clock: {s_dal.Config.Clock}");
@@ -450,9 +391,7 @@ namespace DalTest
 
                 }
             }
-
-
-
+        
 
             /// <summary>
             /// Displays data for a specific entity type: Volunteer, Call, Assignment, or all of them.
@@ -518,7 +457,7 @@ namespace DalTest
                 if (data == "Assignment")
                     flag3 = true;
                 if (data == "config")
-                    flag3 = true;
+                    flag4 = true;
                 if (data == "All")
                 {
                     flag1 = true;
@@ -541,30 +480,29 @@ namespace DalTest
             }
 
 
-
-
             /// <summary>
             /// Sets a new value for a configuration variable (Clock, RiskRange).
             /// </summary>
             static void SetNewConfig()
             {
-                Console.Write("Enter the name of the configuration variable: (Clock,RiskRange)");
-                string configVarName = Console.ReadLine();
+                Console.Write("Enter your choice \n1 - Clock \n2 - RiskRange \n");
+                string? choice = Console.ReadLine();
                 Console.Write("Enter the new value: ");
-                string newValue = Console.ReadLine();
+                string newValue = Console.ReadLine()!;
 
-                if (configVarName == "Clock")
+                if (choice == "1")
                 {
                     DateTime newClockValue = DateTime.Parse(newValue);
                     s_dal.Config.Clock = newClockValue;
-                    Console.WriteLine($"Configuration variable '{configVarName}' set to '{newValue}'.");
+                    Console.WriteLine($"Clock set to '{newValue}'.");
                 }
-                else if (configVarName == "RiskRange")
+                else if (choice == "2")
                 {
                     TimeSpan newRiskRangeValue = TimeSpan.Parse(newValue);
                     s_dal.Config.RiskRange = newRiskRangeValue;
-                    Console.WriteLine($"Configuration variable '{configVarName}' set to '{newValue}'.");
+                    Console.WriteLine($"RiskRange set to '{newValue}'.");
                 }
+                
             }
 
 
@@ -573,39 +511,27 @@ namespace DalTest
             /// </summary>
             static void ShowConfig()
             {
-                Console.Write("Enter the name of the configuration variable: (Clock,RiskRange,AssignmentId,CallId)");
-                string configVarName = Console.ReadLine();
 
-                if (configVarName == "Clock")
+                Console.Write("configuration variabl to Display \n1 - clock \n2 - RiskRange \n3 - AssignmentId \n4 - CallId \n");
+                string? choice = Console.ReadLine();
+
+                if (choice == "1")
                 {
                     Console.WriteLine($"Clock : {s_dal.Config.Clock}");
                 }
-                else if (configVarName == "RiskRange")
+                else if (choice == "2")
                 {
                     Console.WriteLine($"RiskRange : {s_dal.Config.RiskRange}");
                 }
-                else if (configVarName == "AssignmentId")
+                else if (choice == "3")
                 {
                     Console.WriteLine($"AssignmentId : {s_dal.Config.NextAssignmentId}");
                 }
-                else if (configVarName == "CallId")
+                else if (choice == "4")
                 {
                     Console.WriteLine($"AssignmentId : {s_dal.Config.NextCallId}");
                 }
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             /// <summary>
@@ -666,7 +592,6 @@ namespace DalTest
 
                 if (entity == "Assignment")
                 {
-
                     Console.WriteLine($"Enter Assignment ID to update:");
                     int id = int.Parse(Console.ReadLine() ?? "0");
                     Assignment? unUpdated = s_dal.Assignment.Read(id);
@@ -700,8 +625,6 @@ namespace DalTest
 
                 if (entity == "Call")
                 {
-
-
                     Console.WriteLine($"Enter call ID to update:");
                     int id = int.Parse(Console.ReadLine() ?? "0");
                     Call? unUpdated = s_dal.Call.Read(id);
@@ -710,8 +633,10 @@ namespace DalTest
                         Console.WriteLine(unUpdated);
                     }
                     Console.WriteLine("Please enter the following details for the Call:");
-                    Console.Write("Call Type (ProvideTransportation, Emergency,ProvideTransportation, MedicalAssistance, EmotionalSupport, HomeCare, HospitalVisit, DeliverMedicine, CleaningAssistance): ");
-                    CallType type = Enum.TryParse(Console.ReadLine(), out CallType parsedType) ? parsedType : CallType.ProvideTransportation;
+
+                    Console.Write("Call Type: \n1 - ProvideTransportation \n2 - Emergency \n3 - ProvideTransportation \n4 - MedicalAssistance \n5 -  EmotionalSupport \n6 - HomeCare \n7 - HospitalVisit \n8 - DeliverMedicine \n9 - CleaningAssistance\n");
+                    int.TryParse(Console.ReadLine(), out int typeIndex);
+                    CallType type = Enum.IsDefined(typeof(CallType), typeIndex - 1) ? (CallType)(typeIndex - 1) : CallType.ProvideTransportation;
 
                     Console.Write("Call Address: ");
                     string callAddress = Console.ReadLine() ?? "";
@@ -735,17 +660,7 @@ namespace DalTest
 
                 }
 
-
-
             }
-
-
-
-
-
-
-
-
 
             /// <summary>
             /// creation of an entity based on user input.
@@ -776,21 +691,11 @@ namespace DalTest
 
                     s_dal.Assignment.Create(new(0, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
 
-
-
-
-
-
-
                 }
 
                 if (entity == "Volunteer")
                 {
-
-
-
                     Console.WriteLine("Please enter the following details for the Volunteer:");
-
 
                     Console.Write("ID: ");
                     int id = int.Parse(Console.ReadLine() ?? "0");
@@ -830,16 +735,16 @@ namespace DalTest
 
                     s_dal.Volunteer.Create(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
 
-
                 }
 
                 if (entity == "Call")
                 {
 
-
                     Console.WriteLine("Please enter the following details for the Call:");
-                    Console.Write("Call Type (ProvideTransportation, Emergency,ProvideTransportation, MedicalAssistance, EmotionalSupport, HomeCare, HospitalVisit, DeliverMedicine, CleaningAssistance): ");
-                    CallType type = Enum.TryParse(Console.ReadLine(), out CallType parsedType) ? parsedType : CallType.ProvideTransportation;
+
+                    Console.Write("Call Type: \n1 - ProvideTransportation \n2 - Emergency \n3 - ProvideTransportation \n4 - MedicalAssistance \n5 -  EmotionalSupport \n6 - HomeCare \n7 - HospitalVisit \n8 - DeliverMedicine \n9 - CleaningAssistance\n");
+                    int.TryParse(Console.ReadLine(), out int typeIndex);
+                    CallType type = Enum.IsDefined(typeof(CallType), typeIndex - 1) ? (CallType)(typeIndex - 1) : CallType.ProvideTransportation;
 
                     Console.Write("Call Address: ");
                     string callAddress = Console.ReadLine() ?? "";
@@ -861,15 +766,9 @@ namespace DalTest
 
                     s_dal.Call.Create(new(0, type, callAddress, description, latitude, longitude, callTime, totalTime));
 
-
-
                 }
 
             }
-
-
-
-
 
         }
     }
