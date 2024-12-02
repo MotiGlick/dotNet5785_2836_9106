@@ -103,8 +103,8 @@ public static class Initialization
         // Loop for creating assignments for volunteers who handled many calls
         for (int i = 0; i < 20; i++)
         {
-            int randNum = s_rand.Next(0, 5); // Random index to select a volunteer from the first 5 volunteers
-
+            int randNum1 = s_rand.Next(0, 5); // Random index to select a volunteer from the first 5 volunteers
+            int randNum2 = s_rand.Next(0, 4);//Random number for CallStatus
             // Get start and end times for the call
             DateTime CallStartTime = CList[i].CallTime;
             DateTime? CallEndTime = CList[i].TotalTime;
@@ -114,13 +114,14 @@ public static class Initialization
             DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
 
             // Create an assignment and add it to the data access layer
-            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum].Id, AssignmentTime, AssignmentTotalTime, (CallStatus)randNum));
+            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime, AssignmentTotalTime, (CallStatus)randNum2));
         }
 
         // Loop for creating assignments for volunteers who handled fewer calls
         for (int i = 20; i < 45; i++)
         {
-            int randNum = s_rand.Next(6, 13); // Random index to select a volunteer from a different range (6 to 13)
+            int randNum1 = s_rand.Next(6, 13); // Random index to select a volunteer from a different range (6 to 13)
+            int randNum2 = s_rand.Next(0, 4);//Random number for CallStatus
 
             // Get start and end times for the call
             DateTime CallStartTime = CList[i].CallTime;
@@ -131,7 +132,7 @@ public static class Initialization
             DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
 
             // Create an assignment and add it to the data access layer
-            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum].Id, AssignmentTime, AssignmentTotalTime, (CallStatus)randNum));
+            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime, AssignmentTotalTime, (CallStatus)randNum2));
         }
     }
 
@@ -264,18 +265,14 @@ public static class Initialization
         //s_dalVolunteer.DeleteAll();
         //s_dalCall.DeleteAll();
         // Reset configurations and delete all existing data
-        Console.WriteLine("Reset Configuration values and List values...");
         s_dal.ResetDB();//stage 2
 
         // Initialize the lists of volunteers, calls, and assignments
-        Console.WriteLine("Initializing Volunteers list...");
         creatVolunteer();
-
-        Console.WriteLine("Initializing Calls list...");
         creatCall();
-
-        Console.WriteLine("Initializing Assignments list...");
         creatAssignment();
+
+        Console.WriteLine("The data has been initialized");
     }
 
 }

@@ -43,6 +43,8 @@ public enum ConfigMenu
     AdvanceClockMinute,       // Advances the system clock by one minute
     AdvanceClockHour,         // Advances the system clock by one hour
     AdvanceClockDay,          // Advances the system clock by one day
+    AdvanceClockMonth,        // Advances the system clock by one month
+    AdvanceClockYear,         // Advances the system clock by one year
     DisplayCurrentClock,      // Displays the current system clock
     SetNewConfigValue,        // Sets a new value for a specified configuration variable
     DisplayCurrentConfigValue,// Displays the current value of a specified configuration variable
