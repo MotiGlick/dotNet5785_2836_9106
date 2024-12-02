@@ -14,7 +14,8 @@ namespace DalTest
     {
 
         //static readonly IDal s_dal = new DalList();
-        static readonly IDal s_dal = new DalXml(); //stage 3
+        // static readonly IDal s_dal = new DalXml(); //stage 3
+        static readonly IDal s_dal = Factory.Get; //stage 4
         static void Main(string[] args)
         {
 
@@ -55,7 +56,7 @@ namespace DalTest
                         break;
 
                     case MainMenuOption.InitializeData:
-                        Initialization.Do(s_dal);
+                        Initialization.Do();
                         break;
 
                     case MainMenuOption.ShowAllData:                     

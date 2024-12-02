@@ -250,15 +250,16 @@ public static class Initialization
     /// <param name="dalAssignment">Assignment data access object</param>
     /// <param name="dalConfig">Configuration data access object</param>
     /// <exception cref="NullReferenceException">Thrown when any parameter is null</exception>
-    public static void Do(IDal dal)
+    public static void Do()
     {
         //s_dal = dalVolunteer ?? throw new NullReferenceException("DAL object 'Student' cannot be null!");
         //s_dal = dalCall ?? throw new NullReferenceException("DAL object 'Course' cannot be null!");
         //s_dal = dalAssignment ?? throw new NullReferenceException("DAL object 'Link' cannot be null!");
         //s_dal = dalConfig ?? throw new NullReferenceException("DAL object 'Config' cannot be null!");
         //// Check parameters are not null and assign to internal fields
-        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
-
+        
+        //s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
+        s_dal = DalApi.Factory.Get; //stage 4
 
         //s_dalConfig.Reset();
         //s_dalAssignment.DeleteAll();
