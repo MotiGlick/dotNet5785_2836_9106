@@ -20,3 +20,4 @@ internal static class DataSource
     /// </summary>
     internal static List<DO.Assignment> Assignments { get; } = new();
 }
+
