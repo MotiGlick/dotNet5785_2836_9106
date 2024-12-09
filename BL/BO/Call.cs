@@ -1,7 +1,7 @@
 ﻿
 namespace BO;
 
-internal class Call
+public class Call
 {
 
     public int Id { get; init; }
