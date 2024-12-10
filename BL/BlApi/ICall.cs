@@ -6,7 +6,7 @@ public interface ICall
 
 
 
-    int[] callsAmount();
+    int[] CallsAmount();
 
     IEnumerable<BO.CallInList> GetCallList( Enum? filterField, object? filterValue, Enum? sortField ;;
 
@@ -16,7 +16,7 @@ public interface ICall
 
     void DeleteCall(int callId);
 
-    void addCall(BO.Call call);
+    void AddCall(BO.Call call);
 
     IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, Enum? callType , Enum? sortField );
 
