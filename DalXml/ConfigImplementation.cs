@@ -15,21 +15,21 @@ internal class ConfigImplementation : IConfig
         set => Config.Clock = value;
     }
 
-    /// <summary>
-    /// Gets the next unique ID for Call entities.
-    /// </summary>
-    public int NextCallId
-    {
-        get => Config.NextCallId;
-    }
+    ///// <summary>
+    ///// Gets the next unique ID for Call entities.
+    ///// </summary>
+    //public int NextCallId
+    //{
+    //    get => Config.NextCallId;
+    //}
 
-    /// <summary>
-    /// Gets the next unique ID for Assignment entities.
-    /// </summary>
-    public int NextAssignmentId
-    {
-        get => Config.NextAssignmentId;
-    }
+    ///// <summary>
+    ///// Gets the next unique ID for Assignment entities.
+    ///// </summary>
+    //public int NextAssignmentId
+    //{
+    //    get => Config.NextAssignmentId;
+    //}
 
     /// <summary>
     /// Resets the configuration to its default state.

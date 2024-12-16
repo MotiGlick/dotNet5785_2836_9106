@@ -3,7 +3,7 @@
 namespace BO;
 
 
-public enum Duty
+public enum job
 {
     manager,    // Manager role, overseeing other volunteers and operations
     volunteer   // Regular volunteer role, assisting in tasks
@@ -13,7 +13,7 @@ public enum Duty
 /// Enum representing types of distances relevant to the volunteer's tasks.
 /// Different types may require different transportation modes or time calculations.
 /// </summary>
-public enum TypeOfDistance
+public enum DistanceType
 {
     Air,   // Distance as the crow flies (straight line)
     walk,  // Walking distance
@@ -25,7 +25,7 @@ public enum TypeOfDistance
 /// Enum representing different types of calls for assistance.
 /// Each type defines a specific kind of help requested by a user.
 /// </summary>
-public enum TypeOfCall
+public enum CallType
 {
     ProvideTransportation, // Transportation assistance
     MedicalAssistance,     // Medical help or support
@@ -42,10 +42,75 @@ public enum TypeOfCall
 /// Enum for the status of a call after it has been handled or closed.
 /// Each status describes the reason or outcome of the call.
 /// </summary>
-public enum StatusOfCall
+public enum CallClosureType
 {
     HandledOnTime,       // The call was handled within the allowed time
     SelfCancellation,    // The volunteer chose to cancel the call
     ManagerCancellation, // The manager canceled the call assignment
     ExpiredCancellation  // The call was canceled because the allowed time expired
 }
+
+
+public enum CallInListField
+{
+    Id,
+    CallId,
+    CallType,
+    OpeningTime,
+    TimeLeft,
+    LastVolunteerName,
+    HandlingTime,
+    status,
+    AmountOfAssigns
+}
+
+
+
+
+public enum OpenCallInListField
+{
+    Id,
+    CallType,
+    Description,
+    Address,
+    OpeningTime,
+    MaxTime,
+    DistanceFromVolunteer,   
+}
+
+public enum ClosedCallInListField
+{
+    Id,
+    CallType,
+    Address,
+    OpeningTime,
+    HndalStartTime,
+    EndTime,
+    ClosureType
+}
+
+
+
+
+public enum StatusOfCall
+{
+    Open,                // The call is open and not currently assigned to any volunteer
+    InProgress,          // The call is currently being handled by a volunteer
+    Closed,              // The call has been successfully resolved
+    Expired,             // The call was not handled in time or expired without being assigned
+    OpenAtRisk,           // The call is open and approaching its maximum allowed time (within the risk threshold)
+    InProgressAtRisk      // The call is InProgress and approaching its maximum allowed time (within the risk threshold)
+}
+
+
+
+
+public enum TimeUnit
+{ 
+    Minute,
+    Hour,
+    Day,
+    Month,
+    Year
+}
+

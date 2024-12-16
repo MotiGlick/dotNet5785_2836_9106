@@ -141,7 +141,7 @@ internal class AssignmentImplementation : IAssignment
             VolunteerId = element.ToIntNullable("VolunteerId") ?? throw new FormatException("can't convert VolunteerId"),
             AssignmentTime = element.ToDateTimeNullable("AssignmentTime")?? throw new FormatException("can't convert AssignmentTime"),
             AssignmentTotalTime = element.ToDateTimeNullable("AssignmentTotalTime")??null,
-            type = element.ToEnumNullable<CallStatus>("Type")?? null,
+            type = element.ToEnumNullable<CallClosureType>("Type")?? null,
         };
     }
 }

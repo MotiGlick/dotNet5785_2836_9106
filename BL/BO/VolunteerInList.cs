@@ -22,7 +22,7 @@ public class VolunteerInList
     public int? CurrentCallId { get; init; }
 
 
-    public TypeOfCall CurrentCallType { get; init; }
+    public CallType CurrentCallType { get; init; }
 }
 
 
