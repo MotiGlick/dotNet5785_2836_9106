@@ -4,7 +4,7 @@ namespace BlApi;
 
 public interface IVolunteer
 {
-    BO.Duty enterSystem(int id , int passward);
+    BO.job enterSystem(int id , int passward);
     void Create(BO.Volunteer boVolunreer);
     BO.Volunteer? Read(int id);
 

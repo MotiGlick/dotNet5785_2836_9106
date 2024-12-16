@@ -514,7 +514,7 @@ namespace DalTest
             static void ShowConfig()
             {
 
-                Console.Write("configuration variabl to Display \n1 - clock \n2 - RiskRange \n3 - AssignmentId \n4 - CallId \n");
+                Console.Write("configuration variabl to Display \n1 - clock \n2 - RiskRange" );
                 string? choice = Console.ReadLine();
 
                 if (choice == "1")
@@ -525,14 +525,7 @@ namespace DalTest
                 {
                     Console.WriteLine($"RiskRange : {s_dal.Config.RiskRange}");
                 }
-                else if (choice == "3")
-                {
-                    Console.WriteLine($"AssignmentId : {s_dal.Config.NextAssignmentId}");
-                }
-                else if (choice == "4")
-                {
-                    Console.WriteLine($"AssignmentId : {s_dal.Config.NextCallId}");
-                }
+               
             }
 
 
@@ -585,7 +578,7 @@ namespace DalTest
                     bool isActive = bool.TryParse(Console.ReadLine(), out var activeValue) && activeValue;
 
                     Console.Write("Distance Type (Air, Road): ");
-                    distanceType distance = Enum.TryParse(Console.ReadLine(), out distanceType parsedDistance) ? parsedDistance : distanceType.Air;
+                    DistanceType distance = Enum.TryParse(Console.ReadLine(), out DistanceType parsedDistance) ? parsedDistance : DistanceType.Air;
                     
                     s_dal.Volunteer.Update(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
 
@@ -617,7 +610,7 @@ namespace DalTest
                     DateTime? assignmentTotalTime = DateTime.Parse(Console.ReadLine() ?? "0");
 
                     Console.Write("Call Status (HandledOnTime, SelfCancellation, ManagerCancellation, ExpiredCancellation): ");
-                    CallStatus? type = Enum.TryParse(Console.ReadLine(), out CallStatus parsedType) ? parsedType : null;
+                    CallClosureType? type = Enum.TryParse(Console.ReadLine(), out CallClosureType parsedType) ? parsedType : null;
 
 
                     s_dal.Assignment.Update(new(0, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
@@ -689,7 +682,7 @@ namespace DalTest
                     DateTime? assignmentTotalTime = DateTime.Parse(Console.ReadLine() ?? "0");
 
                     Console.Write("Call Status (HandledOnTime, SelfCancellation, ManagerCancellation, ExpiredCancellation): ");
-                    CallStatus? type = Enum.TryParse(Console.ReadLine(), out CallStatus parsedType) ? parsedType : null;
+                    CallClosureType? type = Enum.TryParse(Console.ReadLine(), out CallClosureType parsedType) ? parsedType : null;
 
                     s_dal.Assignment.Create(new(0, callId, volunteerId, assignmentTime, assignmentTotalTime, type));
 
@@ -733,7 +726,7 @@ namespace DalTest
                     bool isActive = bool.TryParse(Console.ReadLine(), out var activeValue) && activeValue;
 
                     Console.Write("Distance Type (Air, Road): ");
-                    distanceType distance = Enum.TryParse(Console.ReadLine(), out distanceType parsedDistance) ? parsedDistance : distanceType.Air;
+                    DistanceType distance = Enum.TryParse(Console.ReadLine(), out DistanceType parsedDistance) ? parsedDistance : DistanceType.Air;
 
                     s_dal.Volunteer.Create(new Volunteer(id, name, phoneNumber, email, password, address, latitude, longitude, maximumDistance, duty, isActive, distance));
 

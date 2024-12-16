@@ -80,7 +80,7 @@ public enum job
 /// Enum representing types of distances relevant to the volunteer's tasks.
 /// Different types may require different transportation modes or time calculations.
 /// </summary>
-public enum distanceType
+public enum DistanceType
 {
     Air,   // Distance as the crow flies (straight line)
     walk,  // Walking distance
@@ -92,10 +92,15 @@ public enum distanceType
 /// Enum for the status of a call after it has been handled or closed.
 /// Each status describes the reason or outcome of the call.
 /// </summary>
-public enum CallStatus
+public enum CallClosureType
 {
     HandledOnTime,       // The call was handled within the allowed time
     SelfCancellation,    // The volunteer chose to cancel the call
     ManagerCancellation, // The manager canceled the call assignment
     ExpiredCancellation  // The call was canceled because the allowed time expired
 }
+
+
+
+
+
