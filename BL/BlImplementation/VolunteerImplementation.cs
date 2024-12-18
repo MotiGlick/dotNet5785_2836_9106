@@ -11,18 +11,40 @@ internal class VolunteerImplementation : IVolunteer
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
     public void Create(BO.Volunteer boVolunteer)
     {
-
-        DO.Volunteer doVolunteer = new(boVolunteer.Id,boVolunteer.Name, boVolunteer.PhoneNumber, boVolunteer.Email,,,,,, boVolunteer.IsActive);
-        try
+        if (VolunteerManager.formatCheckToVolunteer(boVolunteer)&& VolunteerManager.logicCheckToVolunteer(boVolunteer))
         {
-            _dal.Volunteer.Create(boVolunteer);
+            DO.Volunteer doVolunteer = new(boVolunteer.Id, boVolunteer.Name, boVolunteer.PhoneNumber, boVolunteer.Email, boVolunteer.Password, boVolunteer.Address, boVolunteer.Latitude, boVolunteer.Longitude, , boVolunteer.IsActive);
+            try
+            {
+                _dal.Volunteer.Create(doVolunteer);
+            }
+            catch (DO.DalAlreadyExistsException ex)
+            {
+                throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
+            }
         }
-        catch (DO.DalAlreadyExistsException ex)
-        {
-            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
-        }
+        
     }
     /*
+     * 
+     * public int Id { get; init; }
+    public string Name { get; init; }
+    public string PhoneNumber { get; set; }
+    public string Email { get; set; }
+    public string? Password { get; set; }
+    public string? Address { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
+    public Duty Duty { get; set; }
+    public Boolean IsActive { get; set; }
+    public double? MaximumDistance { get; set; }
+    public TypeOfDistance? Distance { get; set; }//set->(תוספת)
+    public int HandeledCalls { get; init; }////init???
+    public int CanceledCalls { get; init; }////init???
+    public int ExpiredCalls { get; init; }////init???
+
+    public BO.CallInProgress? CallInProgress { get; set; }//???->init
+
       int Id,
     string Name,
     string PhoneNumber,
