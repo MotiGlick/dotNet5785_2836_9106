@@ -11,7 +11,7 @@ public class CallInProgress
 
     public int CallId { get; init; }
 
-    public TypeOfCall CallType { get; init; }
+    public CallType CallType { get; init; }
 
     public string? Description { get; init; }
 

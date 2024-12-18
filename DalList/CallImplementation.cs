@@ -15,10 +15,9 @@ internal class CallImplementation : ICall
     /// <param name="item">The Call entity to be added.</param>
     public void Create(Call item)
     {
-        List<DO.Call> list = DataSource.Calls;
         int newId = Config.NextCallId;         /////////
         Call copy = item with { Id = newId };
-        list.Add(copy);
+        DataSource.Calls.Add(copy);
     }
 
     /// <summary>
@@ -27,14 +26,13 @@ internal class CallImplementation : ICall
     /// <param name="id">The ID of the Call entity to delete.</param>
     /// <exception cref="Exception">Thrown if the Call entity with the given ID does not exist.</exception>
     public void Delete(int id)
-    {
-        List<DO.Call> list = DataSource.Calls;
-        Call? foundAssignment = list.Find(Call => Call.Id == id);
+    {    
+        Call? foundAssignment = DataSource.Calls.Find(Call => Call.Id == id);
         if (foundAssignment == null)
         {
             throw new DalDoesNotExistException($"Call with ID={id} does not exist");
         }
-        list.Remove(foundAssignment);
+        DataSource.Calls.Remove(foundAssignment);
     }
 
     /// <summary>
@@ -42,8 +40,7 @@ internal class CallImplementation : ICall
     /// </summary>
     public void DeleteAll()
     {
-        List<DO.Call> list = DataSource.Calls;
-        list.Clear();
+        DataSource.Calls.Clear();
     }
 
     /// <summary>
@@ -53,8 +50,7 @@ internal class CallImplementation : ICall
     /// <returns>The Call entity with the specified ID, or null if not found.</returns>
     public Call? Read(int id)
     {
-        List<DO.Call> list = DataSource.Calls;
-        Call? foundAssignment = list.FirstOrDefault(Call => Call.Id == id);
+        Call? foundAssignment = DataSource.Calls.FirstOrDefault(Call => Call.Id == id);
         return foundAssignment;
     }
 
@@ -75,14 +71,13 @@ internal class CallImplementation : ICall
     /// <exception cref="Exception">Thrown if the Call entity with the specified ID does not exist.</exception>
     public void Update(Call item)
     {
-        List<DO.Call> list = DataSource.Calls;
-        Call? foundAssignment = list.Find(Call => Call.Id == item.Id);
+        Call? foundAssignment = DataSource.Calls.Find(Call => Call.Id == item.Id);
         if (foundAssignment == null)
         {
             throw new DalDoesNotExistException($"Call with ID={item.Id} does not exist");
         }
-        list.Remove(foundAssignment);
-        list.Add(item);
+        DataSource.Calls.Remove(foundAssignment);
+        DataSource.Calls.Add(item);
     }
 
     /// <summary>

@@ -18,7 +18,7 @@ public record Assignment
     int VolunteerId,
     DateTime AssignmentTime,
     DateTime? AssignmentTotalTime,
-    CallStatus? type
+    CallClosureType? type
 )
 {
     public Assignment():this(0,0,0,DateTime.Now,DateTime.Now, null) { }

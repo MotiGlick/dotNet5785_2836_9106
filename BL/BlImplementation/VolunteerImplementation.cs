@@ -68,7 +68,7 @@ internal class VolunteerImplementation : IVolunteer
         throw new NotImplementedException();
     }
 
-    public BO.Duty enterSystem(int id, int passward)
+    public BO.job enterSystem(int id, int passward)
     {
         throw new NotImplementedException();
     }

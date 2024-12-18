@@ -30,11 +30,11 @@ public record Volunteer
     double? maximumDistace,
     job duty,
     bool IsActive = true,
-    distanceType distance = distanceType.Air
+    DistanceType distance = DistanceType.Air
 )
 {
     
     // Default constructor
-    public Volunteer() : this(0, "", "", "", null, null, null, null, null, job.volunteer, true, distanceType.Air) { }
+    public Volunteer() : this(0, "", "", "", null, null, null, null, null, job.volunteer, true, DistanceType.Air) { }
     
 }
