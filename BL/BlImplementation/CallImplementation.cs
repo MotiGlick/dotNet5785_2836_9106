@@ -256,33 +256,32 @@ internal class CallImplementation : BlApi.ICall
 
     }
 
+    //#
     public IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? callType, OpenCallInListField? sortField)
     {
 
-        return GetCallList(CallInListField.status, StatusOfCall.Open) // קריאות פתוחות בלבד
-           .Where(call => AssignmentManager.GetCallAssignList(call.CallId)
-           .All(assign => assign.VolunteerId != volunteerId)) // סינון קריאות שלא מוקצות למתנדב
+        return GetCallList(BO.CallInListField.CallType, callType) 
+           .Where(call => (call.status==BO.StatusOfCall.Open|| call.status == BO.StatusOfCall.OpenAtRisk)) 
            .Select(call => new BO.OpenCallInList
            {
-               Id = (int)call.CallId!,
+               Id = call.CallId,
                CallType = call.CallType,
-               Address = _dal.Call.Read(call.CallId)!.CallAddress, // טיפול ב-null
-               Description = _dal.Call.Read(call.CallId)?.Description,
-               // OpeningTime = call.OpeningTime,
-               //MaxTime = call.MaxTime,
+               Description = _dal.Call.Read(call.CallId)!.Description,
+               Address = _dal.Call.Read(call.CallId)!.CallAddress, 
+               OpeningTime = call.OpeningTime,
+               MaxTime = _dal.Call.Read(call.CallId)!.TotalTime,
                DistanceFromVolunteer = Tools.CalculateDistance(_dal.Volunteer.Read(volunteerId)!.AddressVolunteer!, _dal.Call.Read(call.CallId)!.CallAddress)
+           })
+           .OrderBy < BO.OpenCallInList, object?> (call => sortField switch
+           {
+               OpenCallInListField.Id => call.Id,
+               OpenCallInListField.CallType => (int)call.CallType,
+               OpenCallInListField.Address => call.Address,
+               OpenCallInListField.OpeningTime => call.OpeningTime,
+               OpenCallInListField.MaxTime => call.MaxTime,
+               OpenCallInListField.DistanceFromVolunteer => call.DistanceFromVolunteer,
+               _ => call.Id
            });
-           //.Where(call => callType == null ? true : call.CallType == callType) 
-           //.OrderBy(call => sortField switch 
-           //{
-           //    OpenCallInListField.Id => call.Id,
-           //    OpenCallInListField.CallType => (int)call.CallType,
-           //    OpenCallInListField.Address => call.Address,
-           //    OpenCallInListField.OpeningTime => call.OpeningTime,
-           //    OpenCallInListField.MaxTime => call.MaxTime,
-           //    OpenCallInListField.DistanceFromVolunteer => call.DistanceFromVolunteer,
-           //    _ => call.Id 
-           //});
     }
 
 
@@ -313,8 +312,4 @@ internal class CallImplementation : BlApi.ICall
 
     }
 }
-
-
-
-
 
