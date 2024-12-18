@@ -73,7 +73,7 @@ public static class Initialization
             // Create and add the volunteer to the data access layer
             s_dal.Volunteer!.Create(new(id, VolunteerNames[i], VolunteerPhones[i], VolunteerEmails[i],
                 VolunteerPasswords[i], VolunteerAddresses[i], VolunteerLatitudes[i], VolunteerLongitudes[i],
-                distanec, job.volunteer, true, distanceType.Air));
+                distanec, job.volunteer, true, DistanceType.Air));
         }
 
         {
@@ -85,7 +85,7 @@ public static class Initialization
 
             // Add the manager to the data access layer
             s_dal.Volunteer!.Create(new(id, "Moti glick", "0527540619", "moti_glick@gmail.com",
-                    "00324366", " 21 HaVaad HaLeumi St, Jerusalem", 31.7853, 35.2137, 100, job.manager, true, distanceType.Air));
+                    "00324366", " 21 HaVaad HaLeumi St, Jerusalem", 31.7853, 35.2137, 100, job.manager, true, DistanceType.Air));
         }
     }
     /// <summary>
@@ -114,7 +114,7 @@ public static class Initialization
             DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
 
             // Create an assignment and add it to the data access layer
-            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime, AssignmentTotalTime, (CallStatus)randNum2));
+            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime, AssignmentTotalTime, (CallClosureType)randNum2));
         }
 
         // Loop for creating assignments for volunteers who handled fewer calls
@@ -132,7 +132,7 @@ public static class Initialization
             DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
 
             // Create an assignment and add it to the data access layer
-            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime, AssignmentTotalTime, (CallStatus)randNum2));
+            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime, AssignmentTotalTime, (CallClosureType)randNum2));
         }
     }
 

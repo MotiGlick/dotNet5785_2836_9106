@@ -1,5 +1,7 @@
 ﻿
 
+using BO;
+
 namespace BlApi;
 public interface ICall
 {
@@ -8,7 +10,7 @@ public interface ICall
 
     int[] callsAmount();
 
-    IEnumerable<BO.CallInList> GetCallList( Enum? filterField, object? filterValue, Enum? sortField ;;
+    IEnumerable<BO.CallInList> GetCallList(CallInListField? filterField, object? filterValue, CallInListField? sortField );
 
     BO.Call GetCallDetails(int callId);
 
@@ -18,9 +20,9 @@ public interface ICall
 
     void addCall(BO.Call call);
 
-    IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, Enum? callType , Enum? sortField );
+    IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, CallType? callType , ClosedCallInListField? sortField );
 
-    IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, Enum? callType , Enum? sortField );
+    IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? callType , OpenCallInListField? sortField );
 
     void EndHandling(int volunteerId, int assignmentId);
 

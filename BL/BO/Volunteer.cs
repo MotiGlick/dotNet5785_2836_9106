@@ -12,10 +12,10 @@ public class Volunteer
     public string? Address { get; set; }
     public double? Latitude { get; set; }
     public double? Longitude { get; set; }
-    public Duty Duty { get; set; }
+    public job Duty { get; set; }
     public Boolean IsActive { get; set; }
     public double? MaximumDistance { get; set; }
-    public TypeOfDistance? Distance { get; set; }//set->(תוספת)
+    public DistanceType? Distance { get; set; }//set->(תוספת)
     public int HandeledCalls { get; init; }////init???
     public int CanceledCalls { get; init; }////init???
     public int ExpiredCalls { get; init; }////init???

@@ -16,10 +16,9 @@ internal class AssignmentImplementation : IAssignment
     /// <param name="item">The Assignment entity to be added.</param>
     public void Create(Assignment item)
     {
-        List<DO.Assignment> list = DataSource.Assignments;
         int newId = Config.NextAssignmentId;
         Assignment copy = item with { Id = newId };
-        list.Add(copy);
+        DataSource.Assignments.Add(copy);
     }
 
     /// <summary>
@@ -28,14 +27,13 @@ internal class AssignmentImplementation : IAssignment
     /// <param name="id">The ID of the Assignment entity to delete.</param>
     /// <exception cref="Exception">Thrown if the Assignment entity with the given ID does not exist.</exception>
     public void Delete(int id)
-    {
-        List<DO.Assignment> list = DataSource.Assignments;
-        Assignment? foundAssignment = list.Find(Assignment => Assignment.Id == id);
+    {      
+        Assignment? foundAssignment = DataSource.Assignments.Find(Assignment => Assignment.Id == id);
         if (foundAssignment == null)
         {
             throw new DalDoesNotExistException($"Assignment with ID={id} does not exist");
         }
-        list.Remove(foundAssignment);
+        DataSource.Assignments.Remove(foundAssignment);
     }
 
     /// <summary>
@@ -43,8 +41,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     public void DeleteAll()
     {
-        List<DO.Assignment> list = DataSource.Assignments;
-        list.Clear();
+        DataSource.Assignments.Clear();
     }
 
     /// <summary>
@@ -54,13 +51,12 @@ internal class AssignmentImplementation : IAssignment
     /// <returns>The Assignment entity with the specified ID, or null if not found.</returns>
     public Assignment? Read(int id)
     {
-        List<DO.Assignment> list = DataSource.Assignments;
-        Assignment? foundAssignment = list.FirstOrDefault(Assignment => Assignment.Id == id);
+        Assignment? foundAssignment = DataSource.Assignments.FirstOrDefault(Assignment => Assignment.Id == id);
         return foundAssignment;
     }
 
     /// <summary>
-    /// Reads all Assignment entities from the data source.
+    /// Reads all Assignment entities from the data source after filter the list.
     /// </summary>
     /// <returns>A list of all Assignment entities.</returns>
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null) 
@@ -76,14 +72,14 @@ internal class AssignmentImplementation : IAssignment
     /// <exception cref="Exception">Thrown if the Assignment entity with the specified ID does not exist.</exception>
     public void Update(Assignment item)
     {
-        List<DO.Assignment> list = DataSource.Assignments;
-        Assignment? foundAssignment = list.Find(Assignment => Assignment.Id == item.Id);
+       
+        Assignment? foundAssignment = DataSource.Assignments.Find(Assignment => Assignment.Id == item.Id);
         if (foundAssignment == null)
         {
             throw new DalDoesNotExistException($"Assignment with ID={item.Id} does not exist");
         }
-        list.Remove(foundAssignment);
-        list.Add(item);
+        DataSource.Assignments.Remove(foundAssignment);
+        DataSource.Assignments.Add(item);
     }
 
     /// <summary>
