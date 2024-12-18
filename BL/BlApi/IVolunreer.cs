@@ -5,11 +5,11 @@ namespace BlApi;
 public interface IVolunteer
 {
     BO.Duty enterSystem(int id , int passward);
-    void Create(BO.Volunteer boVolunreer);
+    void Create(BO.Volunteer boVolunteer);
     BO.Volunteer? Read(int id);
 
     IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, Enum? sortField);
-    void Update(BO.Volunteer boVolunreer ,int id);
+    void Update(BO.Volunteer boVolunteer ,int id);
     void Delete(int id);
 
     //void RegisterStudentToCourse(int volunreerId, int callId);
