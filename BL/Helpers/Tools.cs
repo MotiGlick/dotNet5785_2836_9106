@@ -102,13 +102,13 @@ internal class Tools
         return degrees * (Math.PI / 180);
     }
 
-    public static void InputCorectness(string address)
-    {
-        if (string.IsNullOrWhiteSpace(address))
-        {
-            throw new ArgumentException("Address cannot be empty or null.");
-        }
-    }
+    //public static void InputCorectness(string address)
+    //{
+    //    if (string.IsNullOrWhiteSpace(address))
+    //    {
+    //        throw new ArgumentException("Address cannot be empty or null.");
+    //    }
+    //}
 
 
 
