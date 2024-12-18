@@ -27,13 +27,6 @@ internal class CallManager
 
 
 
-    //    מחושב על פי סוג סיום הטיפול בישות ההקצאה, זמן מקסימלי לסיום קריאה והזמן בשעון המערכת:
-    //פתוחה - לא בטיפול של אף מתנדב כרגע.גם אם היתה בטיפול בעבר והמתנדב התחרט עליה או שמנהל ביטל אותה
-    //בטיפול - בטיפול כרגע על ידי מתנדב
-    //סגורה - מתנדב סיים לטפל בה
-    //פג תוקף - לא נבחרה לטיפול או שנבחרה אך לא הסתיימה בזמן
-    //פתוחה בסיכון - קריאה פתוחה שמתקרבת לזמן הסיום הדרוש לה, במרחק של "טווח זמן סיכון" (משתנה תצורה המוגדר על ידי המנהל)
-
 
     public static BO.StatusOfCall GetCallStatus(int doCallId)//????
     {
@@ -71,28 +64,19 @@ internal class CallManager
 
 
 
-
-
-
-
-    public static TimeSpan? GetHandlingTime(int callId)////בעיה חישובית
+    public static TimeSpan? GetHandlingTime(int callId)
     {
-
-        if ((_dal.Call.Read(callId)!.TotalTime < _dal.Config.Clock))
-            return _dal.Call.Read(callId)!.TotalTime - _dal.Config.Clock;
-
-        return null;
+        return AssignmentManager.GetLastAssingment(callId)?.AssignmentTotalTime - AssignmentManager.GetLastAssingment(callId)?.AssignmentTime;
+       // return _dal.Call.Read(callId)?.TotalTime - _dal.Call.Read(callId)?.CallTime;
+   
     }
 
     public static TimeSpan? GetTimeLeft(int callId)
     {
-        if ((_dal.Call.Read(callId)!.TotalTime > _dal.Config.Clock))
-            return _dal.Call.Read(callId)!.TotalTime - _dal.Config.Clock;
+        if ((_dal.Call.Read(callId)!.TotalTime > ClockManager.Now))
+            return _dal.Call.Read(callId)!.TotalTime - ClockManager.Now;
 
         return null;
     }
-
-
-
 
 }

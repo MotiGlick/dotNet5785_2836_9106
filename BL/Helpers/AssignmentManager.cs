@@ -35,8 +35,7 @@ internal class AssignmentManager
     public static DateTime GetAssignmentStartTime(int boCallId, int VolunteerId)
     {
 
-        var assignList = GetCallAssignList(boCallId);
-        return assignList.FirstOrDefault(v => v.VolunteerId == VolunteerId).HndalStartTime;
+        return GetCallAssignList(boCallId).FirstOrDefault(v => v.VolunteerId == VolunteerId).HndalStartTime;
 
     }
 
