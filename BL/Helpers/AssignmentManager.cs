@@ -57,7 +57,7 @@ internal class AssignmentManager
 
     public static int? GetLastAssingmentId(int doCallId)//#
     {
-       
+
         if (GetLastAssingment(doCallId) == null)
             return null;
         else

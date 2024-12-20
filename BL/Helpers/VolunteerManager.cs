@@ -1,5 +1,8 @@
 ﻿
 
+using BO;
+using DalApi;
+using System.Net;
 using System.Text.RegularExpressions;
 
 namespace Helpers;
@@ -7,7 +10,7 @@ namespace Helpers;
 internal class VolunteerManager
 {
     //public static string ToStringProperty<T>(this T t);
-
+    private static readonly DalApi.IDal _dal = DalApi.Factory.Get;
     //public static string ToStringProperty<T>(this T t);
     /// <summary>
     /// A method that checks the correctness of all values ​​in terms of format
@@ -134,5 +137,141 @@ internal class VolunteerManager
 
         return true; // מספר הטלפון תקין
     }
+    /// <summary>
+    /// A function that receives an id and checks whether there is a call in the care of that volunteer. Otherwise - null.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>BO.CallInProgress or null</returns>
+    public static BO.CallInProgress? CreateCallInProgress(int id)
+    {
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+        IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
 
+        // מציאת ה-Assignment וה-Call התואמים באמצעות LINQ
+        var result = (
+            from assignment in assignments
+            let relatedCall = calls.FirstOrDefault(c => c.Id == assignment.CallId)
+            where relatedCall != null &&
+                  (CallManager.GetCallStatus(relatedCall.Id) == BO.StatusOfCall.Open ||
+                   CallManager.GetCallStatus(relatedCall.Id) == BO.StatusOfCall.OpenAtRisk)
+            select new BO.CallInProgress
+            {
+                Id = assignment.Id,
+                CallId = assignment.CallId,
+                CallType = (BO.CallType)relatedCall.type,
+                Description = relatedCall.Description,
+                Address = relatedCall.CallAddress,
+                OpeningTime = relatedCall.CallTime,
+                MaxTime = relatedCall.TotalTime,
+                HndalStartTime = assignment.AssignmentTime,
+                DistanceFromVolunteer = Tools.CalculateDistance(
+                    _dal.Volunteer.Read(assignment.Id).AddressVolunteer,
+                    relatedCall.CallAddress),
+                status = CallManager.GetCallStatus(relatedCall.Id)
+            }).FirstOrDefault(); // לוקח את התוצאה הראשונה או null אם אין תוצאה
+
+        return result;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static int GetNumOfcheck(int id)
+    {
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+        int sum = assignments.Count(a => a.type == DO.CallClosureType.HandledOnTime);
+        return sum;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static int GetNumOfSellfCancellation(int id)
+    {
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+        int sum = assignments.Count(a => a.type == DO.CallClosureType.SelfCancellation);
+        return sum;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static int GetNumOfExpired(int id)
+    {
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+        int sum = assignments.Count(a => a.type == DO.CallClosureType.ExpiredCancellation);
+        return sum;
+    }
+    /// <summary>
+    /// A function that receives an id if there is no call in its handling - will return a value of None, otherwise it will return the CallType
+    /// </summary>
+    /// <param name="volunteerId"></param>
+    /// <returns></returns>
+    public static BO.CallType GetCurrentCallId(int volunteerId)
+    {
+        // שליפת כל המשימות של המתנדב
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == volunteerId);
+
+        // מציאת הקריאה הנוכחית (פעילה)
+        var currentAssignment = assignments
+            .Where(a => CallManager.GetCallStatus(a.CallId) is BO.StatusOfCall.InProgress or BO.StatusOfCall.Open or BO.StatusOfCall.OpenAtRisk)
+            .OrderByDescending(a => a.AssignmentTime) // הכי עדכנית
+            .FirstOrDefault();
+
+        // אם אין משימה פעילה
+        if (currentAssignment == null)
+            return BO.CallType.None;
+
+        // מציאת הקריאה התואמת
+        var call = _dal.Call.Read(currentAssignment.CallId);
+        return call != null ? (BO.CallType)call.type : BO.CallType.None;
+    }
+    /// <summary>
+    /// Returns the CallId of the most recent open or active call for a given volunteer.
+    /// If there is no open or active call, returns null.
+    /// </summary>
+    /// <param name="volunteerId">The volunteer's unique identifier (Volunteer ID) for which to find the most recent open or active call.</param>
+    /// <returns>The CallId of the most recent open or active call, or null if none exists.</returns>
+    public static int? GetOpenCallId(int volunteerId)
+    {
+        // Retrieve all assignments for the volunteer
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == volunteerId);
+
+        // Find the most recent (active) call
+        var currentAssignment = assignments
+            .Where(a => CallManager.GetCallStatus(a.CallId) is BO.StatusOfCall.InProgress or BO.StatusOfCall.InProgressAtRisk)
+            .OrderByDescending(a => a.AssignmentTime) // Most recent assignment
+            .FirstOrDefault();
+
+        // If no active assignment is found
+        if (currentAssignment == null)
+            return null;  // Alternatively, you could return another value, such as "" or a message like "No open call found"
+
+        // If an active assignment exists, return its CallId
+        return currentAssignment.CallId;
+    }
+
+    public static bool CanDeleted(int id)
+    {
+
+        // שליפת כל המשימות של המתנדב
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+
+        // בדיקה אם המתנדב מטפל כרגע או טיפל בעבר בכל קריאה
+        bool hasActiveOrPastAssignments = assignments.Any(a =>
+            CallManager.GetCallStatus(a.CallId) is BO.StatusOfCall.InProgress or
+            BO.StatusOfCall.InProgressAtRisk or
+            BO.StatusOfCall.Open);
+
+        // אם יש משימה פעילה או קריאה שטופלה בעבר, לא ניתן למחוק
+        if (hasActiveOrPastAssignments)
+            return false;
+
+        // אם לא נמצאו משימות פעילה, אפשר למחוק
+        return true;
+    }
 }
+

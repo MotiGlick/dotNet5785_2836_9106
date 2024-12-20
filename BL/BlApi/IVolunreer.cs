@@ -1,14 +1,16 @@
 ﻿
 
+using System;
+
 namespace BlApi;
 
 public interface IVolunteer
 {
-    BO.job enterSystem(int id , int passward);
-    void Create(BO.Volunteer boVolunreer);
-    BO.Volunteer? Read(int id);
+    BO.job EnterToTheSystem(string name , string? passward);
+    void Create();
+    BO.Volunteer Read(int id);
 
-    IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, Enum? sortField);
+    IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField);
     void Update(BO.Volunteer boVolunteer ,int id);
     void Delete(int id);
 

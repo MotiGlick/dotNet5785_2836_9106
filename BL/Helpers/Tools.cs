@@ -1,12 +1,14 @@
 ﻿
 
-using System.Text.Json;
-using System.Text.RegularExpressions;
-
 namespace Helpers;
+using System.Text.Json;
+using System.Net;
+using System.Net.Http;
+using System;
 
-internal class Tools 
+internal class Tools
 {
+    //public static string ToStringProperty<T>(this T t);
 
 
 
@@ -52,7 +54,7 @@ internal class Tools
     public static bool AddressExists(string address)//#
     {
         double[]? coordinates = Tools.GetCoordinates(address);
-        return coordinates != null; 
+        return coordinates != null;
     }
 
     public static double GetLatitude(string address)//#

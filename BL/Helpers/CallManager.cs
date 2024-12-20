@@ -13,7 +13,6 @@ internal class CallManager
     private static readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
 
-        }
 
 
     public static bool LogicalCheck(ref BO.Call boCall)//#
@@ -29,19 +28,11 @@ internal class CallManager
 
 
 
-
-
-
-    public static TimeSpan? GetHandlingTime(int callId)////בעיה חישובית
-    {
-
     public static BO.StatusOfCall GetCallStatus(int doCallId)//????
     {
         DO.Call doCall = _dal.Call.Read(doCallId) ?? throw new Exception($"Call with ID={doCallId} does not exists");
         DO.Assignment? lastAssingment = AssignmentManager.GetLastAssingment(doCallId);
 
-        return null;
-    }
 
         //if there is no Assingment
         if (AssignmentManager.GetCallAssignList(doCallId) == null
@@ -67,7 +58,7 @@ internal class CallManager
                 return BO.StatusOfCall.InProgress;
         }
 
-         
+
 
     }
 
@@ -76,8 +67,8 @@ internal class CallManager
     public static TimeSpan? GetHandlingTime(int callId)
     {
         return AssignmentManager.GetLastAssingment(callId)?.AssignmentTotalTime - AssignmentManager.GetLastAssingment(callId)?.AssignmentTime;
-       // return _dal.Call.Read(callId)?.TotalTime - _dal.Call.Read(callId)?.CallTime;
-   
+        // return _dal.Call.Read(callId)?.TotalTime - _dal.Call.Read(callId)?.CallTime;
+
     }
 
     public static TimeSpan? GetTimeLeft(int callId)
@@ -88,5 +79,4 @@ internal class CallManager
         return null;
     }
 
-    }
 }
