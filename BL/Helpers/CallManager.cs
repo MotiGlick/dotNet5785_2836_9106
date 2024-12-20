@@ -58,7 +58,7 @@ internal class CallManager
                 return BO.StatusOfCall.InProgress;
         }
 
-         
+
 
     }
 
@@ -67,8 +67,8 @@ internal class CallManager
     public static TimeSpan? GetHandlingTime(int callId)
     {
         return AssignmentManager.GetLastAssingment(callId)?.AssignmentTotalTime - AssignmentManager.GetLastAssingment(callId)?.AssignmentTime;
-       // return _dal.Call.Read(callId)?.TotalTime - _dal.Call.Read(callId)?.CallTime;
-   
+        // return _dal.Call.Read(callId)?.TotalTime - _dal.Call.Read(callId)?.CallTime;
+
     }
 
     public static TimeSpan? GetTimeLeft(int callId)

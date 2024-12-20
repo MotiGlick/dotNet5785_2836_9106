@@ -1,7 +1,277 @@
 ﻿
 
+using BO;
+using DalApi;
+using System.Net;
+using System.Text.RegularExpressions;
+
 namespace Helpers;
 
 internal class VolunteerManager
 {
+    //public static string ToStringProperty<T>(this T t);
+    private static readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    //public static string ToStringProperty<T>(this T t);
+    /// <summary>
+    /// A method that checks the correctness of all values ​​in terms of format
+    /// </summary>
+    /// <param name="volunteer"></param>
+    /// <returns></returns>
+    public static bool formatCheckToVolunteer(BO.Volunteer volunteer)
+    {
+
+        // בדיקת ת.ז (האם מספרי)
+        if (!int.TryParse(volunteer.Id.ToString(), out int id) || id <= 0) return false;
+
+        // בדיקת שם מלא (אורך נדרש)
+        if (string.IsNullOrWhiteSpace(volunteer.Name) || volunteer.Name.Length < 2 || volunteer.Name.Length > 50)
+            return false;
+
+        // בדיקת טלפון סלולרי (אורך ומבנה תקין)
+        if (string.IsNullOrWhiteSpace(volunteer.PhoneNumber) ||
+            !Regex.IsMatch(volunteer.PhoneNumber, @"^0\d{9}$"))
+            return false;
+
+        // בדיקת קו רוחב (אם קיים)
+        if (volunteer.Latitude.HasValue && !double.TryParse(volunteer.Latitude.ToString(), out double latitude)) return false;
+
+
+        // בדיקת קו אורך (אם קיים)
+        if (volunteer.Longitude.HasValue && !double.TryParse(volunteer.Longitude.ToString(), out double longitude)) return false;
+
+
+        // בדיקת מרחק מרבי (אם קיים)
+        if (volunteer.MaximumDistance.HasValue && (!double.TryParse(volunteer.MaximumDistance.ToString(), out double maxDistance) || maxDistance <= 0)) return false;
+
+        if (string.IsNullOrWhiteSpace(volunteer.Email))
+            return false;
+
+        string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+        if (!Regex.IsMatch(volunteer.Email, emailPattern))
+            return false;
+
+        // בדיקת כתובת מלאה (אורך נדרש אם קיים)
+        if (!string.IsNullOrWhiteSpace(volunteer.Address) &&
+            (volunteer.Address.Length < 5 || volunteer.Address.Length > 100))
+            return false;
+
+
+        return true;
+    }
+    /// <summary>
+    /// A method that checks the logical correctness of all values.
+    /// </summary>
+    /// <param name="volunteer"></param>
+    /// <returns></returns>
+    public static bool logicCheckToVolunteer(BO.Volunteer volunteer)
+    {
+        if (!IsValidId(volunteer.Id))
+        {
+            return false; // תעודת זהות לא תקינה
+        }
+        if (!IsValidPhoneNumber(volunteer.PhoneNumber))
+        {
+            return false; // מספר טלפון לא תקין
+        }
+        if (Tools.AddressExists(volunteer.Address))
+        {
+            volunteer.Latitude = Tools.GetCoordinates(volunteer.Address)[0];
+            volunteer.Longitude = Tools.GetCoordinates(volunteer.Address)[1];
+        }
+        else
+            return false;
+
+        return true;
+    }
+    /// <summary>
+    /// A method that checks whether the ID card is valid
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    private static bool IsValidId(int id)
+    {
+        // הפיכת מספר תעודת הזהות למחרוזת כדי לטפל בספרות
+        string idStr = id.ToString();
+
+        // בדיקה אם האורך שגוי (למשל פחות מ-9 ספרות)
+        if (idStr.Length != 9)
+        {
+            return false;
+        }
+
+        int sum = 0;
+
+        for (int i = 0; i < idStr.Length; i++)
+        {
+            int num = int.Parse(idStr[i].ToString());
+
+            if (i % 2 == 1) // מכפלה של הספרה במקום האי-זוגי
+            {
+                num *= 2;
+                if (num > 9) num -= 9; // אם המספר גדול מ-9, מחסרים 9
+            }
+
+            sum += num;
+        }
+
+        return sum % 10 == 0; // בדיקת ספרת ביקורת
+    }
+    /// <summary>
+    /// Phone number validation function
+    /// </summary>
+    /// <param name="phoneNumber"></param>
+    /// <returns></returns>
+    private static bool IsValidPhoneNumber(string phoneNumber)
+    {
+        // בדיקה אם המספר ריק, אם הוא לא באורך 10, או אם אינו מתחיל ב-0
+        if (string.IsNullOrWhiteSpace(phoneNumber) || phoneNumber.Length != 10 || !phoneNumber.StartsWith("0"))
+        {
+            return false;
+        }
+
+        // בדיקה שכל התווים הם ספרות
+        if (!phoneNumber.All(char.IsDigit))
+        {
+            return false;
+        }
+
+        return true; // מספר הטלפון תקין
+    }
+    /// <summary>
+    /// A function that receives an id and checks whether there is a call in the care of that volunteer. Otherwise - null.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>BO.CallInProgress or null</returns>
+    public static BO.CallInProgress? CreateCallInProgress(int id)
+    {
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+        IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
+
+        // מציאת ה-Assignment וה-Call התואמים באמצעות LINQ
+        var result = (
+            from assignment in assignments
+            let relatedCall = calls.FirstOrDefault(c => c.Id == assignment.CallId)
+            where relatedCall != null &&
+                  (CallManager.GetCallStatus(relatedCall.Id) == BO.StatusOfCall.Open ||
+                   CallManager.GetCallStatus(relatedCall.Id) == BO.StatusOfCall.OpenAtRisk)
+            select new BO.CallInProgress
+            {
+                Id = assignment.Id,
+                CallId = assignment.CallId,
+                CallType = (BO.CallType)relatedCall.type,
+                Description = relatedCall.Description,
+                Address = relatedCall.CallAddress,
+                OpeningTime = relatedCall.CallTime,
+                MaxTime = relatedCall.TotalTime,
+                HndalStartTime = assignment.AssignmentTime,
+                DistanceFromVolunteer = Tools.CalculateDistance(
+                    _dal.Volunteer.Read(assignment.Id).AddressVolunteer,
+                    relatedCall.CallAddress),
+                status = CallManager.GetCallStatus(relatedCall.Id)
+            }).FirstOrDefault(); // לוקח את התוצאה הראשונה או null אם אין תוצאה
+
+        return result;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static int GetNumOfcheck(int id)
+    {
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+        int sum = assignments.Count(a => a.type == DO.CallClosureType.HandledOnTime);
+        return sum;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static int GetNumOfSellfCancellation(int id)
+    {
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+        int sum = assignments.Count(a => a.type == DO.CallClosureType.SelfCancellation);
+        return sum;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static int GetNumOfExpired(int id)
+    {
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+        int sum = assignments.Count(a => a.type == DO.CallClosureType.ExpiredCancellation);
+        return sum;
+    }
+    /// <summary>
+    /// A function that receives an id if there is no call in its handling - will return a value of None, otherwise it will return the CallType
+    /// </summary>
+    /// <param name="volunteerId"></param>
+    /// <returns></returns>
+    public static BO.CallType GetCurrentCallId(int volunteerId)
+    {
+        // שליפת כל המשימות של המתנדב
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == volunteerId);
+
+        // מציאת הקריאה הנוכחית (פעילה)
+        var currentAssignment = assignments
+            .Where(a => CallManager.GetCallStatus(a.CallId) is BO.StatusOfCall.InProgress or BO.StatusOfCall.Open or BO.StatusOfCall.OpenAtRisk)
+            .OrderByDescending(a => a.AssignmentTime) // הכי עדכנית
+            .FirstOrDefault();
+
+        // אם אין משימה פעילה
+        if (currentAssignment == null)
+            return BO.CallType.None;
+
+        // מציאת הקריאה התואמת
+        var call = _dal.Call.Read(currentAssignment.CallId);
+        return call != null ? (BO.CallType)call.type : BO.CallType.None;
+    }
+    /// <summary>
+    /// Returns the CallId of the most recent open or active call for a given volunteer.
+    /// If there is no open or active call, returns null.
+    /// </summary>
+    /// <param name="volunteerId">The volunteer's unique identifier (Volunteer ID) for which to find the most recent open or active call.</param>
+    /// <returns>The CallId of the most recent open or active call, or null if none exists.</returns>
+    public static int? GetOpenCallId(int volunteerId)
+    {
+        // Retrieve all assignments for the volunteer
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == volunteerId);
+
+        // Find the most recent (active) call
+        var currentAssignment = assignments
+            .Where(a => CallManager.GetCallStatus(a.CallId) is BO.StatusOfCall.InProgress or BO.StatusOfCall.InProgressAtRisk)
+            .OrderByDescending(a => a.AssignmentTime) // Most recent assignment
+            .FirstOrDefault();
+
+        // If no active assignment is found
+        if (currentAssignment == null)
+            return null;  // Alternatively, you could return another value, such as "" or a message like "No open call found"
+
+        // If an active assignment exists, return its CallId
+        return currentAssignment.CallId;
+    }
+
+    public static bool CanDeleted(int id)
+    {
+
+        // שליפת כל המשימות של המתנדב
+        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+
+        // בדיקה אם המתנדב מטפל כרגע או טיפל בעבר בכל קריאה
+        bool hasActiveOrPastAssignments = assignments.Any(a =>
+            CallManager.GetCallStatus(a.CallId) is BO.StatusOfCall.InProgress or
+            BO.StatusOfCall.InProgressAtRisk or
+            BO.StatusOfCall.Open);
+
+        // אם יש משימה פעילה או קריאה שטופלה בעבר, לא ניתן למחוק
+        if (hasActiveOrPastAssignments)
+            return false;
+
+        // אם לא נמצאו משימות פעילה, אפשר למחוק
+        return true;
+    }
 }
+

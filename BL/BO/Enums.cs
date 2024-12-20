@@ -64,6 +64,18 @@ public enum CallInListField
     AmountOfAssigns
 }
 
+public enum VolunteerInListField
+{
+    Id,
+    Name,
+    CallType,
+    IsActive,
+    TotalHandledCalls,
+    TotalCanceledCalls,
+    TotalExpiredCalls,
+    CurrentCallId,
+    CurrentCallType
+}
 
 
 
@@ -76,7 +88,6 @@ public enum OpenCallInListField
     OpeningTime,
     MaxTime,
     DistanceFromVolunteer,
-
 }
 
 public enum ClosedCallInListField

@@ -52,7 +52,7 @@ internal static class Tools
     public static bool AddressExists(string address)//#
     {
         double[]? coordinates = Tools.GetCoordinates(address);
-        return coordinates != null; 
+        return coordinates != null;
     }
 
     public static double GetLatitude(string address)//#

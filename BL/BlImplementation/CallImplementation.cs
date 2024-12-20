@@ -260,19 +260,19 @@ internal class CallImplementation : BlApi.ICall
     public IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? callType, OpenCallInListField? sortField)
     {
 
-        return GetCallList(BO.CallInListField.CallType, callType) 
-           .Where(call => (call.status==BO.StatusOfCall.Open|| call.status == BO.StatusOfCall.OpenAtRisk)) 
+        return GetCallList(BO.CallInListField.CallType, callType)
+           .Where(call => (call.status == BO.StatusOfCall.Open || call.status == BO.StatusOfCall.OpenAtRisk))
            .Select(call => new BO.OpenCallInList
            {
                Id = call.CallId,
                CallType = call.CallType,
                Description = _dal.Call.Read(call.CallId)!.Description,
-               Address = _dal.Call.Read(call.CallId)!.CallAddress, 
+               Address = _dal.Call.Read(call.CallId)!.CallAddress,
                OpeningTime = call.OpeningTime,
                MaxTime = _dal.Call.Read(call.CallId)!.TotalTime,
                DistanceFromVolunteer = Tools.CalculateDistance(_dal.Volunteer.Read(volunteerId)!.AddressVolunteer!, _dal.Call.Read(call.CallId)!.CallAddress)
            })
-           .OrderBy < BO.OpenCallInList, object?> (call => sortField switch
+           .OrderBy<BO.OpenCallInList, object?>(call => sortField switch
            {
                OpenCallInListField.Id => call.Id,
                OpenCallInListField.CallType => (int)call.CallType,
