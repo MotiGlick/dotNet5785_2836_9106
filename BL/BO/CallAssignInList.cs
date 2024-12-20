@@ -12,6 +12,6 @@ public class CallAssignInList
 
     public DateTime? HndalEndTime { get; init; }
 
-    public CallClosureType? ClosureType  { get; init; }    
+    public CallClosureType? ClosureType { get; init; }
 
 }
