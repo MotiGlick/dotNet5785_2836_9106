@@ -10,7 +10,7 @@ public interface ICall
 
     int[] CallsAmount();
 
-    IEnumerable<BO.CallInList> GetCallList(CallInListField? filterField, object? filterValue, CallInListField? sortField );
+    IEnumerable<BO.CallInList> GetCallList(CallInListField? filterField, object? filterValue, CallInListField? sortField);
 
     BO.Call GetCallDetails(int callId);
 
@@ -20,9 +20,9 @@ public interface ICall
 
     void AddCall(BO.Call call);
 
-    IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, CallType? callType , ClosedCallInListField? sortField );
+    IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, CallType? callType, ClosedCallInListField? sortField);
 
-    IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? callType , OpenCallInListField? sortField );
+    IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? callType, OpenCallInListField? sortField);
 
     void EndHandling(int volunteerId, int assignmentId);
 
