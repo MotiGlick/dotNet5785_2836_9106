@@ -5,14 +5,12 @@ using System.Text.Json;
 using System.Net;
 using System.Net.Http;
 using System;
+using System.Reflection;
+using System.Collections;
 
-internal class Tools
+internal static class Tools
 {
-    //public static string ToStringProperty<T>(this T t);
-
-
-
-
+   
     public static double[]? GetCoordinates(string address)
     {
         string baseUrl = "https://us1.locationiq.com/v1/search.php";
@@ -70,6 +68,7 @@ internal class Tools
     }
 
 
+    
     public static double CalculateDistance(string address1, string address2)
     {
         // שליפת הקואורדינטות של שתי הכתובות
@@ -113,7 +112,26 @@ internal class Tools
 
 
 
-
+    public static string ToStringProperty<T>(this T t)//#
+    {
+        string str = "";
+        foreach (PropertyInfo item in typeof(T).GetProperties())
+        {
+            var value = item.GetValue(t, null);
+            str += item.Name + ": ";
+            if (value is not string && value is IEnumerable)
+            {
+                str += "\n";
+                foreach (var it in (IEnumerable<object>)value)
+                {
+                    str += it.ToString() + '\n';
+                }
+            }
+            else
+                str += value?.ToString() + '\n';
+        }
+        return str;
+    }
 
 
 }

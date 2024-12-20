@@ -1,5 +1,7 @@
 ﻿
 
+using Helpers;
+
 namespace BO;
 
 public class OpenCallInList
@@ -16,5 +18,6 @@ public class OpenCallInList
 
     public double DistanceFromVolunteer { get; init; }
 
+    public override string ToString() => this.ToStringProperty();
 
 }

@@ -23,7 +23,7 @@ internal class CallImplementation : BlApi.ICall
         try
         {
 
-            if (!CallManager.LogicalCheck(ref boCall))
+            if (!CallManager.LogicalCheck(boCall))
                 throw new Exception("Call is not valid");
 
             _dal.Call.Create(
@@ -197,13 +197,13 @@ internal class CallImplementation : BlApi.ICall
             .Distinct()
             .Where(call => filterField switch
             {
-                CallInListField.Id => call.Id == (int?)filterValue,
-                CallInListField.CallId => call.CallId == (int?)filterValue,
+                //CallInListField.Id => call.Id == (int?)filterValue,
+               // CallInListField.CallId => call.CallId == (int?)filterValue,
                 CallInListField.CallType => call.CallType == (BO.CallType)filterValue!,
-                CallInListField.OpeningTime => call.OpeningTime == (DateTime?)filterValue,
-                CallInListField.TimeLeft => call.TimeLeft == (TimeSpan?)filterValue,
+                //CallInListField.OpeningTime => call.OpeningTime == (DateTime?)filterValue,
+               // CallInListField.TimeLeft => call.TimeLeft == (TimeSpan?)filterValue,
                 CallInListField.LastVolunteerName => call.LastVolunteerName == (string?)filterValue,
-                CallInListField.HandlingTime => call.HandlingTime == (TimeSpan?)filterValue,
+                //CallInListField.HandlingTime => call.HandlingTime == (TimeSpan?)filterValue,
                 CallInListField.status => call.status == (BO.StatusOfCall)filterValue!,
                 CallInListField.AmountOfAssigns => call.AmountOfAssigns == (int?)filterValue,
                 _ => true
@@ -214,10 +214,10 @@ internal class CallImplementation : BlApi.ICall
                 CallInListField.CallId => call.CallId,
                 CallInListField.CallType => (int)call.CallType,
                 CallInListField.OpeningTime => call.OpeningTime,
+                CallInListField.TimeLeft => call.TimeLeft,
                 CallInListField.LastVolunteerName => call.LastVolunteerName,
                 CallInListField.HandlingTime => call.HandlingTime,
                 CallInListField.status => (int)call.status,
-
                 _ => call.Id
             });
     }
@@ -289,7 +289,7 @@ internal class CallImplementation : BlApi.ICall
     {
         try
         {
-            if (CallManager.LogicalCheck(ref boCall))
+            if (CallManager.LogicalCheck( boCall))
                 throw new Exception("Call is not valid");
 
             _dal.Call.Update(

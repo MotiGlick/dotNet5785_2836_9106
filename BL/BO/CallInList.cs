@@ -1,6 +1,9 @@
 ﻿
 
+using DO;
+using Helpers;
 using Microsoft.VisualBasic.FileIO;
+using System.Net;
 
 namespace BO;
 
@@ -29,5 +32,5 @@ public class CallInList
 
     public int AmountOfAssigns { get; init; }
 
-
+    public override string ToString() => this.ToStringProperty();
 }

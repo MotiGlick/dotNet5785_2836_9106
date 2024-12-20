@@ -75,7 +75,8 @@ public enum OpenCallInListField
     Address,
     OpeningTime,
     MaxTime,
-    DistanceFromVolunteer,   
+    DistanceFromVolunteer,
+
 }
 
 public enum ClosedCallInListField
@@ -89,6 +90,52 @@ public enum ClosedCallInListField
     ClosureType
 }
 
+
+public enum MainMenuOptions
+{
+    Exit,                // Exits the main menu
+    VolunteerMenu,       // Displays the submenu for volunteer actions
+    CallMenu,            // Displays the submenu for call actions
+    AdminMenu,       // Displays the submenu for   Admin actions
+
+}
+
+public enum  VolunteerMenu
+{
+    Exit,
+    enterSystem
+
+
+}
+
+public enum CallMenuOptions
+{
+    Exit,                // Exits the  menu
+    ChoosingCallForHandling,
+    EndHandling,
+    CancelHandling,
+    UpdateCallDetails,
+    AddCall,
+    DeleteCall,
+    GetCallList,
+    GetOpenCallsForVolunteer,
+    GetClosedCallsByVolunteer,
+    GetCallDetails,
+    CallsAmount,
+
+}
+
+public enum AdminMenu
+{
+    Exit,                // Exits the  menu
+    AdvanceClock,
+    GetMaxRange,
+    GetClock,
+    InitializeDB,
+    ResetDB,
+    SetMaxRange,
+
+}
 
 
 
@@ -106,7 +153,7 @@ public enum StatusOfCall
 
 
 public enum TimeUnit
-{ 
+{
     Minute,
     Hour,
     Day,

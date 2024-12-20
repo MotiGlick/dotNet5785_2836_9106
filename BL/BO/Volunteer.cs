@@ -1,5 +1,7 @@
 ﻿
 
+using Helpers;
+
 namespace BO;
 
 public class Volunteer
@@ -23,10 +25,7 @@ public class Volunteer
     public BO.CallInProgress? CallInProgress { get; set; }//???->init
 
 
-
-
-
-   // public override string ToString() => this.ToStringProperty();
+   public override string ToString() => this.ToStringProperty();
 
 
 }
