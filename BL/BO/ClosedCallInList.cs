@@ -1,5 +1,7 @@
 ﻿
 
+using Helpers;
+
 namespace BO;
 
 public class ClosedCallInList
@@ -12,5 +14,7 @@ public class ClosedCallInList
     public DateTime HndalStartTime { get; init; }
     public DateTime? EndTime { get; init; }
     public CallClosureType ClosureType { get; init; }
+
+    public override string ToString() => this.ToStringProperty();
 
 }

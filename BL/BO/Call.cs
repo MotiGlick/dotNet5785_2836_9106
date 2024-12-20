@@ -1,4 +1,6 @@
 ﻿
+using Helpers;
+
 namespace BO;
 
 public class Call
@@ -25,7 +27,7 @@ public class Call
     public List<BO.CallAssignInList>? CallAssignsList { get; set; }//???->init
 
 
-
+    public override string ToString() => this.ToStringProperty();
 
 
 }

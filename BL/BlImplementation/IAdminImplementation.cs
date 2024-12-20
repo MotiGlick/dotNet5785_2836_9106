@@ -55,12 +55,13 @@ internal class IAdminImplementation : IAdmin
     {
         _dal.Config.Reset();
         ClockManager.UpdateClock(ClockManager.Now);
-        
+       
     }
 
     public void SetMaxRange(TimeSpan maxRange)
     {
         _dal.Config.RiskRange=maxRange;
+
     }
 }
 

@@ -15,7 +15,7 @@ internal class CallManager
 
 
 
-    public static bool LogicalCheck(ref BO.Call boCall)//#
+    public static bool LogicalCheck(BO.Call boCall)//#
     {
 
         if (!Tools.AddressExists(boCall.Address) || (boCall.MaxTime != null && (boCall.MaxTime <= boCall.OpeningTime)))

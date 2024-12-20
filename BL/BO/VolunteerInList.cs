@@ -1,4 +1,6 @@
 ﻿
+using Helpers;
+
 namespace BO;
 
 public class VolunteerInList
@@ -23,6 +25,8 @@ public class VolunteerInList
 
 
     public CallType CurrentCallType { get; init; }
+
+    public override string ToString() => this.ToStringProperty();
 }
 
 

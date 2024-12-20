@@ -1,5 +1,6 @@
 ﻿
 using DO;
+using Helpers;
 using System.Data;
 
 namespace BO;
@@ -26,6 +27,9 @@ public class CallInProgress
     public double DistanceFromVolunteer { get; init; }
 
     public StatusOfCall status { get; set; }
+
+    public override string ToString() => this.ToStringProperty();
+
 
 
 }
