@@ -3,7 +3,7 @@
 namespace BlImplementation;
 using BlApi;
 using BO;
-using DalApi;
+//using DalApi;
 using DO;
 using Helpers;
 using System;
@@ -50,7 +50,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
         }
         catch (DO.DalAlreadyExistsException ex)
         {
-            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
+           // throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
         }
     }
 

@@ -3,361 +3,361 @@
   <Assignment>
     <Id>10</Id>
     <CallId>0</CallId>
-    <VolunteerId>32414458</VolunteerId>
-    <AssignmentTime>2025-01-09T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-12T22:37:59</AssignmentTotalTime>
-    <Type>ManagerCancellation</Type>
+    <VolunteerId>34248768</VolunteerId>
+    <AssignmentTime>2024-12-28T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-28T21:08:57</AssignmentTotalTime>
+    <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>11</Id>
     <CallId>1</CallId>
-    <VolunteerId>36521185</VolunteerId>
-    <AssignmentTime>2024-12-24T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-02T22:37:59</AssignmentTotalTime>
+    <VolunteerId>24494201</VolunteerId>
+    <AssignmentTime>2025-01-14T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-15T21:08:57</AssignmentTotalTime>
     <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>12</Id>
     <CallId>2</CallId>
-    <VolunteerId>22255230</VolunteerId>
-    <AssignmentTime>2024-12-21T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-25T22:37:59</AssignmentTotalTime>
-    <Type>SelfCancellation</Type>
+    <VolunteerId>25614463</VolunteerId>
+    <AssignmentTime>2024-12-27T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-03T21:08:57</AssignmentTotalTime>
+    <Type>ExpiredCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>13</Id>
     <CallId>3</CallId>
-    <VolunteerId>34067894</VolunteerId>
-    <AssignmentTime>2024-12-27T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-28T22:37:59</AssignmentTotalTime>
-    <Type>HandledOnTime</Type>
+    <VolunteerId>25614463</VolunteerId>
+    <AssignmentTime>2025-01-06T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-10T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>14</Id>
     <CallId>4</CallId>
-    <VolunteerId>34067894</VolunteerId>
-    <AssignmentTime>2025-01-10T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-10T22:37:59</AssignmentTotalTime>
-    <Type>ManagerCancellation</Type>
+    <VolunteerId>25614463</VolunteerId>
+    <AssignmentTime>2024-12-20T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-21T21:08:57</AssignmentTotalTime>
+    <Type>HandledOnTime</Type>
   </Assignment>
   <Assignment>
     <Id>15</Id>
     <CallId>5</CallId>
-    <VolunteerId>36521185</VolunteerId>
-    <AssignmentTime>2025-01-07T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-09T22:37:59</AssignmentTotalTime>
+    <VolunteerId>24494201</VolunteerId>
+    <AssignmentTime>2024-12-17T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-02T21:08:57</AssignmentTotalTime>
     <Type>HandledOnTime</Type>
   </Assignment>
   <Assignment>
     <Id>16</Id>
     <CallId>6</CallId>
-    <VolunteerId>32414458</VolunteerId>
-    <AssignmentTime>2025-01-09T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-10T22:37:59</AssignmentTotalTime>
-    <Type>ExpiredCancellation</Type>
+    <VolunteerId>24494201</VolunteerId>
+    <AssignmentTime>2024-12-23T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-28T21:08:57</AssignmentTotalTime>
+    <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>17</Id>
     <CallId>7</CallId>
-    <VolunteerId>27196031</VolunteerId>
-    <AssignmentTime>2024-12-18T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-02T22:37:59</AssignmentTotalTime>
-    <Type>HandledOnTime</Type>
+    <VolunteerId>24494201</VolunteerId>
+    <AssignmentTime>2024-12-16T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-16T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>18</Id>
     <CallId>8</CallId>
-    <VolunteerId>36521185</VolunteerId>
-    <AssignmentTime>2024-12-27T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-31T22:37:59</AssignmentTotalTime>
+    <VolunteerId>25614463</VolunteerId>
+    <AssignmentTime>2024-12-28T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-09T21:08:57</AssignmentTotalTime>
     <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>19</Id>
     <CallId>9</CallId>
-    <VolunteerId>22255230</VolunteerId>
-    <AssignmentTime>2025-01-06T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-09T22:37:59</AssignmentTotalTime>
-    <Type>SelfCancellation</Type>
+    <VolunteerId>37794863</VolunteerId>
+    <AssignmentTime>2024-12-31T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-05T21:08:57</AssignmentTotalTime>
+    <Type>ExpiredCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>20</Id>
     <CallId>10</CallId>
-    <VolunteerId>27196031</VolunteerId>
-    <AssignmentTime>2024-12-21T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-11T22:37:59</AssignmentTotalTime>
-    <Type>HandledOnTime</Type>
+    <VolunteerId>34174829</VolunteerId>
+    <AssignmentTime>2025-01-04T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-08T21:08:57</AssignmentTotalTime>
+    <Type>ExpiredCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>21</Id>
     <CallId>11</CallId>
-    <VolunteerId>32414458</VolunteerId>
-    <AssignmentTime>2025-01-01T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-01T22:37:59</AssignmentTotalTime>
-    <Type>ExpiredCancellation</Type>
+    <VolunteerId>37794863</VolunteerId>
+    <AssignmentTime>2025-01-01T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-11T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>22</Id>
     <CallId>12</CallId>
-    <VolunteerId>22255230</VolunteerId>
-    <AssignmentTime>2024-12-11T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-25T22:37:59</AssignmentTotalTime>
-    <Type>SelfCancellation</Type>
+    <VolunteerId>37794863</VolunteerId>
+    <AssignmentTime>2024-12-17T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-06T21:08:57</AssignmentTotalTime>
+    <Type>ExpiredCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>23</Id>
     <CallId>13</CallId>
-    <VolunteerId>27196031</VolunteerId>
-    <AssignmentTime>2025-01-06T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-09T22:37:59</AssignmentTotalTime>
-    <Type>SelfCancellation</Type>
+    <VolunteerId>34248768</VolunteerId>
+    <AssignmentTime>2024-12-14T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-23T21:08:57</AssignmentTotalTime>
+    <Type>HandledOnTime</Type>
   </Assignment>
   <Assignment>
     <Id>24</Id>
     <CallId>14</CallId>
-    <VolunteerId>34067894</VolunteerId>
-    <AssignmentTime>2024-12-21T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-30T22:37:59</AssignmentTotalTime>
+    <VolunteerId>25614463</VolunteerId>
+    <AssignmentTime>2024-12-15T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-21T21:08:57</AssignmentTotalTime>
     <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>25</Id>
     <CallId>15</CallId>
-    <VolunteerId>27196031</VolunteerId>
-    <AssignmentTime>2024-12-15T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-17T22:37:59</AssignmentTotalTime>
+    <VolunteerId>34248768</VolunteerId>
+    <AssignmentTime>2024-12-27T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-11T21:08:57</AssignmentTotalTime>
     <Type>ExpiredCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>26</Id>
     <CallId>16</CallId>
-    <VolunteerId>34067894</VolunteerId>
-    <AssignmentTime>2024-12-10T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-12T22:37:59</AssignmentTotalTime>
-    <Type>HandledOnTime</Type>
+    <VolunteerId>25614463</VolunteerId>
+    <AssignmentTime>2024-12-17T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-01T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>27</Id>
     <CallId>17</CallId>
-    <VolunteerId>22255230</VolunteerId>
-    <AssignmentTime>2024-12-28T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-28T22:37:59</AssignmentTotalTime>
-    <Type>SelfCancellation</Type>
+    <VolunteerId>25614463</VolunteerId>
+    <AssignmentTime>2024-12-25T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-25T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>28</Id>
     <CallId>18</CallId>
-    <VolunteerId>22255230</VolunteerId>
-    <AssignmentTime>2024-12-16T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-23T22:37:59</AssignmentTotalTime>
-    <Type>HandledOnTime</Type>
+    <VolunteerId>37794863</VolunteerId>
+    <AssignmentTime>2024-12-24T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-07T21:08:57</AssignmentTotalTime>
+    <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>29</Id>
     <CallId>19</CallId>
-    <VolunteerId>22255230</VolunteerId>
-    <AssignmentTime>2024-12-26T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-31T22:37:59</AssignmentTotalTime>
-    <Type>HandledOnTime</Type>
+    <VolunteerId>24494201</VolunteerId>
+    <AssignmentTime>2024-12-15T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-22T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>30</Id>
     <CallId>20</CallId>
-    <VolunteerId>37682821</VolunteerId>
-    <AssignmentTime>2024-12-27T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-06T22:37:59</AssignmentTotalTime>
-    <Type>HandledOnTime</Type>
+    <VolunteerId>22429668</VolunteerId>
+    <AssignmentTime>2024-12-18T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-28T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>31</Id>
     <CallId>21</CallId>
-    <VolunteerId>28196606</VolunteerId>
-    <AssignmentTime>2025-01-11T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-12T22:37:59</AssignmentTotalTime>
-    <Type>SelfCancellation</Type>
+    <VolunteerId>32599124</VolunteerId>
+    <AssignmentTime>2024-12-30T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-06T21:08:57</AssignmentTotalTime>
+    <Type>HandledOnTime</Type>
   </Assignment>
   <Assignment>
     <Id>32</Id>
     <CallId>22</CallId>
-    <VolunteerId>37682821</VolunteerId>
-    <AssignmentTime>2025-01-11T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-12T22:37:59</AssignmentTotalTime>
+    <VolunteerId>37169283</VolunteerId>
+    <AssignmentTime>2024-12-28T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-11T21:08:57</AssignmentTotalTime>
     <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>33</Id>
     <CallId>23</CallId>
-    <VolunteerId>27406492</VolunteerId>
-    <AssignmentTime>2024-12-30T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-01T22:37:59</AssignmentTotalTime>
-    <Type>SelfCancellation</Type>
+    <VolunteerId>37169283</VolunteerId>
+    <AssignmentTime>2024-12-10T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-09T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>34</Id>
     <CallId>24</CallId>
-    <VolunteerId>28196606</VolunteerId>
-    <AssignmentTime>2024-12-28T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-08T22:37:59</AssignmentTotalTime>
-    <Type>ExpiredCancellation</Type>
+    <VolunteerId>37169283</VolunteerId>
+    <AssignmentTime>2024-12-20T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-24T21:08:57</AssignmentTotalTime>
+    <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>35</Id>
     <CallId>25</CallId>
-    <VolunteerId>27406492</VolunteerId>
-    <AssignmentTime>2024-12-26T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-31T22:37:59</AssignmentTotalTime>
-    <Type>ManagerCancellation</Type>
+    <VolunteerId>39559061</VolunteerId>
+    <AssignmentTime>2024-12-28T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-31T21:08:57</AssignmentTotalTime>
+    <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>36</Id>
     <CallId>26</CallId>
-    <VolunteerId>27406492</VolunteerId>
-    <AssignmentTime>2024-12-08T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-19T22:37:59</AssignmentTotalTime>
-    <Type>ManagerCancellation</Type>
+    <VolunteerId>22429668</VolunteerId>
+    <AssignmentTime>2024-12-18T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-20T21:08:57</AssignmentTotalTime>
+    <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>37</Id>
     <CallId>27</CallId>
-    <VolunteerId>37682821</VolunteerId>
-    <AssignmentTime>2025-01-13T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-13T22:37:59</AssignmentTotalTime>
-    <Type>SelfCancellation</Type>
+    <VolunteerId>36972592</VolunteerId>
+    <AssignmentTime>2025-01-06T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-14T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>38</Id>
     <CallId>28</CallId>
-    <VolunteerId>33765393</VolunteerId>
-    <AssignmentTime>2024-12-30T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-14T22:37:59</AssignmentTotalTime>
-    <Type>ExpiredCancellation</Type>
+    <VolunteerId>39559061</VolunteerId>
+    <AssignmentTime>2024-12-08T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-15T21:08:57</AssignmentTotalTime>
+    <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>39</Id>
     <CallId>29</CallId>
-    <VolunteerId>35114457</VolunteerId>
-    <AssignmentTime>2025-01-04T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-09T22:37:59</AssignmentTotalTime>
-    <Type>SelfCancellation</Type>
+    <VolunteerId>35749509</VolunteerId>
+    <AssignmentTime>2024-12-13T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-18T21:08:57</AssignmentTotalTime>
+    <Type>HandledOnTime</Type>
   </Assignment>
   <Assignment>
     <Id>40</Id>
     <CallId>30</CallId>
-    <VolunteerId>37682821</VolunteerId>
-    <AssignmentTime>2025-01-15T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-15T22:37:59</AssignmentTotalTime>
+    <VolunteerId>39046063</VolunteerId>
+    <AssignmentTime>2024-12-11T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-25T21:08:57</AssignmentTotalTime>
     <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>41</Id>
     <CallId>31</CallId>
-    <VolunteerId>33765393</VolunteerId>
-    <AssignmentTime>2024-12-20T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-30T22:37:59</AssignmentTotalTime>
-    <Type>ManagerCancellation</Type>
+    <VolunteerId>37169283</VolunteerId>
+    <AssignmentTime>2025-01-06T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-12T21:08:57</AssignmentTotalTime>
+    <Type>HandledOnTime</Type>
   </Assignment>
   <Assignment>
     <Id>42</Id>
     <CallId>32</CallId>
-    <VolunteerId>35114457</VolunteerId>
-    <AssignmentTime>2025-01-01T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-06T22:37:59</AssignmentTotalTime>
-    <Type>ManagerCancellation</Type>
+    <VolunteerId>39559061</VolunteerId>
+    <AssignmentTime>2024-12-19T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-28T21:08:57</AssignmentTotalTime>
+    <Type>HandledOnTime</Type>
   </Assignment>
   <Assignment>
     <Id>43</Id>
     <CallId>33</CallId>
-    <VolunteerId>38788292</VolunteerId>
-    <AssignmentTime>2024-12-21T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-01T22:37:59</AssignmentTotalTime>
-    <Type>HandledOnTime</Type>
+    <VolunteerId>37169283</VolunteerId>
+    <AssignmentTime>2025-01-09T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-09T21:08:57</AssignmentTotalTime>
+    <Type>ExpiredCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>44</Id>
     <CallId>34</CallId>
-    <VolunteerId>27406492</VolunteerId>
-    <AssignmentTime>2024-12-26T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-04T22:37:59</AssignmentTotalTime>
+    <VolunteerId>32599124</VolunteerId>
+    <AssignmentTime>2025-01-05T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-05T21:08:57</AssignmentTotalTime>
     <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>45</Id>
     <CallId>35</CallId>
-    <VolunteerId>38788292</VolunteerId>
-    <AssignmentTime>2025-01-07T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-11T22:37:59</AssignmentTotalTime>
-    <Type>ExpiredCancellation</Type>
+    <VolunteerId>22429668</VolunteerId>
+    <AssignmentTime>2024-12-10T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-15T21:08:57</AssignmentTotalTime>
+    <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>46</Id>
     <CallId>36</CallId>
-    <VolunteerId>33765393</VolunteerId>
-    <AssignmentTime>2024-12-15T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-15T22:37:59</AssignmentTotalTime>
-    <Type>HandledOnTime</Type>
+    <VolunteerId>35749509</VolunteerId>
+    <AssignmentTime>2024-12-18T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-18T21:08:57</AssignmentTotalTime>
+    <Type>ExpiredCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>47</Id>
     <CallId>37</CallId>
-    <VolunteerId>27406492</VolunteerId>
-    <AssignmentTime>2024-12-30T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-07T22:37:59</AssignmentTotalTime>
-    <Type>HandledOnTime</Type>
+    <VolunteerId>35749509</VolunteerId>
+    <AssignmentTime>2024-12-13T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-22T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>48</Id>
     <CallId>38</CallId>
-    <VolunteerId>35114457</VolunteerId>
-    <AssignmentTime>2024-12-22T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-08T22:37:59</AssignmentTotalTime>
-    <Type>ManagerCancellation</Type>
+    <VolunteerId>39046063</VolunteerId>
+    <AssignmentTime>2024-12-31T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-10T21:08:57</AssignmentTotalTime>
+    <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>49</Id>
     <CallId>39</CallId>
-    <VolunteerId>35257584</VolunteerId>
-    <AssignmentTime>2024-12-18T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-26T22:37:59</AssignmentTotalTime>
-    <Type>ExpiredCancellation</Type>
+    <VolunteerId>32599124</VolunteerId>
+    <AssignmentTime>2024-12-20T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-31T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>50</Id>
     <CallId>40</CallId>
-    <VolunteerId>33765393</VolunteerId>
-    <AssignmentTime>2024-12-26T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-28T22:37:59</AssignmentTotalTime>
-    <Type>ExpiredCancellation</Type>
+    <VolunteerId>36972592</VolunteerId>
+    <AssignmentTime>2025-01-01T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-04T21:08:57</AssignmentTotalTime>
+    <Type>SelfCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>51</Id>
     <CallId>41</CallId>
-    <VolunteerId>37682821</VolunteerId>
-    <AssignmentTime>2024-12-21T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-08T22:37:59</AssignmentTotalTime>
+    <VolunteerId>35749509</VolunteerId>
+    <AssignmentTime>2024-12-26T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-11T21:08:57</AssignmentTotalTime>
     <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>52</Id>
     <CallId>42</CallId>
-    <VolunteerId>28196606</VolunteerId>
-    <AssignmentTime>2025-01-05T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-08T22:37:59</AssignmentTotalTime>
-    <Type>ExpiredCancellation</Type>
+    <VolunteerId>32599124</VolunteerId>
+    <AssignmentTime>2024-12-28T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-05T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>53</Id>
     <CallId>43</CallId>
-    <VolunteerId>37682821</VolunteerId>
-    <AssignmentTime>2024-12-21T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2024-12-21T22:37:59</AssignmentTotalTime>
-    <Type>HandledOnTime</Type>
+    <VolunteerId>32599124</VolunteerId>
+    <AssignmentTime>2024-12-10T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2024-12-19T21:08:57</AssignmentTotalTime>
+    <Type>ExpiredCancellation</Type>
   </Assignment>
   <Assignment>
     <Id>54</Id>
     <CallId>44</CallId>
-    <VolunteerId>35257584</VolunteerId>
-    <AssignmentTime>2025-01-09T22:37:59</AssignmentTime>
-    <AssignmentTotalTime>2025-01-09T22:37:59</AssignmentTotalTime>
-    <Type>HandledOnTime</Type>
+    <VolunteerId>39046063</VolunteerId>
+    <AssignmentTime>2024-12-28T21:08:57</AssignmentTime>
+    <AssignmentTotalTime>2025-01-02T21:08:57</AssignmentTotalTime>
+    <Type>ManagerCancellation</Type>
   </Assignment>
 </Assignments>
