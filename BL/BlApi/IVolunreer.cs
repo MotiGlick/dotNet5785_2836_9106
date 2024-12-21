@@ -7,7 +7,7 @@ namespace BlApi;
 public interface IVolunteer
 {
     BO.job EnterToTheSystem(string name , string? passward);
-    void Create();
+    void Create(BO.Volunteer s);
     BO.Volunteer Read(int id);
 
     IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField);

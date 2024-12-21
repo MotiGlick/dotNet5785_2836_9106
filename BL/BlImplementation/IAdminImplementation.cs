@@ -5,9 +5,22 @@ using DalApi;
 using Helpers;
 using System;
 
+
+
+/// <summary>
+/// Implementation of the IAdmin interface. This class provides methods for managing
+/// the system's clock, initializing and resetting the database, and configuring the
+/// maximum risk range for calls.
+/// </summary>
 internal class IAdminImplementation : IAdmin
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+
+
+    /// <summary>
+    /// Advances the system clock by a specified time unit.
+    /// </summary>
+    /// <param name="unit">The time unit by which to advance the clock (Minute, Hour, Day, Month, Year).</param>
     public void ForwardClock(BO.TimeUnit unit)
     {
         switch (unit)
@@ -33,16 +46,33 @@ internal class IAdminImplementation : IAdmin
         }
     }
 
+
+    /// <summary>
+    /// Retrieves the current system clock time from the database.
+    /// </summary>
+    /// <returns>The current system clock time.</returns>
     public DateTime GetClock()
     {
         return _dal.Config.Clock;
     }
 
+
+
+    /// <summary>
+    /// Retrieves the maximum risk range (TimeSpan) from the database.
+    /// </summary>
+    /// <returns>The maximum risk range.</returns>
     public TimeSpan GetMaxRange()
     {
         return _dal.Config.RiskRange;
     }
 
+
+
+    /// <summary>
+    /// Initializes the database by resetting it and running the initialization process.
+    /// Updates the system clock to the current time.
+    /// </summary>
     public void InitializeDB()
     {
         ResetDB();
@@ -51,6 +81,11 @@ internal class IAdminImplementation : IAdmin
         
     }
 
+
+
+    /// <summary>
+    /// Resets the database and updates the system clock to the current time.
+    /// </summary>
     public void ResetDB()
     {
         _dal.Config.Reset();
@@ -58,6 +93,10 @@ internal class IAdminImplementation : IAdmin
        
     }
 
+    /// <summary>
+    /// Sets the maximum risk range (TimeSpan) in the database.
+    /// </summary>
+    /// <param name="maxRange">The new maximum risk range.</param>
     public void SetMaxRange(TimeSpan maxRange)
     {
         _dal.Config.RiskRange=maxRange;

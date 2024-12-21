@@ -50,10 +50,12 @@ public enum CallClosureType
     ExpiredCancellation  // The call was canceled because the allowed time expired
 }
 
-
+/// <summary>
+/// Represents fields in the CallInList class.
+/// </summary>
 public enum CallInListField
 {
-    Id,
+    Id,     
     CallId,
     CallType,
     OpeningTime,
@@ -64,6 +66,10 @@ public enum CallInListField
     AmountOfAssigns
 }
 
+
+/// <summary>
+/// Represents fields in the VolunteerInList class.
+/// </summary>
 public enum VolunteerInListField
 {
     Id,
@@ -78,7 +84,9 @@ public enum VolunteerInListField
 }
 
 
-
+/// <summary>
+/// Represents fields in the OpenCallInList class.
+/// </summary>
 public enum OpenCallInListField
 {
     Id,
@@ -90,6 +98,10 @@ public enum OpenCallInListField
     DistanceFromVolunteer,
 }
 
+
+/// <summary>
+/// Represents fields in the ClosedCallInList class.
+/// </summary>
 public enum ClosedCallInListField
 {
     Id,
@@ -102,23 +114,36 @@ public enum ClosedCallInListField
 }
 
 
+/// <summary>
+/// Represents options in the main menu.
+/// </summary>
 public enum MainMenuOptions
 {
     Exit,                // Exits the main menu
     VolunteerMenu,       // Displays the submenu for volunteer actions
     CallMenu,            // Displays the submenu for call actions
-    AdminMenu,       // Displays the submenu for   Admin actions
+    AdminMenu,          // Displays the submenu for   Admin actions
 
 }
 
-public enum  VolunteerMenu
+/// <summary>
+/// Represents options in the volunteer menu.
+/// </summary>
+public enum VolunteerMenu
 {
     Exit,
-    enterSystem
-
+    EnterToTheSystem,
+    Delete,
+    Create,
+    Read,
+    ReadAll,
+    Update,
 
 }
 
+/// <summary>
+/// Represents options in the call menu.
+/// </summary>
 public enum CallMenuOptions
 {
     Exit,                // Exits the  menu
@@ -136,6 +161,9 @@ public enum CallMenuOptions
 
 }
 
+/// <summary>
+/// Represents options in the admin menu.
+/// </summary>
 public enum AdminMenu
 {
     Exit,                // Exits the  menu
@@ -150,6 +178,9 @@ public enum AdminMenu
 
 
 
+/// <summary>
+/// Represents the possible statuses of a call.
+/// </summary>
 public enum StatusOfCall
 {
     Open,                // The call is open and not currently assigned to any volunteer
@@ -162,7 +193,9 @@ public enum StatusOfCall
 
 
 
-
+/// <summary>
+/// Represents units of time.
+/// </summary>
 public enum TimeUnit
 {
     Minute,

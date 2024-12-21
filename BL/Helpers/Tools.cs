@@ -1,5 +1,4 @@
 ﻿
-
 namespace Helpers;
 using System.Text.Json;
 using System.Net;
@@ -8,9 +7,21 @@ using System;
 using System.Reflection;
 using System.Collections;
 
+
+/// <summary>
+/// A utility class containing various helper methods for geographic calculations, address validation, 
+/// and object property string representation.
+/// </summary>
 internal static class Tools
 {
-   
+
+    /// <summary>
+    /// Retrieves the geographic coordinates (latitude and longitude) of a given address using an external API.
+    /// </summary>
+    /// <param name="address">The address to retrieve coordinates for.</param>
+    /// <returns>
+    /// An array containing latitude and longitude as doubles, or null if the address cannot be resolved.
+    /// </returns>
     public static double[]? GetCoordinates(string address)
     {
         string baseUrl = "https://us1.locationiq.com/v1/search.php";
@@ -23,7 +34,7 @@ internal static class Tools
 
             if (!response.IsSuccessStatusCode)
             {
-                // אם יש שגיאה בתקשורת, אפשר לבחור לזרוק חריגה או להחזיר null
+                // If there is a communication error, choose to throw an exception or return null
                 return null;
             }
 
@@ -35,7 +46,7 @@ internal static class Tools
 
                 if (root.GetArrayLength() == 0)
                 {
-                    // אין תוצאות עבור הכתובת
+                    // No results for the given address
                     return null;
                 }
 
@@ -49,41 +60,72 @@ internal static class Tools
     }
 
 
+    /// <summary>
+    /// Checks whether a given address exists by attempting to retrieve its coordinates.
+    /// </summary>
+    /// <param name="address">The address to validate.</param>
+    /// <returns>True if the address exists; otherwise, false.</returns>
     public static bool AddressExists(string address)//#
     {
         double[]? coordinates = Tools.GetCoordinates(address);
         return coordinates != null;
     }
 
+    /// <summary>
+    /// Retrieves the latitude of a given address.
+    /// </summary>
+    /// <param name="address">The address to retrieve latitude for.</param>
+    /// <returns>The latitude as a double.</returns>
+    /// <exception cref="Exception">Thrown if the address cannot be resolved.</exception>
     public static double GetLatitude(string address)//#
     {
-        double[]? coordinates = Tools.GetCoordinates(address);
+        double[]? coordinates = GetCoordinates(address);
         return coordinates![0];
     }
 
+
+    /// <summary>
+    /// Retrieves the longitude of a given address.
+    /// </summary>
+    /// <param name="address">The address to retrieve longitude for.</param>
+    /// <returns>The longitude as a double.</returns>
+    /// <exception cref="Exception">Thrown if the address cannot be resolved.</exception>
     public static double GetLongitude(string address)//#
     {
-        double[]? coordinates = Tools.GetCoordinates(address);
+        double[]? coordinates = GetCoordinates(address);
         return coordinates![1];
     }
 
 
-    
+    /// <summary>
+    /// Calculates the distance in kilometers between two addresses using their geographic coordinates.
+    /// </summary>
+    /// <param name="address1">The first address.</param>
+    /// <param name="address2">The second address.</param>
+    /// <returns>The distance in kilometers as a double.</returns>
     public static double CalculateDistance(string address1, string address2)
     {
-        // שליפת הקואורדינטות של שתי הכתובות
+        
         double[] coords1 = GetCoordinates(address1);
         double[] coords2 = GetCoordinates(address2);
 
-        // חישוב המרחק בעזרת נוסחת Haversine
         return CalculateHaversineDistance(coords1[0], coords1[1], coords2[0], coords2[1]);
     }
 
+
+    /// <summary>
+    /// Calculates the distance between two geographic coordinates using the Haversine formula.
+    /// </summary>
+    /// <param name="lat1">Latitude of the first point.</param>
+    /// <param name="lon1">Longitude of the first point.</param>
+    /// <param name="lat2">Latitude of the second point.</param>
+    /// <param name="lon2">Longitude of the second point.</param>
+    /// <returns>The distance in kilometers as a double.</returns>
     private static double CalculateHaversineDistance(double lat1, double lon1, double lat2, double lon2)
     {
-        const double R = 6371; // רדיוס כדור הארץ בקילומטרים
+        const double R = 6371; // Radius of the Earth in kilometers
 
-        // המרת מעלות לרדיאנים
+        //  converting degrees to radians
         double dLat = DegreesToRadians(lat2 - lat1);
         double dLon = DegreesToRadians(lon2 - lon1);
 
@@ -93,25 +135,28 @@ internal static class Tools
 
         double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
-        return R * c; // המרחק בקילומטרים
+        return R * c; // distance in kilometers
     }
 
+    /// <summary>
+    /// Converts degrees to radians.
+    /// </summary>
+    /// <param name="degrees">The angle in degrees.</param>
+    /// <returns>The angle in radians.</returns>
     private static double DegreesToRadians(double degrees)
     {
         return degrees * (Math.PI / 180);
     }
 
-    //public static void InputCorectness(string address)
-    //{
-    //    if (string.IsNullOrWhiteSpace(address))
-    //    {
-    //        throw new ArgumentException("Address cannot be empty or null.");
-    //    }
-    //}
 
 
 
-
+    /// <summary>
+    /// Extension method that converts the properties of an object to a formatted string.
+    /// </summary>
+    /// <typeparam name="T">The type of the object.</typeparam>
+    /// <param name="t">The object to convert.</param>
+    /// <returns>A string containing the object's property names and values.</returns>
     public static string ToStringProperty<T>(this T t)//#
     {
         string str = "";

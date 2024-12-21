@@ -12,11 +12,22 @@ using System.Data.SqlTypes;
 using System.Net;
 
 
+/// <summary>
+/// Implementation of the ICall interface.
+/// Provides methods for managing calls in the system.
+/// </summary>
 internal class CallImplementation : BlApi.ICall
 {
 
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
+
+    /// <summary>
+    /// Adds a new call to the system.
+    /// Validates the call and creates a corresponding record in the database.
+    /// </summary>
+    /// <param name="boCall">The call object to be added.</param>
+    /// <exception cref="Exception">Thrown if the call is invalid or already exists.</exception>
     public void AddCall(BO.Call boCall)//#
     {
 
@@ -48,6 +59,10 @@ internal class CallImplementation : BlApi.ICall
     }
 
 
+    /// <summary>
+    /// Retrieves the number of calls for each call type.
+    /// </summary>
+    /// <returns>An array where each index represents a call type and its count.</returns>
     public int[] CallsAmount()//#
     {
 
@@ -64,7 +79,13 @@ internal class CallImplementation : BlApi.ICall
         return result;
     }
 
-
+    /// <summary>
+    /// Cancels the handling of a call by a volunteer.
+    /// Allows self or manager cancellation of an assignment if valid.
+    /// </summary>
+    /// <param name="volunteerId">ID of the volunteer attempting the cancellation.</param>
+    /// <param name="assignmentId">ID of the assignment to cancel.</param>
+    /// <exception cref="Exception">Thrown if the volunteer cannot cancel the assignment.</exception>
     public void CancelHandling(int volunteerId, int assignmentId)//#
     {
 
@@ -78,7 +99,7 @@ internal class CallImplementation : BlApi.ICall
         {
             try
             {
-
+                // Update assignment with cancellation closure type based on who cancels
                 if (doAssignment.VolunteerId == volunteerId)
                     _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, ClockManager.Now, DO.CallClosureType.SelfCancellation));
                 else
@@ -96,6 +117,14 @@ internal class CallImplementation : BlApi.ICall
         }
     }
 
+
+    /// <summary>
+    /// Assigns a call to a volunteer for handling.
+    /// Only open or open-at-risk calls can be selected.
+    /// </summary>
+    /// <param name="volunteerId">ID of the volunteer choosing the call.</param>
+    /// <param name="callId">ID of the call to assign.</param>
+    /// <exception cref="Exception">Thrown if the call is not open or open-at-risk.</exception>
     public void ChoosingCallForHandling(int volunteerId, int callId)//#
     {
 
@@ -105,18 +134,27 @@ internal class CallImplementation : BlApi.ICall
         if (CallManager.GetCallStatus(callId) != BO.StatusOfCall.Open || CallManager.GetCallStatus(callId) != BO.StatusOfCall.OpenAtRisk)
             throw new Exception($"Call with ID={callId} does not open for hanling");
 
+
+        // Create an assignment for the volunteer and call
         else
             _dal.Assignment.Create(new(0, callId, volunteerId, ClockManager.Now, null, null));
 
-
     }
 
+
+    /// <summary>
+    /// Deletes a call from the system.
+    /// Calls can only be deleted if no assignments exist and the status is open or open-at-risk.
+    /// </summary>
+    /// <param name="callId">ID of the call to delete.</param>
+    /// <exception cref="Exception">Thrown if the call cannot be deleted due to assignments or status.</exception>
     public void DeleteCall(int callId)//#
     {
 
         DO.Call doCall = _dal.Call.Read(callId) ?? throw new Exception($"Call with ID={callId} does Not exist");//Exception
         try
         {
+            // Check if there are no assignments and call is open or open-at-risk
             if (AssignmentManager.GetCallAssignList(callId) == null &&
                 (CallManager.GetCallStatus(callId) == BO.StatusOfCall.Open) || CallManager.GetCallStatus(callId) == BO.StatusOfCall.OpenAtRisk)
                 _dal.Call.Delete(callId);
@@ -129,6 +167,14 @@ internal class CallImplementation : BlApi.ICall
         }
     }
 
+
+    /// <summary>
+    /// Ends the handling of a call by a volunteer.
+    /// Marks the assignment as handled on time.
+    /// </summary>
+    /// <param name="volunteerId">ID of the volunteer ending the handling.</param>
+    /// <param name="assignmentId">ID of the assignment to end.</param>
+    /// <exception cref="Exception">Thrown if the volunteer is not authorized to end the assignment.</exception>
     public void EndHandling(int volunteerId, int assignmentId)//#
     {
         DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new Exception($"Volunteer with ID={volunteerId} does not exists");
@@ -140,6 +186,7 @@ internal class CallImplementation : BlApi.ICall
         {
             try
             {
+                // Update assignment status to "HandledOnTime"
                 _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, ClockManager.Now, DO.CallClosureType.HandledOnTime));
 
             }
@@ -155,6 +202,14 @@ internal class CallImplementation : BlApi.ICall
 
     }
 
+
+
+    /// <summary>
+    /// Retrieves the details of a specific call.
+    /// </summary>
+    /// <param name="callId">ID of the call to retrieve.</param>
+    /// <returns>The call details.</returns>
+    /// <exception cref="Exception">Thrown if the call does not exist.</exception>
     public BO.Call GetCallDetails(int callId)//#
     {
         DO.Call doCall = _dal.Call.Read(callId) ?? throw new Exception($"Call with ID={callId} does Not exist");//Exception
@@ -176,7 +231,14 @@ internal class CallImplementation : BlApi.ICall
 
 
 
-    //#
+
+    /// <summary>
+    /// Retrieves a list of calls with optional filtering and sorting.
+    /// </summary>
+    /// <param name="filterField">Field to filter the calls by (optional).</param>
+    /// <param name="filterValue">Value to filter by (optional).</param>
+    /// <param name="sortField">Field to sort the calls by (optional).</param>
+    /// <returns>A list of calls matching the filter criteria.</returns>
     public IEnumerable<BO.CallInList> GetCallList(CallInListField? filterField = null, object? filterValue = null, CallInListField? sortField = null)
     {
 
@@ -224,7 +286,13 @@ internal class CallImplementation : BlApi.ICall
 
 
 
-    //#
+    /// <summary>
+    /// Retrieves a list of closed calls handled by a specific volunteer.
+    /// </summary>
+    /// <param name="volunteerId">ID of the volunteer.</param>
+    /// <param name="callTypeFilter">Optional filter by call type.</param>
+    /// <param name="sortField">Optional field to sort the results by.</param>
+    /// <returns>List of closed calls handled by the volunteer.</returns>
     public IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, BO.CallType? callTypeFilter, ClosedCallInListField? sortField)
     {
 
@@ -256,7 +324,14 @@ internal class CallImplementation : BlApi.ICall
 
     }
 
-    //#
+
+    /// <summary>
+    /// Retrieves a list of open calls assigned to a specific volunteer.
+    /// </summary>
+    /// <param name="volunteerId">ID of the volunteer.</param>
+    /// <param name="callType">Optional filter by call type.</param>
+    /// <param name="sortField">Optional field to sort the results by.</param>
+    /// <returns>List of open calls assigned to the volunteer.</returns>
     public IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? callType, OpenCallInListField? sortField)
     {
 
@@ -284,14 +359,20 @@ internal class CallImplementation : BlApi.ICall
            });
     }
 
-
+    /// <summary>
+    /// Updates the details of an existing call in the system.
+    /// </summary>
+    /// <param name="boCall">The updated call information.</param>
+    /// <exception cref="Exception">Thrown if the call is invalid or already exists.</exception>
     public void UpdateCallDetails(BO.Call boCall)//#
     {
         try
         {
+            // Validate the call using the LogicalCheck method from CallManager
             if (CallManager.LogicalCheck( boCall))
                 throw new Exception("Call is not valid");
 
+            // Update the call in the data layer
             _dal.Call.Update(
                 new
                 (
