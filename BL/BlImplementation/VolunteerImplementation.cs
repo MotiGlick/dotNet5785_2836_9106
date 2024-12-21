@@ -61,11 +61,11 @@ internal class VolunteerImplementation : IVolunteer
             {
                 _dal.Volunteer.Delete(id);
             }
-            else throw new BO.DalDoesNotExistException($"Volunteer with ID={id} not exists", ex);
+            else throw new BO.BlDeletionImpossible($"Volunteer with ID={id} can not be deleted because he/she handles call");
         }
         catch (DO.DalDoesNotExistException ex)
         {
-            throw new BO.DalDoesNotExistException($"Volunteer with ID={id} not exists", ex);
+            throw new BO.BlDeletionImpossible($"Volunteer with ID={id} can not be deleted because :", ex);
         }
 
     }
@@ -88,45 +88,39 @@ internal class VolunteerImplementation : IVolunteer
         }
         else
         {
-            throw new BO.BlInvalidCredentialsException("Invalid username or password.");
+            throw new BlNotValidException("Invalid username or password.");
         }
     }
 
     public BO.Volunteer Read(int id)
     {
-        try
+        DO.Volunteer? doVolunteer = _dal.Volunteer.Read(id);
+        if (doVolunteer != null)
         {
-            DO.Volunteer? doVolunteer = _dal.Volunteer.Read(id);
-            if (doVolunteer != null)
+            BO.Volunteer volunteer = new BO.Volunteer()
             {
-                BO.Volunteer volunteer = new BO.Volunteer()
-                {
-                    Id = id,
-                    Name = doVolunteer.Name,
-                    PhoneNumber = doVolunteer.PhoneNumber,
-                    Email = doVolunteer.Email,
-                    Password = doVolunteer.pasword,
-                    Address = doVolunteer.AddressVolunteer,
-                    Latitude = doVolunteer.Latitude,
-                    Longitude = doVolunteer.Longitude,
-                    Duty = (BO.job)doVolunteer.duty,
-                    IsActive = doVolunteer.IsActive,
-                    MaximumDistance = doVolunteer.maximumDistace,
-                    Distance = (BO.DistanceType)doVolunteer.distance,
-                    HandeledCalls = VolunteerManager.GetNumOfcheck(id),
-                    CanceledCalls = VolunteerManager.GetNumOfSellfCancellation(id),
-                    ExpiredCalls = VolunteerManager.GetNumOfExpired(id),
-                    CallInProgress = VolunteerManager.CreateCallInProgress(id)
-                };
-                return volunteer;
-            }
-            else throw new BO.BlAlreadyExistsException($"Volunteer with ID={id} not exists");
+                Id = id,
+                Name = doVolunteer.Name,
+                PhoneNumber = doVolunteer.PhoneNumber,
+                Email = doVolunteer.Email,
+                Password = doVolunteer.pasword,
+                Address = doVolunteer.AddressVolunteer,
+                Latitude = doVolunteer.Latitude,
+                Longitude = doVolunteer.Longitude,
+                Duty = (BO.job)doVolunteer.duty,
+                IsActive = doVolunteer.IsActive,
+                MaximumDistance = doVolunteer.maximumDistace,
+                Distance = (BO.DistanceType)doVolunteer.distance,
+                HandeledCalls = VolunteerManager.GetNumOfcheck(id),
+                CanceledCalls = VolunteerManager.GetNumOfSellfCancellation(id),
+                ExpiredCalls = VolunteerManager.GetNumOfExpired(id),
+                CallInProgress = VolunteerManager.CreateCallInProgress(id)
+            };
+            return volunteer;
         }
-        catch (DO.DalAlreadyExistsException ex)
-        {
-            throw new BO.BlAlreadyExistsException($"Volunteer with ID={id} not exists");
-        }
+        else throw new BO.BlDoesNotExistException($"Volunteer with ID={id} not exists");
     }
+
     /// <summary>
     /// Retrieves a list of volunteers with an optional filter based on their activity status and sorts the list by a specified field.
     /// If no filter or sorting field is provided, it defaults to sorting by volunteer ID.
@@ -235,7 +229,7 @@ internal class VolunteerImplementation : IVolunteer
         }
         catch (DO.DalDoesNotExistException ex)
         {
-            throw new BO.DalDoesNotExistException($"Volunteer with ID={boVolunteer.Id} not exists", ex);
+            throw new BO.BlDoesNotExistException($"Volunteer with ID={boVolunteer.Id} not exists", ex);
         }
     }
 }  
