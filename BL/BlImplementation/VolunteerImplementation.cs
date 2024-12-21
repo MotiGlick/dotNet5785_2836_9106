@@ -11,9 +11,18 @@ using System.Collections.Generic;
 using System.Net;
 using System.Xml.Linq;
 
-internal class VolunteerImplementation : IVolunteer
+internal class VolunteerImplementation : BlApi.IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    /// <summary>
+    /// Creates a new volunteer in the system.
+    /// Validates the volunteer's data for proper formatting and logical correctness.
+    /// If validation passes, the volunteer is added to the database.
+    /// </summary>
+    /// <param name="boVolunteer"></param>
+    /// <exception cref="BO.BlAlreadyExistsException"></exception>
+    /// Thrown if a volunteer with the same ID already exists in the database.
+    /// </exception>
     public void Create(BO.Volunteer boVolunteer)
     {
         
@@ -91,7 +100,16 @@ internal class VolunteerImplementation : IVolunteer
             throw new BlNotValidException("Invalid username or password.");
         }
     }
+    /// <summary>
+    /// Return volunteer by their ID.
+    /// Converts the data from the data layer object to the business layer object and enriches it with additional derived properties.
 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>BO.Volunteer containing the volunteer's details</returns>
+    /// <exception cref="BO.BlDoesNotExistException"></exception>
+    /// Thrown if the volunteer with the specified ID does not exist in the database.
+    /// </exception>
     public BO.Volunteer Read(int id)
     {
         DO.Volunteer? doVolunteer = _dal.Volunteer.Read(id);
@@ -188,7 +206,16 @@ internal class VolunteerImplementation : IVolunteer
 
         return volunteersList;
     }
-
+    /// <summary>
+    /// Updates the details of an existing volunteer. 
+    /// The update is subject to role-based conditions: only a manager can update any volunteer, 
+    /// while a volunteer can only update their own information with certain restrictions on role changes.
+    /// </summary>
+    /// <param name="boVolunteer"></param>
+    /// <param name="id"></param>
+    /// <exception cref="BO.BlDoesNotExistException"></exception>
+    /// Thrown if the volunteer to be updated does not exist in the database.
+    /// </exception>
     public void Update(BO.Volunteer boVolunteer, int id)
     {
         try
