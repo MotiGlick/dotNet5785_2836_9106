@@ -1,2 +1,503 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+<ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Call>
+    <Id>0</Id>
+    <type>HomeCare</type>
+    <CallAddress>23 Jaffa Street, Jerusalem</CallAddress>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Latitude>31.7833</Latitude>
+    <Longitude>35.2196</Longitude>
+    <CallTime>2024-12-17T22:37:59</CallTime>
+    <TotalTime>2025-01-17T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>1</Id>
+    <type>DeliverMedicine</type>
+    <CallAddress>15 King George Street, Jerusalem</CallAddress>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Latitude>31.7798</Latitude>
+    <Longitude>35.2193</Longitude>
+    <CallTime>2024-12-10T22:37:59</CallTime>
+    <TotalTime>2025-01-17T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>2</Id>
+    <type>HomeCare</type>
+    <CallAddress>37 HaNeviim Street, Jerusalem</CallAddress>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Latitude>31.7832</Latitude>
+    <Longitude>35.2174</Longitude>
+    <CallTime>2024-12-19T22:37:59</CallTime>
+    <TotalTime>2025-01-06T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>3</Id>
+    <type>MedicalAssistance</type>
+    <CallAddress>78 Hebron Road, Jerusalem</CallAddress>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Latitude>31.7487</Latitude>
+    <Longitude>35.2127</Longitude>
+    <CallTime>2024-12-11T22:37:59</CallTime>
+    <TotalTime>2025-01-07T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>4</Id>
+    <type>MedicalAssistance</type>
+    <CallAddress>42 Herzl Boulevard, Jerusalem</CallAddress>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Latitude>31.7903</Latitude>
+    <Longitude>35.206</Longitude>
+    <CallTime>2024-12-07T22:37:59</CallTime>
+    <TotalTime>2025-01-11T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>5</Id>
+    <type>EmotionalSupport</type>
+    <CallAddress>40 Agripas Street, Jerusalem</CallAddress>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Latitude>31.7835</Latitude>
+    <Longitude>35.215</Longitude>
+    <CallTime>2024-12-20T22:37:59</CallTime>
+    <TotalTime>2025-01-14T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>6</Id>
+    <type>HomeCare</type>
+    <CallAddress>29 Gaza Street, Jerusalem</CallAddress>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Latitude>31.7839</Latitude>
+    <Longitude>35.2117</Longitude>
+    <CallTime>2024-12-17T22:37:59</CallTime>
+    <TotalTime>2025-01-12T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>7</Id>
+    <type>HomeCare</type>
+    <CallAddress>9 Emek Refaim Street, Jerusalem</CallAddress>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Latitude>31.7612</Latitude>
+    <Longitude>35.2178</Longitude>
+    <CallTime>2024-12-16T22:37:59</CallTime>
+    <TotalTime>2025-01-13T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>8</Id>
+    <type>HospitalVisit</type>
+    <CallAddress>18 Keren Hayesod Street, Jerusalem</CallAddress>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Latitude>31.7743</Latitude>
+    <Longitude>35.2167</Longitude>
+    <CallTime>2024-12-09T22:37:59</CallTime>
+    <TotalTime>2025-01-05T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>9</Id>
+    <type>EmotionalSupport</type>
+    <CallAddress>10 Shlomzion Hamalka Street, Jerusalem</CallAddress>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Latitude>31.7806</Latitude>
+    <Longitude>35.2222</Longitude>
+    <CallTime>2024-12-18T22:37:59</CallTime>
+    <TotalTime>2025-01-13T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>10</Id>
+    <type>DeliverMedicine</type>
+    <CallAddress>5 David HaMelech Street, Jerusalem</CallAddress>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Latitude>31.7783</Latitude>
+    <Longitude>35.2248</Longitude>
+    <CallTime>2024-12-17T22:37:59</CallTime>
+    <TotalTime>2025-01-15T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>11</Id>
+    <type>DeliverMedicine</type>
+    <CallAddress>33 Ben Yehuda Street, Jerusalem</CallAddress>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Latitude>31.7834</Latitude>
+    <Longitude>35.2201</Longitude>
+    <CallTime>2024-12-19T22:37:59</CallTime>
+    <TotalTime>2025-01-06T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>12</Id>
+    <type>ProvideTransportation</type>
+    <CallAddress>25 HaPalmach Street, Jerusalem</CallAddress>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Latitude>31.7647</Latitude>
+    <Longitude>35.2156</Longitude>
+    <CallTime>2024-12-07T22:37:59</CallTime>
+    <TotalTime>2025-01-05T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>13</Id>
+    <type>MedicalAssistance</type>
+    <CallAddress>12 Derech Beit Lechem, Jerusalem</CallAddress>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Latitude>31.7641</Latitude>
+    <Longitude>35.2234</Longitude>
+    <CallTime>2024-12-14T22:37:59</CallTime>
+    <TotalTime>2025-01-12T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>14</Id>
+    <type>EmotionalSupport</type>
+    <CallAddress>50 Sderot Ben Gurion, Jerusalem</CallAddress>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Latitude>31.7785</Latitude>
+    <Longitude>35.2104</Longitude>
+    <CallTime>2024-12-15T22:37:59</CallTime>
+    <TotalTime>2025-01-13T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>15</Id>
+    <type>MedicalAssistance</type>
+    <CallAddress>22 Azza Street, Jerusalem</CallAddress>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Latitude>31.7765</Latitude>
+    <Longitude>35.2215</Longitude>
+    <CallTime>2024-12-15T22:37:59</CallTime>
+    <TotalTime>2025-01-06T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>16</Id>
+    <type>HomeCare</type>
+    <CallAddress>16 Rachel Imeinu Street, Jerusalem</CallAddress>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Latitude>31.7566</Latitude>
+    <Longitude>35.2103</Longitude>
+    <CallTime>2024-12-08T22:37:59</CallTime>
+    <TotalTime>2025-01-15T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>17</Id>
+    <type>EmotionalSupport</type>
+    <CallAddress>7 Derech HaAtsmaut, Jerusalem</CallAddress>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Latitude>31.7717</Latitude>
+    <Longitude>35.2238</Longitude>
+    <CallTime>2024-12-11T22:37:59</CallTime>
+    <TotalTime>2025-01-08T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>18</Id>
+    <type>DeliverMedicine</type>
+    <CallAddress>60 Yitzhak Rabin Boulevard, Jerusalem</CallAddress>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Latitude>31.7782</Latitude>
+    <Longitude>35.2046</Longitude>
+    <CallTime>2024-12-12T22:37:59</CallTime>
+    <TotalTime>2025-01-04T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>19</Id>
+    <type>MedicalAssistance</type>
+    <CallAddress>3 HaTzanchanim Street, Jerusalem</CallAddress>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Latitude>31.7821</Latitude>
+    <Longitude>35.2149</Longitude>
+    <CallTime>2024-12-19T22:37:59</CallTime>
+    <TotalTime>2025-01-05T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>20</Id>
+    <type>HomeCare</type>
+    <CallAddress>45 Mount Scopus, Jerusalem</CallAddress>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Latitude>31.7943</Latitude>
+    <Longitude>35.2431</Longitude>
+    <CallTime>2024-12-14T22:37:59</CallTime>
+    <TotalTime>2025-01-08T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>21</Id>
+    <type>DeliverMedicine</type>
+    <CallAddress>8 Shmuel HaNavi Street, Jerusalem</CallAddress>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Latitude>31.7986</Latitude>
+    <Longitude>35.2227</Longitude>
+    <CallTime>2024-12-11T22:37:59</CallTime>
+    <TotalTime>2025-01-14T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>22</Id>
+    <type>ProvideTransportation</type>
+    <CallAddress>11 Shivtei Israel Street, Jerusalem</CallAddress>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Latitude>31.7826</Latitude>
+    <Longitude>35.2145</Longitude>
+    <CallTime>2024-12-12T22:37:59</CallTime>
+    <TotalTime>2025-01-17T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>23</Id>
+    <type>DeliverMedicine</type>
+    <CallAddress>28 Rehov Hillel, Jerusalem</CallAddress>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Latitude>31.7792</Latitude>
+    <Longitude>35.2123</Longitude>
+    <CallTime>2024-12-15T22:37:59</CallTime>
+    <TotalTime>2025-01-07T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>24</Id>
+    <type>MedicalAssistance</type>
+    <CallAddress>4 Ben Maimon Street, Jerusalem</CallAddress>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Latitude>31.7819</Latitude>
+    <Longitude>35.2233</Longitude>
+    <CallTime>2024-12-08T22:37:59</CallTime>
+    <TotalTime>2025-01-13T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>25</Id>
+    <type>HomeCare</type>
+    <CallAddress>17 Ussishkin Street, Jerusalem</CallAddress>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Latitude>31.7687</Latitude>
+    <Longitude>35.2137</Longitude>
+    <CallTime>2024-12-10T22:37:59</CallTime>
+    <TotalTime>2025-01-08T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>26</Id>
+    <type>HospitalVisit</type>
+    <CallAddress>2 HaPisga Street, Jerusalem</CallAddress>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Latitude>31.778</Latitude>
+    <Longitude>35.2172</Longitude>
+    <CallTime>2024-12-08T22:37:59</CallTime>
+    <TotalTime>2025-01-13T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>27</Id>
+    <type>HospitalVisit</type>
+    <CallAddress>32 Beit HaKerem Street, Jerusalem</CallAddress>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Latitude>31.7754</Latitude>
+    <Longitude>35.2205</Longitude>
+    <CallTime>2024-12-10T22:37:59</CallTime>
+    <TotalTime>2025-01-14T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>28</Id>
+    <type>HospitalVisit</type>
+    <CallAddress>6 Sderot Eshkol, Jerusalem</CallAddress>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Latitude>31.7972</Latitude>
+    <Longitude>35.2308</Longitude>
+    <CallTime>2024-12-17T22:37:59</CallTime>
+    <TotalTime>2025-01-16T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>29</Id>
+    <type>HomeCare</type>
+    <CallAddress>14 Jabotinsky Street, Jerusalem</CallAddress>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Latitude>31.7665</Latitude>
+    <Longitude>35.218</Longitude>
+    <CallTime>2024-12-12T22:37:59</CallTime>
+    <TotalTime>2025-01-17T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>30</Id>
+    <type>HospitalVisit</type>
+    <CallAddress>19 HaAri Street, Jerusalem</CallAddress>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Latitude>31.7789</Latitude>
+    <Longitude>35.2178</Longitude>
+    <CallTime>2024-12-08T22:37:59</CallTime>
+    <TotalTime>2025-01-16T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>31</Id>
+    <type>HomeCare</type>
+    <CallAddress>36 Betzalel Street, Jerusalem</CallAddress>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Latitude>31.7798</Latitude>
+    <Longitude>35.2225</Longitude>
+    <CallTime>2024-12-10T22:37:59</CallTime>
+    <TotalTime>2025-01-08T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>32</Id>
+    <type>HospitalVisit</type>
+    <CallAddress>24 Rehov Mevo HaGalil, Jerusalem</CallAddress>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Latitude>31.7693</Latitude>
+    <Longitude>35.2098</Longitude>
+    <CallTime>2024-12-08T22:37:59</CallTime>
+    <TotalTime>2025-01-15T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>33</Id>
+    <type>HomeCare</type>
+    <CallAddress>9 Ma'alot Street, Jerusalem</CallAddress>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Latitude>31.77</Latitude>
+    <Longitude>35.2089</Longitude>
+    <CallTime>2024-12-09T22:37:59</CallTime>
+    <TotalTime>2025-01-04T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>34</Id>
+    <type>MedicalAssistance</type>
+    <CallAddress>21 Sderot Shazar, Jerusalem</CallAddress>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Latitude>31.7726</Latitude>
+    <Longitude>35.2147</Longitude>
+    <CallTime>2024-12-20T22:37:59</CallTime>
+    <TotalTime>2025-01-05T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>35</Id>
+    <type>ProvideTransportation</type>
+    <CallAddress>13 Shai Agnon Street, Jerusalem</CallAddress>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Latitude>31.7856</Latitude>
+    <Longitude>35.2165</Longitude>
+    <CallTime>2024-12-13T22:37:59</CallTime>
+    <TotalTime>2025-01-15T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>36</Id>
+    <type>DeliverMedicine</type>
+    <CallAddress>27 Haganah Street, Jerusalem</CallAddress>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Latitude>31.7714</Latitude>
+    <Longitude>35.2148</Longitude>
+    <CallTime>2024-12-11T22:37:59</CallTime>
+    <TotalTime>2025-01-15T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>37</Id>
+    <type>MedicalAssistance</type>
+    <CallAddress>53 Hamelech Shlomo Street, Jerusalem</CallAddress>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Latitude>31.7737</Latitude>
+    <Longitude>35.2192</Longitude>
+    <CallTime>2024-12-15T22:37:59</CallTime>
+    <TotalTime>2025-01-12T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>38</Id>
+    <type>ProvideTransportation</type>
+    <CallAddress>39 Hanassi Street, Jerusalem</CallAddress>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Latitude>31.7822</Latitude>
+    <Longitude>35.2103</Longitude>
+    <CallTime>2024-12-11T22:37:59</CallTime>
+    <TotalTime>2025-01-16T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>39</Id>
+    <type>MedicalAssistance</type>
+    <CallAddress>18 Kiryat Moshe Street, Jerusalem</CallAddress>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Latitude>31.7881</Latitude>
+    <Longitude>35.2156</Longitude>
+    <CallTime>2024-12-13T22:37:59</CallTime>
+    <TotalTime>2025-01-11T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>40</Id>
+    <type>MedicalAssistance</type>
+    <CallAddress>41 Agron Street, Jerusalem</CallAddress>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Latitude>31.7698</Latitude>
+    <Longitude>35.2222</Longitude>
+    <CallTime>2024-12-09T22:37:59</CallTime>
+    <TotalTime>2025-01-11T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>41</Id>
+    <type>ProvideTransportation</type>
+    <CallAddress>31 Pierre Koenig Street, Jerusalem</CallAddress>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Latitude>31.7519</Latitude>
+    <Longitude>35.2084</Longitude>
+    <CallTime>2024-12-15T22:37:59</CallTime>
+    <TotalTime>2025-01-17T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>42</Id>
+    <type>HomeCare</type>
+    <CallAddress>29 French Hill, Jerusalem</CallAddress>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Latitude>31.7997</Latitude>
+    <Longitude>35.2221</Longitude>
+    <CallTime>2024-12-10T22:37:59</CallTime>
+    <TotalTime>2025-01-09T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>43</Id>
+    <type>DeliverMedicine</type>
+    <CallAddress>6 Shlomo HaMelech Street, Jerusalem</CallAddress>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Latitude>31.7767</Latitude>
+    <Longitude>35.2157</Longitude>
+    <CallTime>2024-12-15T22:37:59</CallTime>
+    <TotalTime>2025-01-15T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>44</Id>
+    <type>HomeCare</type>
+    <CallAddress>37 Ein Kerem Street, Jerusalem</CallAddress>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Latitude>31.7673</Latitude>
+    <Longitude>35.217</Longitude>
+    <CallTime>2024-12-20T22:37:59</CallTime>
+    <TotalTime>2025-01-14T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>45</Id>
+    <type>DeliverMedicine</type>
+    <CallAddress>49 Herzog Street, Jerusalem</CallAddress>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Latitude>31.772</Latitude>
+    <Longitude>35.2187</Longitude>
+    <CallTime>2024-12-15T22:37:59</CallTime>
+    <TotalTime>2024-12-20T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>46</Id>
+    <type>DeliverMedicine</type>
+    <CallAddress>20 Strauss Street, Jerusalem</CallAddress>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Latitude>31.7784</Latitude>
+    <Longitude>35.2149</Longitude>
+    <CallTime>2024-12-10T22:37:59</CallTime>
+    <TotalTime>2024-12-20T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>47</Id>
+    <type>EmotionalSupport</type>
+    <CallAddress>34 Lincoln Street, Jerusalem</CallAddress>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Latitude>31.7761</Latitude>
+    <Longitude>35.2234</Longitude>
+    <CallTime>2024-12-08T22:37:59</CallTime>
+    <TotalTime>2024-12-20T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>48</Id>
+    <type>HospitalVisit</type>
+    <CallAddress>11 Haneviim Street, Jerusalem</CallAddress>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Latitude>31.7689</Latitude>
+    <Longitude>35.2116</Longitude>
+    <CallTime>2024-12-07T22:37:59</CallTime>
+    <TotalTime>2024-12-20T22:37:59</TotalTime>
+  </Call>
+  <Call>
+    <Id>49</Id>
+    <type>EmotionalSupport</type>
+    <CallAddress>56 Malha Road, Jerusalem</CallAddress>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Latitude>31.7512</Latitude>
+    <Longitude>35.2049</Longitude>
+    <CallTime>2024-12-10T22:37:59</CallTime>
+    <TotalTime>2024-12-20T22:37:59</TotalTime>
+  </Call>
+</ArrayOfCall>
