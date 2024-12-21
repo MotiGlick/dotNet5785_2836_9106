@@ -12,6 +12,7 @@ internal class VolunteerManager
     //public static string ToStringProperty<T>(this T t);
     private static readonly DalApi.IDal _dal = DalApi.Factory.Get;
     //public static string ToStringProperty<T>(this T t);
+
     /// <summary>
     /// A method that checks the correctness of all values ​​in terms of format
     /// </summary>
@@ -173,10 +174,10 @@ internal class VolunteerManager
         return result;
     }
     /// <summary>
-    /// 
+    /// Retrieves the total number of calls handled on time by a specific volunteer.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The ID of the volunteer.</param>
+    /// <returns>The count of calls handled on time.</returns>
     public static int GetNumOfcheck(int id)
     {
         IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
@@ -184,10 +185,10 @@ internal class VolunteerManager
         return sum;
     }
     /// <summary>
-    /// 
+    /// Retrieves the total number of calls canceled by the volunteer themselves.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The ID of the volunteer.</param>
+    /// <returns>The count of self-canceled calls.</returns>
     public static int GetNumOfSellfCancellation(int id)
     {
         IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
@@ -195,10 +196,10 @@ internal class VolunteerManager
         return sum;
     }
     /// <summary>
-    /// 
+    /// Retrieves the total number of expired calls associated with a volunteer.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The ID of the volunteer.</param>
+    /// <returns>The count of expired calls.</returns>
     public static int GetNumOfExpired(int id)
     {
         IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
@@ -253,7 +254,13 @@ internal class VolunteerManager
         // If an active assignment exists, return its CallId
         return currentAssignment.CallId;
     }
-
+    /// <summary>
+    /// Determines whether a volunteer can be deleted based on their current and past assignments.
+    /// </summary>
+    /// <param name="id">The ID of the volunteer.</param>
+    /// <returns>
+    /// True if the volunteer can be deleted (no active or past assignments exist), otherwise false.
+    /// </returns>
     public static bool CanDeleted(int id)
     {
 
