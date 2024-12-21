@@ -3,7 +3,7 @@
 namespace BlImplementation;
 using BlApi;
 using BO;
-using DalApi;
+//using DalApi;
 using DO;
 using Helpers;
 using System;
@@ -41,7 +41,7 @@ internal class VolunteerImplementation : IVolunteer
         }
         catch (DO.DalAlreadyExistsException ex)
         {
-            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
+           // throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
         }
     }
 
@@ -61,11 +61,11 @@ internal class VolunteerImplementation : IVolunteer
             {
                 _dal.Volunteer.Delete(id);
             }
-            else throw new BO.DalDoesNotExistException($"Volunteer with ID={id} not exists", ex);
+          //  else throw new BO.DalDoesNotExistException($"Volunteer with ID={id} not exists", ex);
         }
         catch (DO.DalDoesNotExistException ex)
         {
-            throw new BO.DalDoesNotExistException($"Volunteer with ID={id} not exists", ex);
+           // throw new BO.DalDoesNotExistException($"Volunteer with ID={id} not exists", ex);
         }
 
     }
@@ -88,7 +88,8 @@ internal class VolunteerImplementation : IVolunteer
         }
         else
         {
-            throw new BO.BlInvalidCredentialsException("Invalid username or password.");
+            return 0;///
+         //   throw new BO.BlInvalidCredentialsException("Invalid username or password.");
         }
     }
 
@@ -120,11 +121,13 @@ internal class VolunteerImplementation : IVolunteer
                 };
                 return volunteer;
             }
-            else throw new BO.BlAlreadyExistsException($"Volunteer with ID={id} not exists");
+            //else throw new BO.BlAlreadyExistsException($"Volunteer with ID={id} not exists");
+            return null;/////////
         }
         catch (DO.DalAlreadyExistsException ex)
         {
-            throw new BO.BlAlreadyExistsException($"Volunteer with ID={id} not exists");
+            return null;/////////
+                        // throw new BO.BlAlreadyExistsException($"Volunteer with ID={id} not exists");
         }
     }
     /// <summary>
@@ -235,7 +238,7 @@ internal class VolunteerImplementation : IVolunteer
         }
         catch (DO.DalDoesNotExistException ex)
         {
-            throw new BO.DalDoesNotExistException($"Volunteer with ID={boVolunteer.Id} not exists", ex);
+          //  throw new BO.DalDoesNotExistException($"Volunteer with ID={boVolunteer.Id} not exists", ex);
         }
     }
 }  

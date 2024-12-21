@@ -133,11 +133,11 @@ public enum VolunteerMenu
 {
     Exit,
     EnterToTheSystem,
-    Delete,
     Create,
+    Update,
+    Delete,
     Read,
     ReadAll,
-    Update,
 
 }
 
