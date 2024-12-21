@@ -11,9 +11,18 @@ using System.Collections.Generic;
 using System.Net;
 using System.Xml.Linq;
 
-internal class VolunteerImplementation : IVolunteer
+internal class VolunteerImplementation : BlApi.IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    /// <summary>
+    /// Creates a new volunteer in the system.
+    /// Validates the volunteer's data for proper formatting and logical correctness.
+    /// If validation passes, the volunteer is added to the database.
+    /// </summary>
+    /// <param name="boVolunteer"></param>
+    /// <exception cref="BO.BlAlreadyExistsException"></exception>
+    /// Thrown if a volunteer with the same ID already exists in the database.
+    /// </exception>
     public void Create(BO.Volunteer boVolunteer)
     {
         
@@ -61,11 +70,11 @@ internal class VolunteerImplementation : IVolunteer
             {
                 _dal.Volunteer.Delete(id);
             }
-          //  else throw new BO.DalDoesNotExistException($"Volunteer with ID={id} not exists", ex);
+            else throw new BO.BlDeletionImpossible($"Volunteer with ID={id} can not be deleted because he/she handles call");
         }
         catch (DO.DalDoesNotExistException ex)
         {
-           // throw new BO.DalDoesNotExistException($"Volunteer with ID={id} not exists", ex);
+            throw new BO.BlDeletionImpossible($"Volunteer with ID={id} can not be deleted because :", ex);
         }
 
     }
@@ -88,48 +97,48 @@ internal class VolunteerImplementation : IVolunteer
         }
         else
         {
-            return 0;///
-         //   throw new BO.BlInvalidCredentialsException("Invalid username or password.");
+            throw new BlNotValidException("Invalid username or password.");
         }
     }
+    /// <summary>
+    /// Return volunteer by their ID.
+    /// Converts the data from the data layer object to the business layer object and enriches it with additional derived properties.
 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>BO.Volunteer containing the volunteer's details</returns>
+    /// <exception cref="BO.BlDoesNotExistException"></exception>
+    /// Thrown if the volunteer with the specified ID does not exist in the database.
+    /// </exception>
     public BO.Volunteer Read(int id)
     {
-        try
+        DO.Volunteer? doVolunteer = _dal.Volunteer.Read(id);
+        if (doVolunteer != null)
         {
-            DO.Volunteer? doVolunteer = _dal.Volunteer.Read(id);
-            if (doVolunteer != null)
+            BO.Volunteer volunteer = new BO.Volunteer()
             {
-                BO.Volunteer volunteer = new BO.Volunteer()
-                {
-                    Id = id,
-                    Name = doVolunteer.Name,
-                    PhoneNumber = doVolunteer.PhoneNumber,
-                    Email = doVolunteer.Email,
-                    Password = doVolunteer.pasword,
-                    Address = doVolunteer.AddressVolunteer,
-                    Latitude = doVolunteer.Latitude,
-                    Longitude = doVolunteer.Longitude,
-                    Duty = (BO.job)doVolunteer.duty,
-                    IsActive = doVolunteer.IsActive,
-                    MaximumDistance = doVolunteer.maximumDistace,
-                    Distance = (BO.DistanceType)doVolunteer.distance,
-                    HandeledCalls = VolunteerManager.GetNumOfcheck(id),
-                    CanceledCalls = VolunteerManager.GetNumOfSellfCancellation(id),
-                    ExpiredCalls = VolunteerManager.GetNumOfExpired(id),
-                    CallInProgress = VolunteerManager.CreateCallInProgress(id)
-                };
-                return volunteer;
-            }
-            //else throw new BO.BlAlreadyExistsException($"Volunteer with ID={id} not exists");
-            return null;/////////
+                Id = id,
+                Name = doVolunteer.Name,
+                PhoneNumber = doVolunteer.PhoneNumber,
+                Email = doVolunteer.Email,
+                Password = doVolunteer.pasword,
+                Address = doVolunteer.AddressVolunteer,
+                Latitude = doVolunteer.Latitude,
+                Longitude = doVolunteer.Longitude,
+                Duty = (BO.job)doVolunteer.duty,
+                IsActive = doVolunteer.IsActive,
+                MaximumDistance = doVolunteer.maximumDistace,
+                Distance = (BO.DistanceType)doVolunteer.distance,
+                HandeledCalls = VolunteerManager.GetNumOfcheck(id),
+                CanceledCalls = VolunteerManager.GetNumOfSellfCancellation(id),
+                ExpiredCalls = VolunteerManager.GetNumOfExpired(id),
+                CallInProgress = VolunteerManager.CreateCallInProgress(id)
+            };
+            return volunteer;
         }
-        catch (DO.DalAlreadyExistsException ex)
-        {
-            return null;/////////
-                        // throw new BO.BlAlreadyExistsException($"Volunteer with ID={id} not exists");
-        }
+        else throw new BO.BlDoesNotExistException($"Volunteer with ID={id} not exists");
     }
+
     /// <summary>
     /// Retrieves a list of volunteers with an optional filter based on their activity status and sorts the list by a specified field.
     /// If no filter or sorting field is provided, it defaults to sorting by volunteer ID.
@@ -197,7 +206,16 @@ internal class VolunteerImplementation : IVolunteer
 
         return volunteersList;
     }
-
+    /// <summary>
+    /// Updates the details of an existing volunteer. 
+    /// The update is subject to role-based conditions: only a manager can update any volunteer, 
+    /// while a volunteer can only update their own information with certain restrictions on role changes.
+    /// </summary>
+    /// <param name="boVolunteer"></param>
+    /// <param name="id"></param>
+    /// <exception cref="BO.BlDoesNotExistException"></exception>
+    /// Thrown if the volunteer to be updated does not exist in the database.
+    /// </exception>
     public void Update(BO.Volunteer boVolunteer, int id)
     {
         try
@@ -238,7 +256,7 @@ internal class VolunteerImplementation : IVolunteer
         }
         catch (DO.DalDoesNotExistException ex)
         {
-          //  throw new BO.DalDoesNotExistException($"Volunteer with ID={boVolunteer.Id} not exists", ex);
+            throw new BO.BlDoesNotExistException($"Volunteer with ID={boVolunteer.Id} not exists", ex);
         }
     }
 }  
