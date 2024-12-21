@@ -14,39 +14,38 @@ using System.Xml.Linq;
 internal class VolunteerImplementation : IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
-    
     public void Create(BO.Volunteer boVolunteer)
     {
-        if (VolunteerManager.formatCheckToVolunteer(boVolunteer)&& VolunteerManager.logicCheckToVolunteer(boVolunteer))
-        {
-            DO.Volunteer doVolunteer = new DO.Volunteer()
-            {
-                Id = boVolunteer.Id,
-                Name = boVolunteer.Name,
-                PhoneNumber = boVolunteer.PhoneNumber,
-                Email = boVolunteer.Email,
-                pasword = boVolunteer.Password,
-                AddressVolunteer = boVolunteer.Address,
-                Latitude = boVolunteer.Latitude,
-                Longitude = boVolunteer.Longitude,
-                maximumDistace = boVolunteer.MaximumDistance,
-                duty =,
-                IsActive = boVolunteer.IsActive,
-                distance = (DO.DistanceType)boVolunteer.Distance
-            };
-
-        };
-        try
-            {
-                _dal.Volunteer.Create(doVolunteer);
-            }
-            catch (DO.DalAlreadyExistsException ex)
-            {
-                throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
-            }
-        }
         
+        try
+        {
+            if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(boVolunteer))
+            {
+                DO.Volunteer doVolunteer = new DO.Volunteer()
+                {
+                    Id = boVolunteer.Id,
+                    Name = boVolunteer.Name,
+                    PhoneNumber = boVolunteer.PhoneNumber,
+                    Email = boVolunteer.Email,
+                    pasword = boVolunteer.Password,
+                    AddressVolunteer = boVolunteer.Address,
+                    Latitude = boVolunteer.Latitude,
+                    Longitude = boVolunteer.Longitude,
+                    maximumDistace = boVolunteer.MaximumDistance,
+                    duty = (DO.job)boVolunteer.Duty,
+                    IsActive = boVolunteer.IsActive,
+                    distance = (DO.DistanceType)boVolunteer.Distance
+                };
+                _dal.Volunteer.Create(doVolunteer);
+            };
+        }
+        catch (DO.DalAlreadyExistsException ex)
+        {
+            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
+        }
     }
+
+
     /// <summary>
     /// Deletes a volunteer if they are eligible to be deleted, based on their assignments and current status.
     /// If the volunteer cannot be deleted, an exception is thrown.
@@ -58,12 +57,14 @@ internal class VolunteerImplementation : IVolunteer
     {
         try
         {
-            if (VolunteerManager.CanDeleted(id)) {
+            if (VolunteerManager.CanDeleted(id))
+            {
                 _dal.Volunteer.Delete(id);
             }
             else throw new BO.DalDoesNotExistException($"Volunteer with ID={id} not exists", ex);
         }
-        catch (DO.DalDoesNotExistException ex) {
+        catch (DO.DalDoesNotExistException ex)
+        {
             throw new BO.DalDoesNotExistException($"Volunteer with ID={id} not exists", ex);
         }
 
@@ -78,7 +79,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="BO.BlInvalidCredentialsException"></exception>
     public BO.job EnterToTheSystem(string name, string? pasward)
     {
-        
+
         DO.Volunteer? doVolunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Name == name && v.pasword == pasward);
 
         if (doVolunteer != null)
@@ -98,9 +99,10 @@ internal class VolunteerImplementation : IVolunteer
             DO.Volunteer? doVolunteer = _dal.Volunteer.Read(id);
             if (doVolunteer != null)
             {
-                BO.Volunteer volunteer = new BO.Volunteer() {
+                BO.Volunteer volunteer = new BO.Volunteer()
+                {
                     Id = id,
-                    Name= doVolunteer.Name,
+                    Name = doVolunteer.Name,
                     PhoneNumber = doVolunteer.PhoneNumber,
                     Email = doVolunteer.Email,
                     Password = doVolunteer.pasword,
@@ -118,9 +120,10 @@ internal class VolunteerImplementation : IVolunteer
                 };
                 return volunteer;
             }
-            else throw new BO.BlAlreadyExistsException($"Volunteer with ID={id} not exists") ;
+            else throw new BO.BlAlreadyExistsException($"Volunteer with ID={id} not exists");
         }
-        catch (DO.DalAlreadyExistsException ex) {
+        catch (DO.DalAlreadyExistsException ex)
+        {
             throw new BO.BlAlreadyExistsException($"Volunteer with ID={id} not exists");
         }
     }
@@ -197,28 +200,43 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
             bool isManager = _dal.Volunteer.Read(id).duty == DO.job.manager;
-            if (isManager || id == boVolunteer.Id) {//בודק אם הוא מנהל או שזה המתנדב עצמו
-                if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(boVolunteer))//בדיקה לוגית ותקינות
+            DO.Volunteer oldDoVolunteer = _dal.Volunteer.Read(boVolunteer.Id);
+            DO.Volunteer newDoVolunteer = new DO.Volunteer()
+            {
+                Id = boVolunteer.Id,
+                Name = boVolunteer.Name,
+                PhoneNumber = boVolunteer.PhoneNumber,
+                Email = boVolunteer.Email,
+                pasword = boVolunteer.Password,
+                AddressVolunteer = boVolunteer.Address,
+                Latitude = boVolunteer.Latitude,
+                Longitude = boVolunteer.Longitude,
+                maximumDistace = boVolunteer.MaximumDistance,
+                duty = (DO.job)boVolunteer.Duty,
+                IsActive = boVolunteer.IsActive,
+                distance = (DO.DistanceType)boVolunteer.Distance
+            };
+     
+            if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(boVolunteer))//בדיקה לוגית ותקינות
+            {
+                if (isManager){// אם הוא מנהל 
+                    _dal.Volunteer.Update(newDoVolunteer);
+                }
+                else if (id == boVolunteer.Id)//אם זה המתנדב עצמו זה שמעדכן
                 {
-                    DO.Volunteer doVolunteer = new DO.Volunteer() {
-                        Id = boVolunteer.Id,
-                        Name= boVolunteer.Name,
-                        PhoneNumber = boVolunteer.PhoneNumber,
-                        Email = boVolunteer.Email,
-                        pasword = boVolunteer.Password,
-                        AddressVolunteer = boVolunteer.Address,
-                        Latitude = boVolunteer.Latitude,
-                        Longitude = boVolunteer.Longitude,
-                        maximumDistace = boVolunteer.MaximumDistance,
-                        duty=,
-                        IsActive = boVolunteer.IsActive,
-                        distance = (DO.DistanceType)boVolunteer.Distance                    };
-                    
-                };
+                    if (oldDoVolunteer.duty != newDoVolunteer.duty &&  oldDoVolunteer.duty == DO.job.manager)//אם מעדכנים את התפקיד אז זה רק אם הוא מנהל
+                    {
+                        _dal.Volunteer.Update(newDoVolunteer);
+                    }
+                    else if(oldDoVolunteer.duty == newDoVolunteer.duty) _dal.Volunteer.Update(newDoVolunteer);// אם הוא לא מנסה לעדכן את תפקיד 
+                }
             }
-            Update();
+  
         }
-        catch (DO.DalDoesNotExistException ex) { 
+        catch (DO.DalDoesNotExistException ex)
+        {
+            throw new BO.DalDoesNotExistException($"Volunteer with ID={boVolunteer.Id} not exists", ex);
         }
     }
-}
+}  
+
