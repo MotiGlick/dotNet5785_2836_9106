@@ -35,7 +35,7 @@ internal class CallImplementation : BlApi.ICall
         {
 
             if (!CallManager.LogicalCheck(boCall))
-                throw new Exception("Call is not valid");
+                throw new BO.BlNotValidException("Call is not valid");
 
             _dal.Call.Create(
                 new(
@@ -52,7 +52,7 @@ internal class CallImplementation : BlApi.ICall
         }
         catch (Exception ex)
         {
-            throw new Exception($"Call with ID={boCall.Id} already exists", ex);
+            throw new BO.BlAlreadyExistsException($"Call with ID={boCall.Id} already exists", ex);
 
         }
 
@@ -89,8 +89,8 @@ internal class CallImplementation : BlApi.ICall
     public void CancelHandling(int volunteerId, int assignmentId)//#
     {
 
-        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new Exception($"Volunteer with ID={volunteerId} does not exists");
-        DO.Assignment doAssignment = _dal.Assignment.Read(assignmentId) ?? throw new Exception($"Assignmen with ID={assignmentId}  does not exists");
+        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
+        DO.Assignment doAssignment = _dal.Assignment.Read(assignmentId) ?? throw new BO.BlDoesNotExistException($"Assignmen with ID={assignmentId}  does not exists");
 
 
         if ((doAssignment.VolunteerId == volunteerId || doVolunteer.duty == DO.job.manager)
@@ -107,13 +107,13 @@ internal class CallImplementation : BlApi.ICall
             }
             catch (Exception ex)
             {
-                throw new Exception($"Assignment with ID={assignmentId} does Not exist", ex);
+                throw new BO.BlDoesNotExistException($"Assignment with ID={assignmentId} does Not exist", ex);
             }
 
         }
         else
         {
-            throw new Exception($"Volunteer with ID={volunteerId} is not allow to cancel Assignment with ID={assignmentId}");
+            throw new BO.BlNotAlowedException($"Volunteer with ID={volunteerId} is not allow to cancel Assignment with ID={assignmentId}");
         }
     }
 
@@ -128,11 +128,11 @@ internal class CallImplementation : BlApi.ICall
     public void ChoosingCallForHandling(int volunteerId, int callId)//#
     {
 
-        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new Exception($"Volunteer with ID={volunteerId} does not exists");
-        DO.Call doCall = _dal.Call.Read(callId) ?? throw new Exception($"Call with ID={callId}  does not exists");
+        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
+        DO.Call doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId}  does not exists");
 
         if (CallManager.GetCallStatus(callId) != BO.StatusOfCall.Open || CallManager.GetCallStatus(callId) != BO.StatusOfCall.OpenAtRisk)
-            throw new Exception($"Call with ID={callId} does not open for hanling");
+            throw new BlNotAlowedException ($"Call with ID={callId} does not open for hanling");
 
 
         // Create an assignment for the volunteer and call
@@ -151,7 +151,7 @@ internal class CallImplementation : BlApi.ICall
     public void DeleteCall(int callId)//#
     {
 
-        DO.Call doCall = _dal.Call.Read(callId) ?? throw new Exception($"Call with ID={callId} does Not exist");//Exception
+        DO.Call doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist");//Exception
         try
         {
             // Check if there are no assignments and call is open or open-at-risk
@@ -159,11 +159,11 @@ internal class CallImplementation : BlApi.ICall
                 (CallManager.GetCallStatus(callId) == BO.StatusOfCall.Open) || CallManager.GetCallStatus(callId) == BO.StatusOfCall.OpenAtRisk)
                 _dal.Call.Delete(callId);
             else
-                throw new Exception($"Call with ID={callId} is not allow to delete");
+                throw new BO.BlNotAlowedException($"Call with ID={callId} is not allow to delete");
         }
         catch (Exception ex)
         {
-            throw new Exception($"Call with ID={callId} does Not exist", ex);
+            throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist", ex);
         }
     }
 
@@ -177,8 +177,8 @@ internal class CallImplementation : BlApi.ICall
     /// <exception cref="Exception">Thrown if the volunteer is not authorized to end the assignment.</exception>
     public void EndHandling(int volunteerId, int assignmentId)//#
     {
-        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new Exception($"Volunteer with ID={volunteerId} does not exists");
-        DO.Assignment doAssignment = _dal.Assignment.Read(assignmentId) ?? throw new Exception($"Call with ID={assignmentId}  does not exists");
+        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
+        DO.Assignment doAssignment = _dal.Assignment.Read(assignmentId) ?? throw new BO.BlDoesNotExistException($"Call with ID={assignmentId}  does not exists");
 
         if (doAssignment.VolunteerId == volunteerId
            && (CallManager.GetCallStatus(doAssignment.CallId) != BO.StatusOfCall.InProgress
@@ -192,12 +192,12 @@ internal class CallImplementation : BlApi.ICall
             }
             catch (Exception ex)
             {
-                throw new Exception($"Assignment with ID={assignmentId} does Not exist", ex);
+                throw new BO.BlDoesNotExistException($"Assignment with ID={assignmentId} does Not exist", ex);
             }
         }
         else
         {
-            throw new Exception($"Volunteer with ID={volunteerId} is not allow to end Assignment with ID={assignmentId}");
+            throw new BO.BlNotAlowedException($"Volunteer with ID={volunteerId} is not allow to end Assignment with ID={assignmentId}");
         }
 
     }
@@ -212,7 +212,7 @@ internal class CallImplementation : BlApi.ICall
     /// <exception cref="Exception">Thrown if the call does not exist.</exception>
     public BO.Call GetCallDetails(int callId)//#
     {
-        DO.Call doCall = _dal.Call.Read(callId) ?? throw new Exception($"Call with ID={callId} does Not exist");//Exception
+        DO.Call doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist");//Exception
 
         return new BO.Call
         {
@@ -370,7 +370,7 @@ internal class CallImplementation : BlApi.ICall
         {
             // Validate the call using the LogicalCheck method from CallManager
             if (CallManager.LogicalCheck( boCall))
-                throw new Exception("Call is not valid");
+                throw new BO.BlNotValidException("Call is not valid");
 
             // Update the call in the data layer
             _dal.Call.Update(
@@ -388,7 +388,7 @@ internal class CallImplementation : BlApi.ICall
         }
         catch (Exception ex)
         {
-            throw new Exception($"Student with ID={boCall.Id} already exists", ex);
+            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boCall.Id} already exists", ex);
         }
 
     }

@@ -136,26 +136,26 @@ internal class Program
 
 
                 }
-                catch (Exception ex)
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine($"Error: {ex.Message}");
+                //}
+                catch (BlDeletionImpossible ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
+                    Console.WriteLine($"Delete failed: {ex.Message}");
                 }
-                //catch (BlDeletionImpossible ex)
-                //{
-                //    Console.WriteLine($"Delete failed: {ex.Message}");
-                //}
-                //catch (BlDoesNotExistException ex)
-                //{
-                //    Console.WriteLine($"Get details failed: {ex.Message}");
-                //}
-                //catch (BlNotValidException ex)
-                //{
-                //    Console.WriteLine($"Update failed: {ex.Message}");
-                //}
-                //catch (BlAlreadyExistsException ex)
-                //{
-                //    Console.WriteLine($"Add failed: {ex.Message}");
-                //}
+                catch (BlDoesNotExistException ex)
+                {
+                    Console.WriteLine($"Get details failed: {ex.Message}");
+                }
+                catch (BlNotValidException ex)
+                {
+                    Console.WriteLine($"Update failed: {ex.Message}");
+                }
+                catch (BlAlreadyExistsException ex)
+                {
+                    Console.WriteLine($"Add failed: {ex.Message}");
+                }
             }
         } while (choice != BO.VolunteerMenu.Exit);
 
@@ -314,34 +314,30 @@ internal class Program
                     }
 
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                //catch (BlDoesNotExistException ex)
+                //catch (Exception ex)
                 //{
                 //    Console.WriteLine(ex.Message);
                 //}
-                //catch (BlDeletionImpossible ex)
-                //{
-                //    Console.WriteLine($"{ex.Message}");
-                //    break;
-                //}
-                //catch (BlNotValidException ex)
-                //{
-                //    Console.WriteLine($"{ex.Message}");
-                //    break;
-                //}
+                catch (BlDoesNotExistException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (BlDeletionImpossible ex)
+                {
+                    Console.WriteLine($"{ex.Message}");
+                    break;
+                }
+                catch (BlNotValidException ex)
+                {
+                    Console.WriteLine($"{ex.Message}");
+                    break;
+                }
                 //catch (BlAssignmentIsNotActive ex)
                 //{
                 //    Console.WriteLine($"{ex.Message}");
                 //    break;
                 //}
-                //catch (BlDoesNotExistException ex)
-                //{
-                //    Console.WriteLine($"{ex.Message}");
-                //    break;
-                //}
+                
 
 
             }
@@ -432,18 +428,18 @@ internal class Program
                     //break;
 
                 }
-                catch (Exception ex)
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine($"An error occurred: {ex.Message}");
+                //}
+                catch (ArgumentException ex)
                 {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
+                    Console.WriteLine($"Invalid argument: {ex.Message}");
                 }
-                //catch (ArgumentException ex)
-                //{
-                //    Console.WriteLine($"Invalid argument: {ex.Message}");
-                //}
-                //catch (InvalidOperationException ex)
-                //{
-                //    Console.WriteLine($"Operation failed: {ex.Message}");
-                //}
+                catch (InvalidOperationException ex)
+                {
+                    Console.WriteLine($"Operation failed: {ex.Message}");
+                }
 
 
             }
