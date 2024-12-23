@@ -864,6 +864,7 @@ internal class Program
                 case 8:
                     sortByFild = BO.VolunteerInListField.CurrentCallType;
                     break;
+
             }
 
             try
