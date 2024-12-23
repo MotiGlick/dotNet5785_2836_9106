@@ -5,6 +5,7 @@ using Microsoft.VisualBasic;
 using System;
 using System.Runtime.ConstrainedExecution;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BlTest;
 
@@ -123,7 +124,7 @@ internal class Program
                             Console.WriteLine("Enter volunteer id to get details:");
                             int volunteerId = int.Parse(Console.ReadLine());
                             BO.Volunteer volunteerDetails = s_bl.Volunteer.Read(volunteerId);
-                            PrintVolunteerDetails(volunteerDetails);
+                            Console.WriteLine(volunteerDetails); ;
 
                             break;
                         case BO.VolunteerMenu.ReadAll:
@@ -136,10 +137,6 @@ internal class Program
 
 
                 }
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine($"Error: {ex.Message}");
-                //}
                 catch (BlDeletionImpossible ex)
                 {
                     Console.WriteLine($"Delete failed: {ex.Message}");
@@ -179,7 +176,7 @@ internal class Program
             Console.WriteLine("7 - Get call list in database");
             Console.WriteLine("8 - Get open calls of a volunteer");
             Console.WriteLine("9 - Get all closed calls of a volunteer");
-            Console.WriteLine("10 - Get call info");
+            Console.WriteLine("10 - Get call details");
             Console.WriteLine("11 - Amount of calls on every status");
             Console.WriteLine("0 - Exit");
             Console.Write("Please enter your choice: \n");
@@ -285,18 +282,7 @@ internal class Program
                             callId = int.Parse(Console.ReadLine());
                             BO.Call boCall = s_bl.Call.GetCallDetails(callId);
                             Console.WriteLine(boCall);
-                            //Console.WriteLine($"ID: {boCall.Id}");
-                            //Console.WriteLine($"CallType: {boCall.CallType}");
-                            //Console.WriteLine($"Description: {boCall.Description}");
-                            //Console.WriteLine($"Address: {boCall.Address}");
-                            //Console.WriteLine($"Latitude: {boCall.Latitude}");
-                            //Console.WriteLine($"Longitude: {boCall.Longitude}");
-                            //Console.WriteLine($"OpeningTime: {boCall.OpeningTime}");
-                            //Console.WriteLine($"MaxTime: {boCall.MaxTime}");
-                            //Console.WriteLine($"Status: {boCall.status}");
-                            //Console.WriteLine($"Status: {boCall.status}");
-                            Console.WriteLine(" CallAssignedInList:");
-                            PrintCallAssignedInList(boCall);
+                            
 
 
                             break;
@@ -314,10 +300,6 @@ internal class Program
                     }
 
                 }
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine(ex.Message);
-                //}
                 catch (BlDoesNotExistException ex)
                 {
                     Console.WriteLine(ex.Message);
@@ -332,13 +314,6 @@ internal class Program
                     Console.WriteLine($"{ex.Message}");
                     break;
                 }
-                //catch (BlAssignmentIsNotActive ex)
-                //{
-                //    Console.WriteLine($"{ex.Message}");
-                //    break;
-                //}
-                
-
 
             }
         } while (choice != BO.CallMenuOptions.Exit);
@@ -377,11 +352,13 @@ internal class Program
                             break;
                         case BO.AdminMenu.AdvanceClock:
 
-                            Console.WriteLine("Enter time unit to advance (seconds, minutes, hours):");
+                            Console.WriteLine("Enter time unit to advance ( Minute, Hour, Day, Month, Year):");
                             if (Enum.TryParse(Console.ReadLine(), out BO.TimeUnit timeUnit))
                                 s_bl.Admin.ForwardClock(timeUnit);
                             else
                                 Console.WriteLine("Invalid time unit.");
+
+
 
                             break;
                         case BO.AdminMenu.GetMaxRange:
@@ -423,15 +400,8 @@ internal class Program
                             break;
                     }
 
-                    //default:
-                    //    Console.WriteLine("Invalid option. Please try again.");
-                    //break;
 
                 }
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine($"An error occurred: {ex.Message}");
-                //}
                 catch (ArgumentException ex)
                 {
                     Console.WriteLine($"Invalid argument: {ex.Message}");
@@ -463,7 +433,6 @@ internal class Program
     {
         Console.WriteLine("Choose how to filter the list");
         Console.WriteLine("1  - get all calls");
-        //  Console.WriteLine("filter calls by call type:");
         Console.WriteLine("2  - ProvideTransportation calls");
         Console.WriteLine("3  - MedicalAssistance calls");
         Console.WriteLine("4  - EmotionalSupport calls");
@@ -471,7 +440,6 @@ internal class Program
         Console.WriteLine("6  - HospitalVisit calls");
         Console.WriteLine("7  - DeliverMedicine calls");
         Console.WriteLine("8  - CleaningAssistance calls");
-        // Console.WriteLine("filter calls by their status:");
         Console.WriteLine("9  - open calls");
         Console.WriteLine("10 - calls in progress");
         Console.WriteLine("11 - closed calls");
@@ -591,22 +559,17 @@ internal class Program
                     break;
 
             }
-            IEnumerable<BO.CallInList> callLists = s_bl.Call.GetCallList(filterField, filterValue, sortField);
-
-
-            foreach (var call in callLists)
+            IEnumerable<BO.CallInList> callList = s_bl.Call.GetCallList(filterField, filterValue, sortField);
+            if (callList.Count() == 0 || callList == null)
             {
-                Console.WriteLine(call);
-                Console.WriteLine($"Assignment id: {call.Id}");
-                Console.WriteLine($"Call id: {call.CallId}");
-                Console.WriteLine($"all type: {call.CallType}");
-                Console.WriteLine($"time opened: {call.OpeningTime}");
-                Console.WriteLine($"time to complete: {call.TimeLeft}");
-                Console.WriteLine($"Name of last volunteer who chose this call: {call.LastVolunteerName}");
-                Console.WriteLine($"Call status: {call.status}");
-                Console.WriteLine($"number of assignments this call had: {call.AmountOfAssigns}");
-
+                Console.WriteLine("No  calls found.");
             }
+            else
+                foreach (BO.CallInList call in callList)
+                {
+                    Console.WriteLine(call);
+
+                }
         }
 
     }
@@ -626,7 +589,6 @@ internal class Program
         int volunteerId = int.Parse(Console.ReadLine());
 
         Console.WriteLine("Choose how to filter the list");
-        // Console.WriteLine("filter calls by call type:");
         Console.WriteLine("1  - get all calls");
         Console.WriteLine("2  - ProvideTransportation calls");
         Console.WriteLine("3  - MedicalAssistance calls");
@@ -642,7 +604,7 @@ internal class Program
         Console.WriteLine("2 - order by call type");
         Console.WriteLine("3 - order by call address");
         Console.WriteLine("4 - order by time opened");
-        Console.WriteLine("5 - order by time left"); // OpenCallInListField.MaxTime => call.MaxTime(יכול להיות טעות),
+        Console.WriteLine("5 - order by time left");
         Console.WriteLine("6 - order by call distance from volunteer");
         string input2 = Console.ReadLine();
 
@@ -702,18 +664,16 @@ internal class Program
 
             }
             IEnumerable<BO.OpenCallInList> openCallsInList = s_bl.Call.GetOpenCallsForVolunteer(volunteerId, callType, sortField);
-            foreach (var call in openCallsInList)
+            if (openCallsInList.Count() == 0 || openCallsInList == null)
             {
-                Console.WriteLine(call);
-                //Console.WriteLine($"Call id: {call.Id}");
-                //Console.WriteLine($"Call type: {call.CallType}");
-                //Console.WriteLine($"Call description: {call.Description}");
-                //Console.WriteLine($"Call address: {call.Address}");
-                //Console.WriteLine($"Time opened: {call.OpeningTime}");
-                //Console.WriteLine($"Total time to complete:  {call.MaxTime}");
-                //Console.WriteLine($"Call distance:  {call.DistanceFromVolunteer}");
-
+                Console.WriteLine("No open calls found.");
             }
+            else
+                foreach (var call in openCallsInList)
+                {
+                    Console.WriteLine(call);
+
+                }
         }
 
     }
@@ -734,7 +694,6 @@ internal class Program
 
         Console.WriteLine("Choose how to filter the list");
         Console.WriteLine("1  - get all calls");
-        Console.WriteLine("filter calls by call type:");
         Console.WriteLine("2  - ProvideTransportation calls");
         Console.WriteLine("3  - MedicalAssistance calls");
         Console.WriteLine("4  - EmotionalSupport calls");
@@ -813,18 +772,16 @@ internal class Program
             }
 
             IEnumerable<BO.ClosedCallInList> closedCallInLists = s_bl.Call.GetClosedCallsByVolunteer(volunteerId, callType, sortField);
-            foreach (var call in closedCallInLists)
+            if (closedCallInLists.Count() == 0 || closedCallInLists == null)
             {
-                Console.WriteLine(call);
-                //Console.WriteLine($"Call id: {call.Id}");
-                //Console.WriteLine($"Call type: {call.CallType}");
-                //Console.WriteLine($"Call address: {call.Address}");
-                //Console.WriteLine($"Time opened: {call.OpeningTime}");
-                //Console.WriteLine($"Time assigned: {call.HndalStartTime}");
-                //Console.WriteLine($"Time completed: {call.EndTime}");
-                //Console.WriteLine($"End handeling type: {call.ClosureType}");
-
+                Console.WriteLine("No closed calls found.");
             }
+            else
+                foreach (var call in closedCallInLists)
+                {
+                    Console.WriteLine(call);
+
+                }
         }
 
     }
@@ -923,29 +880,11 @@ internal class Program
 
     }
 
-    private static void PrintCallAssignedInList(BO.Call BOCall)
-    {
-        if (BOCall.CallAssignsList.Count() == 0) Console.WriteLine("No assignments exists for this call");
-        foreach (BO.CallAssignInList assign in BOCall.CallAssignsList)
-        {
-            Console.WriteLine(assign);
-            //Console.WriteLine($"Volunteer id: {call.VolunteerId}");
-            //Console.WriteLine($"Volunteer name: {call.VolunteerName}");
-            //Console.WriteLine($"Time opened: {call.TimeOpened}");
-            //Console.WriteLine($"Time completed: {call.TimeCompleted}");
-            //Console.WriteLine($"Type of end care: {call.typeOfEndCare}");
-
-        }
-    }
-
-
-
     static BO.Call CreateBoCallFromInput(int? callId)
     {
         if (callId == null)
-        {
-            callId = 0;//dosent matter wich value becuse the ID will be aoutomaticly generated
-        }
+            callId = 0;
+
         int convertedId = (int)callId;
         Console.WriteLine("Enter call type from the list:");
         Console.WriteLine("ProvideTransportation");
@@ -954,8 +893,6 @@ internal class Program
         Console.WriteLine("HospitalVisit");
         Console.WriteLine("DeliverMedicine");
         Console.WriteLine("CleaningAssistance");
-        Console.WriteLine("None\n");
- 
 
         BO.CallType callType = Enum.Parse<BO.CallType>(Console.ReadLine(), true);
 
@@ -965,11 +902,12 @@ internal class Program
         Console.WriteLine("Enter call address:");
         string callAddress = Console.ReadLine();
 
-        Console.WriteLine("Enter time opened (yyyy-MM-dd HH:mm:ss):");
-        DateTime timeOpened = DateTime.Parse(Console.ReadLine());
+        //Console.WriteLine("Enter time opened (yyyy-MM-dd HH:mm:ss):");
+        //DateTime timeOpened = DateTime.Parse(Console.ReadLine());
 
         Console.WriteLine("Enter time to complete (yyyy-MM-dd HH:mm:ss) (optional):");
-        string timeToCompleteInput = Console.ReadLine();
+        string? timeToCompleteInput = Console.ReadLine();
+
         DateTime? timeToComplete = string.IsNullOrEmpty(timeToCompleteInput) ? (DateTime?)null : DateTime.Parse(timeToCompleteInput);
         return new BO.Call()
         {
@@ -977,48 +915,13 @@ internal class Program
             CallType = callType,
             Description = callDescription,
             Address = callAddress,
-            OpeningTime = timeOpened,
+            OpeningTime = s_bl.Admin.GetClock(),
             MaxTime = timeToComplete,
             status = StatusOfCall.Open,
             CallAssignsList = null
         };
 
     }
-    public static void PrintVolunteerDetails(BO.Volunteer volunteer)
-    {
-        Console.WriteLine(volunteer);
-        //Console.WriteLine($"Volunteer id: {volunteer.Id}");
-        //Console.WriteLine($"Full name: {volunteer.Name}");
-        //Console.WriteLine($"Phone number: {volunteer.PhoneNumber}");
-        //Console.WriteLine($"Email: {volunteer.Email}");
-        //Console.WriteLine($"Is active: {volunteer.IsActive}");
-        //Console.WriteLine($"Current address: {volunteer.Address}");
-        //Console.WriteLine($"Latitude: {volunteer.Latitude}");
-        //Console.WriteLine($"Longitude: {volunteer.Longitude}");
-        //Console.WriteLine($"Role: {volunteer.Duty}");
-        //Console.WriteLine($"Max distance: {volunteer.MaximumDistance}");
-        //Console.WriteLine($"Distance type: {volunteer.Distance}");
-        //Console.WriteLine($"Number of calls treated: {volunteer.HandeledCalls}");
-        //Console.WriteLine($"Number of calls cancelled: {volunteer.CanceledCalls}");
-        //Console.WriteLine($"Number of calls expired: {volunteer.ExpiredCalls}");
-        //Console.WriteLine($"Assigned call id: {volunteer.CallInProgress?.CallId}");
-        //if (volunteer.CallInProgress != null)
-        //{
-        //    Console.WriteLine("Current call in progress:");
-        //    Console.WriteLine($"Call id: {volunteer.CallInProgress.CallId}");
-        //    Console.WriteLine($"Call type: {volunteer.callInProgres.CallType}");
-        //    Console.WriteLine($"Call description: {volunteer.callInProgres.CallDescription}");
-        //    Console.WriteLine($"Call address: {volunteer.callInProgres.CallAddress}");
-        //    Console.WriteLine($"Time opened: {volunteer.callInProgres.TimeOpened}");
-        //    Console.WriteLine($"Time to complete: {volunteer.callInProgres.TimeToComplete}");
-        //    Console.WriteLine($"Time assigned: {volunteer.callInProgres.TimeAssigned}");
-        //    Console.WriteLine($"Call distance: {volunteer.callInProgres.CallDistance}");
-        //    Console.WriteLine($"Call status: {volunteer.callInProgres.Status}");
-        //}
-
-    }
- 
-
 
     /// <summary>
     /// Prompts the user to enter volunteer details and returns a Volunteer object.

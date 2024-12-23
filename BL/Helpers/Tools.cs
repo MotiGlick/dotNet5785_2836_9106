@@ -22,19 +22,24 @@ internal static class Tools
     /// <returns>
     /// An array containing latitude and longitude as doubles, or null if the address cannot be resolved.
     /// </returns>
+
+
+
     public static double[]? GetCoordinates(string address)
     {
-        string baseUrl = "https://us1.locationiq.com/v1/search.php";
-        string apiKey = "YOUR_API_KEY";
-        string requestUrl = $"{baseUrl}?key={apiKey}&q={Uri.EscapeDataString(address)}&format=json";
+        string baseUrl = "https://nominatim.openstreetmap.org/search";
+        string requestUrl = $"{baseUrl}?q={Uri.EscapeDataString(address)}&format=json&addressdetails=1";
 
         using (HttpClient client = new HttpClient())
         {
+            // הוספת User-Agent לבקשה (נדרש על ידי OpenStreetMap)
+            client.DefaultRequestHeaders.Add("User-Agent", "YourAppName");
+
             HttpResponseMessage response = client.GetAsync(requestUrl).Result;
 
             if (!response.IsSuccessStatusCode)
             {
-                // If there is a communication error, choose to throw an exception or return null
+                Console.WriteLine($"Error: {response.StatusCode}, {response.ReasonPhrase}");
                 return null;
             }
 
@@ -46,7 +51,7 @@ internal static class Tools
 
                 if (root.GetArrayLength() == 0)
                 {
-                    // No results for the given address
+                    Console.WriteLine("No results found for the given address.");
                     return null;
                 }
 
@@ -60,14 +65,17 @@ internal static class Tools
     }
 
 
-    /// <summary>
-    /// Checks whether a given address exists by attempting to retrieve its coordinates.
-    /// </summary>
-    /// <param name="address">The address to validate.</param>
-    /// <returns>True if the address exists; otherwise, false.</returns>
-    public static bool AddressExists(string address)//#
+
+
+
+/// <summary>
+/// Checks whether a given address exists by attempting to retrieve its coordinates.
+/// </summary>
+/// <param name="address">The address to validate.</param>
+/// <returns>True if the address exists; otherwise, false.</returns>
+public static bool AddressExists(string address)//#
     {
-        double[]? coordinates = Tools.GetCoordinates(address);
+        double[]? coordinates = GetCoordinates(address);
         return coordinates != null;
     }
 
@@ -100,16 +108,15 @@ internal static class Tools
     /// <summary>
     /// Calculates the distance in kilometers between two addresses using their geographic coordinates.
     /// </summary>
-    /// <param name="address1">The first address.</param>
-    /// <param name="address2">The second address.</param>
+    /// <param name="doVolunteer">The first address.</param>
+    /// <param name="doCall">The second address.</param>
     /// <returns>The distance in kilometers as a double.</returns>
-    public static double CalculateDistance(string address1, string address2)
+    public static double CalculateDistance(DO.Volunteer? doVolunteer, DO.Call? doCall)
     {
-        
-        double[] coords1 = GetCoordinates(address1);
-        double[] coords2 = GetCoordinates(address2);
 
-        return CalculateHaversineDistance(coords1[0], coords1[1], coords2[0], coords2[1]);
+        if (doVolunteer == null || doCall == null)
+            return 0;
+        return CalculateHaversineDistance(doVolunteer.Latitude, doVolunteer.Longitude, doCall.Latitude, doCall.Latitude);
     }
 
 
@@ -121,16 +128,20 @@ internal static class Tools
     /// <param name="lat2">Latitude of the second point.</param>
     /// <param name="lon2">Longitude of the second point.</param>
     /// <returns>The distance in kilometers as a double.</returns>
-    private static double CalculateHaversineDistance(double lat1, double lon1, double lat2, double lon2)
+    public static double CalculateHaversineDistance(double? lat1, double? lon1, double? lat2, double? lon2)
     {
+
+
+        if (lat1 == null || lon1 == null || lat2 == null || lon2 == null)
+            return 0;
         const double R = 6371; // Radius of the Earth in kilometers
 
         //  converting degrees to radians
-        double dLat = DegreesToRadians(lat2 - lat1);
-        double dLon = DegreesToRadians(lon2 - lon1);
+        double dLat = DegreesToRadians((double)lat2 - (double)lat1);
+        double dLon = DegreesToRadians((double)lon2 - (double)lon1);
 
         double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                   Math.Cos(DegreesToRadians(lat1)) * Math.Cos(DegreesToRadians(lat2)) *
+                   Math.Cos(DegreesToRadians((double)lat1)) * Math.Cos(DegreesToRadians((double)lat2)) *
                    Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
 
         double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));

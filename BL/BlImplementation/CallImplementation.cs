@@ -132,7 +132,7 @@ internal class CallImplementation : BlApi.ICall
         DO.Call doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId}  does not exists");
 
         if (CallManager.GetCallStatus(callId) != BO.StatusOfCall.Open || CallManager.GetCallStatus(callId) != BO.StatusOfCall.OpenAtRisk)
-            throw new BlNotAlowedException ($"Call with ID={callId} does not open for hanling");
+            throw new BlNotAlowedException($"Call with ID={callId} does not open for hanling");
 
 
         // Create an assignment for the volunteer and call
@@ -243,7 +243,7 @@ internal class CallImplementation : BlApi.ICall
     {
 
 
-        return _dal.Call.ReadAll().Select
+        var listOfCalls = _dal.Call.ReadAll().Select
             (call => new BO.CallInList
             {
                 Id = AssignmentManager.GetLastAssingmentId(call.Id),
@@ -256,32 +256,33 @@ internal class CallImplementation : BlApi.ICall
                 status = CallManager.GetCallStatus(call.Id),
                 AmountOfAssigns = AssignmentManager.GetCallAssignList(call.Id).Count,
             })
-            .Distinct()
+             .Distinct()
             .Where(call => filterField switch
             {
                 //CallInListField.Id => call.Id == (int?)filterValue,
-               // CallInListField.CallId => call.CallId == (int?)filterValue,
+                // CallInListField.CallId => call.CallId == (int?)filterValue,
                 CallInListField.CallType => call.CallType == (BO.CallType)filterValue!,
                 //CallInListField.OpeningTime => call.OpeningTime == (DateTime?)filterValue,
-               // CallInListField.TimeLeft => call.TimeLeft == (TimeSpan?)filterValue,
-                CallInListField.LastVolunteerName => call.LastVolunteerName == (string?)filterValue,
+                // CallInListField.TimeLeft => call.TimeLeft == (TimeSpan?)filterValue,
+                //CallInListField.LastVolunteerName => call.LastVolunteerName == (string?)filterValue,
                 //CallInListField.HandlingTime => call.HandlingTime == (TimeSpan?)filterValue,
                 CallInListField.status => call.status == (BO.StatusOfCall)filterValue!,
                 CallInListField.AmountOfAssigns => call.AmountOfAssigns == (int?)filterValue,
                 _ => true
             })
-            .OrderBy<BO.CallInList, object?>(call => sortField switch
-            {
-                CallInListField.Id => call.Id,
-                CallInListField.CallId => call.CallId,
-                CallInListField.CallType => (int)call.CallType,
-                CallInListField.OpeningTime => call.OpeningTime,
-                CallInListField.TimeLeft => call.TimeLeft,
-                CallInListField.LastVolunteerName => call.LastVolunteerName,
-                CallInListField.HandlingTime => call.HandlingTime,
-                CallInListField.status => (int)call.status,
-                _ => call.Id
-            });
+          .OrderBy<BO.CallInList, object?>(call => sortField switch
+           {
+               CallInListField.Id => call.Id,
+               CallInListField.CallId => call.CallId,
+               CallInListField.CallType => (int)call.CallType,
+               CallInListField.OpeningTime => call.OpeningTime,
+               CallInListField.TimeLeft => call.TimeLeft,
+               CallInListField.LastVolunteerName => call.LastVolunteerName,
+               CallInListField.HandlingTime => call.HandlingTime,
+               CallInListField.status => (int)call.status,
+               _ => call.Id
+           });
+        return listOfCalls;
     }
 
 
@@ -297,17 +298,17 @@ internal class CallImplementation : BlApi.ICall
     {
 
 
-        return GetCallList(CallInListField.status, StatusOfCall.Closed).Where(call => AssignmentManager.GetCallAssignList(call.CallId)
-            .Any(assign => assign.VolunteerId == volunteerId))
+        return GetCallList()
+            .Where(call => AssignmentManager.GetCallAssignList(call.CallId).Any(assign => assign.VolunteerId == volunteerId))
             .Select(call => new ClosedCallInList
             {
                 Id = (int)call.Id!,
                 CallType = call.CallType,
                 Address = _dal.Call.Read(call.CallId)!.CallAddress,
                 OpeningTime = call.OpeningTime,
-                HndalStartTime = AssignmentManager.GetAssignmentStartTime((int)call.Id, volunteerId),
-                EndTime = AssignmentManager.GetAssignmentEndTime((int)call.Id, volunteerId),
-                ClosureType = AssignmentManager.GetAssignmentClosureType((int)call.Id, volunteerId)
+                HndalStartTime = AssignmentManager.GetAssignmentStartTime(call.CallId, volunteerId),
+                EndTime = AssignmentManager.GetAssignmentEndTime(call.CallId, volunteerId),
+                ClosureType = AssignmentManager.GetAssignmentClosureType(call.CallId, volunteerId)
             })
             .Where(call => callTypeFilter == null ? true : call.CallType == callTypeFilter)
             .OrderBy<BO.ClosedCallInList, object?>((call => sortField switch
@@ -318,7 +319,7 @@ internal class CallImplementation : BlApi.ICall
                 ClosedCallInListField.OpeningTime => call.OpeningTime,
                 ClosedCallInListField.HndalStartTime => call.HndalStartTime,
                 ClosedCallInListField.EndTime => call.EndTime,
-                ClosedCallInListField.ClosureType => (int)call.ClosureType,
+                ClosedCallInListField.ClosureType => call.ClosureType,
                 _ => call.Id
             }));
 
@@ -334,9 +335,15 @@ internal class CallImplementation : BlApi.ICall
     /// <returns>List of open calls assigned to the volunteer.</returns>
     public IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? callType, OpenCallInListField? sortField)
     {
+        IEnumerable<BO.CallInList> listOfCalls ;
 
-        return GetCallList(BO.CallInListField.CallType, callType)
-           .Where(call => (call.status == BO.StatusOfCall.Open || call.status == BO.StatusOfCall.OpenAtRisk))
+        if (callType != null)
+            listOfCalls = GetCallList(CallInListField.CallType, callType);
+        else
+            listOfCalls = GetCallList();
+
+        return listOfCalls
+           .Where(call => call.status == BO.StatusOfCall.Open || call.status == BO.StatusOfCall.OpenAtRisk)
            .Select(call => new BO.OpenCallInList
            {
                Id = call.CallId,
@@ -345,7 +352,7 @@ internal class CallImplementation : BlApi.ICall
                Address = _dal.Call.Read(call.CallId)!.CallAddress,
                OpeningTime = call.OpeningTime,
                MaxTime = _dal.Call.Read(call.CallId)!.TotalTime,
-               DistanceFromVolunteer = Tools.CalculateDistance(_dal.Volunteer.Read(volunteerId)!.AddressVolunteer!, _dal.Call.Read(call.CallId)!.CallAddress)
+               DistanceFromVolunteer =  Tools.CalculateDistance(_dal.Volunteer.Read(volunteerId), _dal.Call.Read(call.CallId))
            })
            .OrderBy<BO.OpenCallInList, object?>(call => sortField switch
            {
@@ -369,7 +376,7 @@ internal class CallImplementation : BlApi.ICall
         try
         {
             // Validate the call using the LogicalCheck method from CallManager
-            if (CallManager.LogicalCheck( boCall))
+            if (CallManager.LogicalCheck(boCall))
                 throw new BO.BlNotValidException("Call is not valid");
 
             // Update the call in the data layer

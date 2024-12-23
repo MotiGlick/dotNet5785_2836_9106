@@ -70,5 +70,6 @@ public class CallInList
     /// </summary>
     public int AmountOfAssigns { get; init; }
 
+
     public override string ToString() => this.ToStringProperty();
 }

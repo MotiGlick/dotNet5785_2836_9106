@@ -50,7 +50,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
         }
         catch (DO.DalAlreadyExistsException ex)
         {
-           // throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
+            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
         }
     }
 
@@ -146,7 +146,6 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// <param name="isActive">Optional filter to specify if the volunteer should be active (true) or inactive (false). If null, no filter is applied.</param>
     /// <param name="sortField">Optional field to sort the volunteer list by. If null, the list is sorted by volunteer ID by default.</param>
     /// <returns>A sorted list of volunteers (BO.VolunteerInList) based on the provided filters and sorting criteria.</returns>
-
     public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField)
     {
         // שליפת כל המתנדבים עם או בלי פילטר לפי הפעילות

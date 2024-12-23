@@ -4,6 +4,7 @@ using BO;
 using DO;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Helpers;
 
@@ -51,12 +52,24 @@ internal class AssignmentManager
     /// <param name="boCallId">The ID of the call.</param>
     /// <param name="VolunteerId">The ID of the volunteer.</param>
     /// <returns>The start time of the assignment.</returns>
+    /// <exception cref="Exception">Thrown if the assignment does not exist or start time is not set.</exception>
     public static DateTime GetAssignmentStartTime(int boCallId, int VolunteerId)
     {
+      
+        var assignList = GetCallAssignList(boCallId);
+        var assignment = assignList.FirstOrDefault(v => v.VolunteerId == VolunteerId);
 
-        return GetCallAssignList(boCallId).FirstOrDefault(v => v.VolunteerId == VolunteerId).HndalStartTime;
 
+        if (assignment == null)
+            throw new BlDoesNotExistException($"No assignment found for VolunteerId={VolunteerId} in CallId={boCallId}");
+
+        // בדיקה אם זמן ההתחלה מוגדר והחזרתו
+        if (assignment.HndalStartTime == null)
+            throw new BlDoesNotExistException($"Start time is not set for the assignment of VolunteerId={VolunteerId} in CallId={boCallId}");
+
+        return assignment.HndalStartTime;
     }
+
 
 
     /// <summary>
@@ -64,15 +77,20 @@ internal class AssignmentManager
     /// </summary>
     /// <param name="boCallId">The ID of the call.</param>
     /// <param name="VolunteerId">The ID of the volunteer.</param>
-    /// <returns>The end time of the assignment.</returns>
-    /// <exception cref="Exception">Thrown if the end time cannot be found.</exception>
-    public static DateTime GetAssignmentEndTime(int boCallId, int VolunteerId)
+    /// <returns>The end time of the assignment, or null if the assignment doesn't exist or end time is not set.</returns>
+    /// <exception cref="Exception">Thrown if the end time is explicitly null.</exception>
+    public static DateTime? GetAssignmentEndTime(int boCallId, int VolunteerId)
     {
-
+       
         var assignList = GetCallAssignList(boCallId);
-        return assignList.FirstOrDefault(v => v.VolunteerId == VolunteerId).HndalEndTime ?? throw new Exception("ClosureType not foand");
+        var assignment = assignList.FirstOrDefault(v => v.VolunteerId == VolunteerId);
 
+        if (assignment == null)
+            return null;
+
+        return assignment.HndalEndTime;
     }
+
 
 
     /// <summary>
@@ -82,10 +100,15 @@ internal class AssignmentManager
     /// <param name="VolunteerId">The ID of the volunteer.</param>
     /// <returns>The closure type of the assignment.</returns>
     /// <exception cref="Exception">Thrown if the closure type cannot be found.</exception>
-    public static BO.CallClosureType GetAssignmentClosureType(int boCallId, int VolunteerId)
+    public static BO.CallClosureType? GetAssignmentClosureType(int boCallId, int VolunteerId)
     {
 
-        return GetCallAssignList(boCallId).FirstOrDefault(v => v.VolunteerId == VolunteerId).ClosureType ?? throw new Exception("ClosureType not foand");
+        var assignment = GetCallAssignList(boCallId)?.FirstOrDefault(v => v.VolunteerId == VolunteerId);
+        if (assignment == null)
+            return null;
+        else
+            return assignment.ClosureType;
+      
 
     }
 
@@ -111,20 +134,29 @@ internal class AssignmentManager
     /// <returns>The name of the last volunteer.</returns>
     public static string? GetLastVolunteerName(int doCallId)//#
     {
-
-        return GetCallAssignList(doCallId).OrderByDescending(Assin => Assin.HndalStartTime).First().VolunteerName;
+        int? VolunteerId = GetLastVolunteerId(doCallId);
+        if (VolunteerId == null)
+            return null;
+        else
+            return GetCallAssignList(doCallId).OrderByDescending(Assin => Assin.HndalStartTime).First().VolunteerName;
 
     }
 
     /// <summary>
     /// Retrieves the ID of the volunteer in the last assignment for a specific call.
     /// </summary>
-    /// <param name="doCallId">The ID of the call.</param>
+    /// <param name = "doCallId" > The ID of the call.</param>
     /// <returns>The ID of the last volunteer.</returns>
     public static int? GetLastVolunteerId(int doCallId)//#
     {
 
-        return GetCallAssignList(doCallId).OrderByDescending(Assin => Assin.HndalStartTime).First().VolunteerId;
+        var assignments = GetCallAssignList(doCallId);
+        if (assignments == null || !assignments.Any())
+            return null;
+
+        return assignments
+            //.OrderByDescending(assin => assin.HndalStartTime)
+            .FirstOrDefault()?.VolunteerId;
 
     }
 
@@ -136,7 +168,17 @@ internal class AssignmentManager
     public static DO.Assignment? GetLastAssingment(int doCallId)//#
     {
 
-        return _dal.Assignment.ReadAll().FirstOrDefault(assin => assin.VolunteerId == GetLastVolunteerId(doCallId));
+        int? VolunteerId = GetLastVolunteerId(doCallId);
+        if (VolunteerId == null)
+            return null;
+        else
+        {
+            var lastAssignment = _dal.Assignment.ReadAll()//GetCallAssignList(doCallId)
+            //.OrderByDescending(assin => assin.HndalStartTime)
+            .FirstOrDefault(assin => assin.VolunteerId == VolunteerId);
+
+            return lastAssignment;
+        }
 
     }
 
@@ -146,4 +188,17 @@ internal class AssignmentManager
     //    return GetCallAssignList(doCallId).OrderByDescending(Assin => Assin.HndalStartTime).First();
 
     //}
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
