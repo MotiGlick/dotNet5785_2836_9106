@@ -88,7 +88,7 @@ internal class IAdminImplementation : IAdmin
     /// </summary>
     public void ResetDB()
     {
-        _dal.Config.Reset();
+        _dal.ResetDB();
         ClockManager.UpdateClock(ClockManager.Now);
        
     }

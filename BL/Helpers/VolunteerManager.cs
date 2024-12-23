@@ -165,9 +165,7 @@ internal class VolunteerManager
                 OpeningTime = relatedCall.CallTime,
                 MaxTime = relatedCall.TotalTime,
                 HndalStartTime = assignment.AssignmentTime,
-                DistanceFromVolunteer = Tools.CalculateDistance(
-                    _dal.Volunteer.Read(assignment.Id).AddressVolunteer,
-                    relatedCall.CallAddress),
+                DistanceFromVolunteer = Tools.CalculateDistance(_dal.Volunteer.Read(assignment.Id), relatedCall),
                 status = CallManager.GetCallStatus(relatedCall.Id)
             }).FirstOrDefault(); // לוקח את התוצאה הראשונה או null אם אין תוצאה
 

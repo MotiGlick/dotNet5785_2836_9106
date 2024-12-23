@@ -43,7 +43,7 @@ public class ClosedCallInList
     /// <summary>
     /// Gets the closure type of the call.
     /// </summary>
-    public CallClosureType ClosureType { get; init; }
+    public CallClosureType? ClosureType { get; init; }
 
     /// <summary>
     /// Returns a string that represents the current object, including its properties.

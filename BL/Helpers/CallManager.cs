@@ -27,9 +27,11 @@ internal class CallManager
     /// </returns>
     public static bool LogicalCheck(BO.Call boCall)//#
     {
-
-        if (!Tools.AddressExists(boCall.Address) || (boCall.MaxTime != null && (boCall.MaxTime <= boCall.OpeningTime)))
+        if (!Tools.AddressExists(boCall.Address))
             return false;
+        if (boCall.MaxTime != null)
+            if (boCall.MaxTime <= boCall.OpeningTime)
+                return false;
 
         return true;
 
@@ -43,40 +45,46 @@ internal class CallManager
     /// <param name="doCallId">The ID of the call.</param>
     /// <returns>The status of the call as a <see cref="BO.StatusOfCall"/>.</returns>
     /// <exception cref="Exception">Thrown if the call does not exist.</exception>
-    public static BO.StatusOfCall GetCallStatus(int doCallId)//????
+    public static BO.StatusOfCall GetCallStatus(int doCallId)
     {
-        DO.Call doCall = _dal.Call.Read(doCallId) ?? throw new Exception($"Call with ID={doCallId} does not exists");
-        DO.Assignment? lastAssingment = AssignmentManager.GetLastAssingment(doCallId);
 
+        DO.Call doCall = _dal.Call.Read(doCallId) ?? throw new Exception($"Call with ID={doCallId} does not exist");
+
+
+        var now = ClockManager.Now;
+        var callAssignments = AssignmentManager.GetCallAssignList(doCallId);
+        var riskRangeEnd = doCall.CallTime + _dal.Config.RiskRange;
 
         // If there is no assignment or all assignments are canceled
-        if (AssignmentManager.GetCallAssignList(doCallId) == null
-            || AssignmentManager.GetCallAssignList(doCallId).All(assign => assign.ClosureType == BO.CallClosureType.SelfCancellation || assign.ClosureType == BO.CallClosureType.ManagerCancellation))
+        if (callAssignments == null || callAssignments.All(assign =>
+                assign.ClosureType == BO.CallClosureType.SelfCancellation ||
+                assign.ClosureType == BO.CallClosureType.ManagerCancellation))
         {
-            if (ClockManager.Now > doCall.CallTime + _dal.Config.RiskRange && ClockManager.Now < doCall.TotalTime)
+            if (now > riskRangeEnd && now < doCall.TotalTime)
                 return BO.StatusOfCall.OpenAtRisk;
-            else if (ClockManager.Now > doCall.TotalTime)
+            else if (now > doCall.TotalTime)
                 return BO.StatusOfCall.Expired;
             else
                 return BO.StatusOfCall.Open;
-
         }
 
-        else //there is an Assingment
+        // if Handled on time
+        var lastAssignment = AssignmentManager.GetLastAssingment(doCallId);
+        var lestAssignmentClosureType = AssignmentManager.GetAssignmentClosureType(doCallId, (int)AssignmentManager.GetLastVolunteerId(doCallId)!);
+        if (lastAssignment != null && lestAssignmentClosureType == BO.CallClosureType.HandledOnTime)
         {
-
-            if (ClockManager.Now > doCall.CallTime + _dal.Config.RiskRange && ClockManager.Now < doCall.TotalTime)
-                return BO.StatusOfCall.InProgressAtRisk;
-            else if (ClockManager.Now > doCall.TotalTime)
-                return BO.StatusOfCall.Closed;
-            else
-                return BO.StatusOfCall.InProgress;
+            return BO.StatusOfCall.Closed;
         }
 
+    
+        if (now > riskRangeEnd && now < doCall.TotalTime)
+            return BO.StatusOfCall.InProgressAtRisk;
+        else if (now > doCall.TotalTime)
+            return BO.StatusOfCall.Expired;
 
 
+        return BO.StatusOfCall.InProgress;
     }
-
 
     /// <summary>
     /// Calculates the total handling time of the last assignment for a given call.
