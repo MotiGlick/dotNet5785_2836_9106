@@ -30,19 +30,12 @@ internal class VolunteerManager
 
         // בדיקת טלפון סלולרי (אורך ומבנה תקין)
         if (string.IsNullOrWhiteSpace(volunteer.PhoneNumber) ||
-            !Regex.IsMatch(volunteer.PhoneNumber, @"^0\d{9}$"))
+          !Regex.IsMatch(volunteer.PhoneNumber, @"^\d{10}$"))
             return false;
 
-        // בדיקת קו רוחב (אם קיים)
-        if (volunteer.Latitude.HasValue && !double.TryParse(volunteer.Latitude.ToString(), out double latitude)) return false;
 
-
-        // בדיקת קו אורך (אם קיים)
-        if (volunteer.Longitude.HasValue && !double.TryParse(volunteer.Longitude.ToString(), out double longitude)) return false;
-
-
-        // בדיקת מרחק מרבי (אם קיים)
-        if (volunteer.MaximumDistance.HasValue && (!double.TryParse(volunteer.MaximumDistance.ToString(), out double maxDistance) || maxDistance <= 0)) return false;
+        //בדיקת מרחק מרבי(אם קיים)
+        if (volunteer.MaximumDistance!=0 && (!double.TryParse(volunteer.MaximumDistance.ToString(), out double maxDistance) || maxDistance <= 0)) return false;
 
         if (string.IsNullOrWhiteSpace(volunteer.Email))
             return false;
@@ -52,8 +45,7 @@ internal class VolunteerManager
             return false;
 
         // בדיקת כתובת מלאה (אורך נדרש אם קיים)
-        if (!string.IsNullOrWhiteSpace(volunteer.Address) &&
-            (volunteer.Address.Length < 5 || volunteer.Address.Length > 100))
+        if (volunteer.Address != "" && (volunteer.Address.Length < 5 || volunteer.Address.Length > 100) && volunteer.Address != null)
             return false;
 
 
@@ -64,23 +56,24 @@ internal class VolunteerManager
     /// </summary>
     /// <param name="volunteer"></param>
     /// <returns></returns>
-    public static bool logicCheckToVolunteer(BO.Volunteer volunteer)
+    public static bool logicCheckToVolunteer(ref BO.Volunteer volunteer)
     {
-        if (!IsValidId(volunteer.Id))
-        {
-            return false; // תעודת זהות לא תקינה
-        }
+        //if (!IsValidId(volunteer.Id))
+        //{
+        //    return false; // תעודת זהות לא תקינה
+        //}
         if (!IsValidPhoneNumber(volunteer.PhoneNumber))
         {
             return false; // מספר טלפון לא תקין
         }
-        if (Tools.AddressExists(volunteer.Address))
-        {
-            volunteer.Latitude = Tools.GetCoordinates(volunteer.Address)[0];
-            volunteer.Longitude = Tools.GetCoordinates(volunteer.Address)[1];
-        }
-        else
-            return false;
+        if (volunteer.Address != "")
+            if (Tools.AddressExists(volunteer.Address))
+            {
+                volunteer.Latitude = Tools.GetLatitude(volunteer.Address);
+                volunteer.Longitude = Tools.GetLongitude(volunteer.Address);
+            }
+            else
+                return false;
 
         return true;
     }

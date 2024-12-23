@@ -91,14 +91,14 @@ internal class Program
                             Console.WriteLine("Enter password (if nedded):");
                             string? password = Console.ReadLine();
                             BO.job jub = s_bl.Volunteer.EnterToTheSystem(name, password);
-
+                            Console.WriteLine("Enter to the system successfully");
                             break;
 
                         case BO.VolunteerMenu.Create:
 
                             var newVolunteer = GetVolunteerDetails(null);
                             s_bl.Volunteer.Create(newVolunteer);
-
+                            Console.WriteLine("Volunteer added successfully");
                             break;
                         case BO.VolunteerMenu.Update:
 
@@ -113,10 +113,10 @@ internal class Program
                         case BO.VolunteerMenu.Delete:
 
                             Console.WriteLine("Enter volunteer id to delete:");
-                            if (int.TryParse(Console.ReadLine(), out int deleteId))
-                                s_bl.Volunteer.Delete(deleteId);
-                            else
-                                Console.WriteLine("Error");
+                            int.TryParse(Console.ReadLine(), out int deleteId);
+                            s_bl.Volunteer.Delete(deleteId);
+                            Console.WriteLine("Volunteer deleted successfully");
+
 
                             break;
                         case BO.VolunteerMenu.Read:
@@ -185,7 +185,6 @@ internal class Program
 
             if (Enum.TryParse(input, out choice))
             {
-
 
                 try
                 {
@@ -282,7 +281,7 @@ internal class Program
                             callId = int.Parse(Console.ReadLine());
                             BO.Call boCall = s_bl.Call.GetCallDetails(callId);
                             Console.WriteLine(boCall);
-                            
+
 
 
                             break;
@@ -354,7 +353,9 @@ internal class Program
 
                             Console.WriteLine("Enter time unit to advance ( Minute, Hour, Day, Month, Year):");
                             if (Enum.TryParse(Console.ReadLine(), out BO.TimeUnit timeUnit))
-                                s_bl.Admin.ForwardClock(timeUnit);
+                            {    s_bl.Admin.ForwardClock(timeUnit);
+                                Console.WriteLine("time added successfully");
+                            }
                             else
                                 Console.WriteLine("Invalid time unit.");
 
@@ -382,6 +383,7 @@ internal class Program
                             break;
                         case BO.AdminMenu.ResetDB:
                             s_bl.Admin.ResetDB();
+                            Console.WriteLine("Data Reset successfully");
                             break;
 
                         case BO.AdminMenu.SetMaxRange:
@@ -938,17 +940,17 @@ internal class Program
             int.TryParse(Console.ReadLine(), out id);
         }
 
-        Console.Write("Name: ");
+        Console.Write("Name (at least 2 letters):");
         string Name = Console.ReadLine();
 
 
         Console.Write("Password (optional): ");
         string? password = Console.ReadLine();
 
-        Console.Write("Phone Number: ");
+        Console.Write("Phone Number (10 numbers starting whith 0): ");
         string phoneNumber = Console.ReadLine();
 
-        Console.Write("Email: ");
+        Console.Write("Email (in format - user@example.com): ");
         string email = Console.ReadLine();
 
         Console.Write("Is Active (true/false): ");
@@ -963,11 +965,11 @@ internal class Program
         BO.DistanceType destinationType = (BO.DistanceType)destinationTypeInt;
 
 
-        Console.Write("Current Full Address (optional): ");
+        Console.Write("Current Full Address (at least 5 letters)(optional): ");
         string? currentFullAddress = Console.ReadLine();
 
         Console.Write("Max Distance (optional): ");
-        string DistanceInput = Console.ReadLine();
+        string? DistanceInput = Console.ReadLine();
         double.TryParse(DistanceInput, out double maxDistance);
 
         BO.Volunteer volunteer = new BO.Volunteer

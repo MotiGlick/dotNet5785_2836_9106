@@ -8,6 +8,7 @@ using DO;
 using Helpers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Net;
 using System.Xml.Linq;
 
@@ -25,10 +26,10 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// </exception>
     public void Create(BO.Volunteer boVolunteer)
     {
-        
+
         try
         {
-            if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(boVolunteer))
+            if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(ref boVolunteer))
             {
                 DO.Volunteer doVolunteer = new DO.Volunteer()
                 {
@@ -46,7 +47,10 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                     distance = (DO.DistanceType)boVolunteer.Distance
                 };
                 _dal.Volunteer.Create(doVolunteer);
-            };
+            }
+            else
+                throw new BO.BlNotValidException("The volunteer data is not valid");
+
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -219,44 +223,48 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     {
         try
         {
-            bool isManager = _dal.Volunteer.Read(id).duty == DO.job.manager;
-            DO.Volunteer oldDoVolunteer = _dal.Volunteer.Read(boVolunteer.Id);
-            DO.Volunteer newDoVolunteer = new DO.Volunteer()
+            if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(ref boVolunteer))//בדיקה לוגית ותקינות
             {
-                Id = boVolunteer.Id,
-                Name = boVolunteer.Name,
-                PhoneNumber = boVolunteer.PhoneNumber,
-                Email = boVolunteer.Email,
-                pasword = boVolunteer.Password,
-                AddressVolunteer = boVolunteer.Address,
-                Latitude = boVolunteer.Latitude,
-                Longitude = boVolunteer.Longitude,
-                maximumDistace = boVolunteer.MaximumDistance,
-                duty = (DO.job)boVolunteer.Duty,
-                IsActive = boVolunteer.IsActive,
-                distance = (DO.DistanceType)boVolunteer.Distance
-            };
-     
-            if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(boVolunteer))//בדיקה לוגית ותקינות
-            {
-                if (isManager){// אם הוא מנהל 
+                bool isManager = _dal.Volunteer.Read(id).duty == DO.job.manager;
+                DO.Volunteer oldDoVolunteer = _dal.Volunteer.Read(boVolunteer.Id);
+                DO.Volunteer newDoVolunteer = new DO.Volunteer()
+                {
+                    Id = boVolunteer.Id,
+                    Name = boVolunteer.Name,
+                    PhoneNumber = boVolunteer.PhoneNumber,
+                    Email = boVolunteer.Email,
+                    pasword = boVolunteer.Password,
+                    AddressVolunteer = boVolunteer.Address,
+                    Latitude = boVolunteer.Latitude,
+                    Longitude = boVolunteer.Longitude,
+                    maximumDistace = boVolunteer.MaximumDistance,
+                    duty = (DO.job)boVolunteer.Duty,
+                    IsActive = boVolunteer.IsActive,
+                    distance = (DO.DistanceType)boVolunteer.Distance
+                };
+
+
+                if (isManager)
+                {// אם הוא מנהל 
                     _dal.Volunteer.Update(newDoVolunteer);
                 }
                 else if (id == boVolunteer.Id)//אם זה המתנדב עצמו זה שמעדכן
                 {
-                    if (oldDoVolunteer.duty != newDoVolunteer.duty &&  oldDoVolunteer.duty == DO.job.manager)//אם מעדכנים את התפקיד אז זה רק אם הוא מנהל
+                    if (oldDoVolunteer.duty != newDoVolunteer.duty && oldDoVolunteer.duty == DO.job.manager)//אם מעדכנים את התפקיד אז זה רק אם הוא מנהל
                     {
                         _dal.Volunteer.Update(newDoVolunteer);
                     }
-                    else if(oldDoVolunteer.duty == newDoVolunteer.duty) _dal.Volunteer.Update(newDoVolunteer);// אם הוא לא מנסה לעדכן את תפקיד 
+                    else if (oldDoVolunteer.duty == newDoVolunteer.duty) _dal.Volunteer.Update(newDoVolunteer);// אם הוא לא מנסה לעדכן את תפקיד 
                 }
             }
-  
+
         }
         catch (DO.DalDoesNotExistException ex)
         {
             throw new BO.BlDoesNotExistException($"Volunteer with ID={boVolunteer.Id} not exists", ex);
         }
     }
-}  
+}
+
+
 
