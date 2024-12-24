@@ -252,4 +252,32 @@
     <IsActive>true</IsActive>
     <distance>walk</distance>
   </Volunteer>
+  <Volunteer>
+    <Id>212212212</Id>
+    <Name>dd</Name>
+    <PhoneNumber>0123123123</PhoneNumber>
+    <Email>use@e.com</Email>
+    <pasword />
+    <AddressVolunteer>78 Hebron , Jerusalem</AddressVolunteer>
+    <Latitude>31.7564434</Latitude>
+    <Longitude>35.2220004</Longitude>
+    <maximumDistace>0</maximumDistace>
+    <duty>volunteer</duty>
+    <IsActive>true</IsActive>
+    <distance>walk</distance>
+  </Volunteer>
+  <Volunteer>
+    <Id>444444444</Id>
+    <Name>tttt</Name>
+    <PhoneNumber>0123123123</PhoneNumber>
+    <Email>g@f.com</Email>
+    <pasword />
+    <AddressVolunteer>Jerusalem</AddressVolunteer>
+    <Latitude>31.7788242</Latitude>
+    <Longitude>35.2257626</Longitude>
+    <maximumDistace>122</maximumDistace>
+    <duty>manager</duty>
+    <IsActive>true</IsActive>
+    <distance>walk</distance>
+  </Volunteer>
 </ArrayOfVolunteer>
