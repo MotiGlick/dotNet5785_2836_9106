@@ -9,9 +9,11 @@ namespace Helpers;
 
 internal class VolunteerManager
 {
-    //public static string ToStringProperty<T>(this T t);
+    internal static ObserverManager Observers = new(); //stage 5 
+
+
     private static readonly DalApi.IDal _dal = DalApi.Factory.Get;
-    //public static string ToStringProperty<T>(this T t);
+
 
     /// <summary>
     /// A method that checks the correctness of all values ​​in terms of format
@@ -35,7 +37,7 @@ internal class VolunteerManager
 
 
         //בדיקת מרחק מרבי(אם קיים)
-        if (volunteer.MaximumDistance!=0 && (!double.TryParse(volunteer.MaximumDistance.ToString(), out double maxDistance) || maxDistance <= 0)) return false;
+        if (volunteer.MaximumDistance != 0 && (!double.TryParse(volunteer.MaximumDistance.ToString(), out double maxDistance) || maxDistance <= 0)) return false;
 
         if (string.IsNullOrWhiteSpace(volunteer.Email))
             return false;
@@ -161,6 +163,12 @@ internal class VolunteerManager
                 DistanceFromVolunteer = Tools.CalculateDistance(_dal.Volunteer.Read(assignment.Id), relatedCall),
                 status = CallManager.GetCallStatus(relatedCall.Id)
             }).FirstOrDefault(); // לוקח את התוצאה הראשונה או null אם אין תוצאה
+       
+        if (result != null)
+           {
+            Observers.NotifyItemUpdated(id); //stage 5
+            Observers.NotifyListUpdated(); //stage 5
+        }
 
         return result;
     }

@@ -14,6 +14,9 @@ using System.Collections;
 /// </summary>
 internal static class Tools
 {
+    internal static ObserverManager Observers = new(); //stage 5 
+
+
 
     /// <summary>
     /// Retrieves the geographic coordinates (latitude and longitude) of a given address using an external API.

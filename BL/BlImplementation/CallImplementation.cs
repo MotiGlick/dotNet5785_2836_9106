@@ -22,6 +22,8 @@ internal class CallImplementation : BlApi.ICall
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
 
+
+    #region Stage 4
     /// <summary>
     /// Adds a new call to the system.
     /// Validates the call and creates a corresponding record in the database.
@@ -48,6 +50,7 @@ internal class CallImplementation : BlApi.ICall
                 boCall.OpeningTime,
                 boCall.MaxTime
                 ));
+            CallManager.Observers.NotifyListUpdated(); //stage 5
 
         }
         catch (Exception ex)
@@ -101,9 +104,9 @@ internal class CallImplementation : BlApi.ICall
             {
                 // Update assignment with cancellation closure type based on who cancels
                 if (doAssignment.VolunteerId == volunteerId)
-                    _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, ClockManager.Now, DO.CallClosureType.SelfCancellation));
+                    _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.SelfCancellation));
                 else
-                    _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, ClockManager.Now, DO.CallClosureType.ManagerCancellation));
+                    _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.ManagerCancellation));
             }
             catch (Exception ex)
             {
@@ -137,7 +140,7 @@ internal class CallImplementation : BlApi.ICall
 
         // Create an assignment for the volunteer and call
         else
-            _dal.Assignment.Create(new(0, callId, volunteerId, ClockManager.Now, null, null));
+            _dal.Assignment.Create(new(0, callId, volunteerId, AdminManager.Now, null, null));
 
     }
 
@@ -157,7 +160,11 @@ internal class CallImplementation : BlApi.ICall
             // Check if there are no assignments and call is open or open-at-risk
             if (AssignmentManager.GetCallAssignList(callId) == null &&
                 (CallManager.GetCallStatus(callId) == BO.StatusOfCall.Open) || CallManager.GetCallStatus(callId) == BO.StatusOfCall.OpenAtRisk)
+            {
                 _dal.Call.Delete(callId);
+                CallManager.Observers.NotifyListUpdated(); //stage 5
+            }
+
             else
                 throw new BO.BlNotAlowedException($"Call with ID={callId} is not allow to delete");
         }
@@ -187,7 +194,7 @@ internal class CallImplementation : BlApi.ICall
             try
             {
                 // Update assignment status to "HandledOnTime"
-                _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, ClockManager.Now, DO.CallClosureType.HandledOnTime));
+                _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.HandledOnTime));
 
             }
             catch (Exception ex)
@@ -335,7 +342,7 @@ internal class CallImplementation : BlApi.ICall
     /// <returns>List of open calls assigned to the volunteer.</returns>
     public IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? callType, OpenCallInListField? sortField)
     {
-        IEnumerable<BO.CallInList> listOfCalls ;
+        IEnumerable<BO.CallInList> listOfCalls;
 
         if (callType != null)
             listOfCalls = GetCallList(CallInListField.CallType, callType);
@@ -352,7 +359,7 @@ internal class CallImplementation : BlApi.ICall
                Address = _dal.Call.Read(call.CallId)!.CallAddress,
                OpeningTime = call.OpeningTime,
                MaxTime = _dal.Call.Read(call.CallId)!.TotalTime,
-               DistanceFromVolunteer =  Tools.CalculateDistance(_dal.Volunteer.Read(volunteerId), _dal.Call.Read(call.CallId))
+               DistanceFromVolunteer = Tools.CalculateDistance(_dal.Volunteer.Read(volunteerId), _dal.Call.Read(call.CallId))
            })
            .OrderBy<BO.OpenCallInList, object?>(call => sortField switch
            {
@@ -391,6 +398,8 @@ internal class CallImplementation : BlApi.ICall
                    Tools.GetLongitude(boCall.Address),
                    boCall.OpeningTime, boCall.MaxTime
                 ));
+            CallManager.Observers.NotifyItemUpdated(boCall.Id);  //stage 5
+            CallManager.Observers.NotifyListUpdated();  //stage 5
 
         }
         catch (Exception ex)
@@ -399,5 +408,22 @@ internal class CallImplementation : BlApi.ICall
         }
 
     }
+
+    #endregion Stage 4
+
+    #region Stage 5
+    public void AddObserver(Action listObserver) =>
+    CallManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+    CallManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+    CallManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+    CallManager.Observers.RemoveObserver(id, observer); //stage 5
+    #endregion Stage 5
+
+
+
+
 }
 

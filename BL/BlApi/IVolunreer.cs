@@ -10,7 +10,7 @@ namespace BlApi;
 /// Provides methods for creating, reading, updating, and deleting volunteers,
 /// as well as logging into the system and retrieving lists of volunteers.
 /// </summary>
-public interface IVolunteer
+public interface IVolunteer :IObservable
 {
 
     /// <summary>

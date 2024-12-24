@@ -14,8 +14,11 @@ using System;
 /// </summary>
 internal class IAdminImplementation : IAdmin
 {
-    private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
+
+
+    #region Stage 4
+    private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
     /// <summary>
     /// Advances the system clock by a specified time unit.
@@ -26,19 +29,19 @@ internal class IAdminImplementation : IAdmin
         switch (unit)
         {
             case BO.TimeUnit.Minute:                
-                ClockManager.UpdateClock(ClockManager.Now.AddMinutes(1));
+                AdminManager.UpdateClock(AdminManager.Now.AddMinutes(1));
                 break;
             case BO.TimeUnit.Hour:
-                ClockManager.UpdateClock(ClockManager.Now.AddHours(1));
+                AdminManager.UpdateClock(AdminManager.Now.AddHours(1));
                 break;
             case BO.TimeUnit.Day:
-                ClockManager.UpdateClock(ClockManager.Now.AddDays(1));
+                AdminManager.UpdateClock(AdminManager.Now.AddDays(1));
                 break;
             case BO.TimeUnit.Month:
-                ClockManager.UpdateClock(ClockManager.Now.AddMonths(1));
+                AdminManager.UpdateClock(AdminManager.Now.AddMonths(1));
                 break;
             case BO.TimeUnit.Year:
-                ClockManager.UpdateClock(ClockManager.Now.AddYears(1));
+                AdminManager.UpdateClock(AdminManager.Now.AddYears(1));
 
                 break;
             default:
@@ -51,23 +54,23 @@ internal class IAdminImplementation : IAdmin
     /// Retrieves the current system clock time from the database.
     /// </summary>
     /// <returns>The current system clock time.</returns>
-    public DateTime GetClock()
-    {
-        return _dal.Config.Clock;
-    }
+    public DateTime GetClock() => AdminManager.Now;
 
 
+
+    /// <summary>
+    /// Sets the maximum risk range (TimeSpan) in the database.
+    /// </summary>
+    /// <param name="maxRange">The new maximum risk range.</param>
+    public void SetMaxRange(TimeSpan maxRange) => AdminManager.MaxRange = maxRange;
+   
 
     /// <summary>
     /// Retrieves the maximum risk range (TimeSpan) from the database.
     /// </summary>
     /// <returns>The maximum risk range.</returns>
-    public TimeSpan GetMaxRange()
-    {
-        return _dal.Config.RiskRange;
-    }
-
-
+    public TimeSpan GetMaxRange() => AdminManager.MaxRange;
+    
 
     /// <summary>
     /// Initializes the database by resetting it and running the initialization process.
@@ -77,11 +80,9 @@ internal class IAdminImplementation : IAdmin
     {
         ResetDB();
         DalTest.Initialization.Do();
-        ClockManager.UpdateClock(ClockManager.Now);
+        AdminManager.UpdateClock(AdminManager.Now);
         
     }
-
-
 
     /// <summary>
     /// Resets the database and updates the system clock to the current time.
@@ -89,18 +90,22 @@ internal class IAdminImplementation : IAdmin
     public void ResetDB()
     {
         _dal.ResetDB();
-        ClockManager.UpdateClock(ClockManager.Now);
+        AdminManager.UpdateClock(AdminManager.Now);
        
     }
 
-    /// <summary>
-    /// Sets the maximum risk range (TimeSpan) in the database.
-    /// </summary>
-    /// <param name="maxRange">The new maximum risk range.</param>
-    public void SetMaxRange(TimeSpan maxRange)
-    {
-        _dal.Config.RiskRange=maxRange;
+#endregion Stage 4
 
-    }
+    #region Stage 5
+    public void AddClockObserver(Action clockObserver) =>
+    AdminManager.ClockUpdatedObservers += clockObserver;
+    public void RemoveClockObserver(Action clockObserver) =>
+    AdminManager.ClockUpdatedObservers -= clockObserver;
+    public void AddConfigObserver(Action configObserver) =>
+   AdminManager.ConfigUpdatedObservers += configObserver;
+    public void RemoveConfigObserver(Action configObserver) =>
+    AdminManager.ConfigUpdatedObservers -= configObserver;
+    #endregion Stage 5
+
 }
 

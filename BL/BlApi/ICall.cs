@@ -9,7 +9,7 @@ namespace BlApi;
 /// <summary>
 /// Interface for managing call-related operations.
 /// </summary>
-public interface ICall
+public interface ICall : IObservable
 {
 
     /// <summary>

@@ -12,6 +12,7 @@ namespace BlApi;
 public interface IAdmin
 {
 
+    #region Stage 4
     /// <summary>
     /// Initializes the database with default or predefined values.
     /// </summary>
@@ -46,6 +47,18 @@ public interface IAdmin
     /// </summary>
     /// <param name="unit">The amount of time to advance the clock, represented as a BO.TimeUnit object.</param>
     void ForwardClock(BO.TimeUnit unit);
+    #endregion Stage 4
+
+
+
+
+
+    #region Stage 5
+    void AddConfigObserver(Action configObserver);
+    void RemoveConfigObserver(Action configObserver);
+    void AddClockObserver(Action clockObserver);
+    void RemoveClockObserver(Action clockObserver);
+    #endregion Stage 5
 
 
 }

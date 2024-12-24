@@ -7,7 +7,7 @@ namespace BlApi;
 /// Interface for the Business Logic (BL) layer.
 /// Provides access to various domain-specific managers.
 /// </summary>
-public interface IBl
+public interface IBl 
 {
     /// <summary>
     /// Gets the volunteer management logic.
