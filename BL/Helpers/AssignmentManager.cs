@@ -14,6 +14,9 @@ namespace Helpers;
 /// </summary>
 internal class AssignmentManager
 {
+
+    internal static ObserverManager Observers = new(); //stage 5 
+
     /// <summary>
     /// Data access layer instance for interacting with the data source.
     /// </summary>
@@ -27,22 +30,28 @@ internal class AssignmentManager
     /// <returns>A list of <see cref="BO.CallAssignInList"/> containing assignment details.</returns>
     public static List<BO.CallAssignInList> GetCallAssignList(int? CallId)
     {
+        var callAssignList = (from assignment in _dal.Assignment.ReadAll()
+                              where assignment.CallId == CallId
+                              let VolunteerName = _dal.Volunteer.Read(assignment.VolunteerId)!.Name
+                              let HndalEndTime = assignment.AssignmentTotalTime
+                              let ClosureType = assignment.type
+                              select new BO.CallAssignInList
+                              {
+                                  VolunteerId = assignment.VolunteerId,
+                                  VolunteerName = VolunteerName,
+                                  HndalStartTime = assignment.AssignmentTime,
+                                  HndalEndTime = HndalEndTime,
+                                  ClosureType = (BO.CallClosureType)ClosureType,
 
-        return (from assignment in _dal.Assignment.ReadAll()
-                where assignment.CallId == CallId
-                let VolunteerName = _dal.Volunteer.Read(assignment.VolunteerId)!.Name
-                let HndalEndTime = assignment.AssignmentTotalTime
-                let ClosureType = assignment.type
-                select new BO.CallAssignInList
-                {
-                    VolunteerId = assignment.VolunteerId,
-                    VolunteerName = VolunteerName,
-                    HndalStartTime = assignment.AssignmentTime,
-                    HndalEndTime = HndalEndTime,
-                    ClosureType = (BO.CallClosureType)ClosureType,
+                              }).ToList();
 
-                }).ToList();
+        if (callAssignList != null)
+        {
+            Observers.NotifyItemUpdated((int)CallId!);//stage 5
+            Observers.NotifyListUpdated();//stage 5
+        }
 
+        return callAssignList;
     }
 
 
@@ -55,7 +64,7 @@ internal class AssignmentManager
     /// <exception cref="Exception">Thrown if the assignment does not exist or start time is not set.</exception>
     public static DateTime GetAssignmentStartTime(int boCallId, int VolunteerId)
     {
-      
+
         var assignList = GetCallAssignList(boCallId);
         var assignment = assignList.FirstOrDefault(v => v.VolunteerId == VolunteerId);
 
@@ -81,7 +90,7 @@ internal class AssignmentManager
     /// <exception cref="Exception">Thrown if the end time is explicitly null.</exception>
     public static DateTime? GetAssignmentEndTime(int boCallId, int VolunteerId)
     {
-       
+
         var assignList = GetCallAssignList(boCallId);
         var assignment = assignList.FirstOrDefault(v => v.VolunteerId == VolunteerId);
 
@@ -108,7 +117,7 @@ internal class AssignmentManager
             return null;
         else
             return assignment.ClosureType;
-      
+
 
     }
 

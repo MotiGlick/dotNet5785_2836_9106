@@ -1,5 +1,4 @@
 ﻿
-
 namespace BlImplementation;
 
 using BlApi;
@@ -27,6 +26,10 @@ internal class Bl : IBl
     /// Gets the admin management logic.
     /// </summary>
     public IAdmin Admin { get; }=new IAdminImplementation();
+
+
+
+
 
 
 

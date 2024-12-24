@@ -11,6 +11,10 @@ using System.Text.Json;
 /// </summary>
 internal class CallManager
 {
+
+    internal static ObserverManager Observers = new(); //stage 5 
+
+
     /// <summary>
     /// Data access layer instance for interacting with the data source.
     /// </summary>
@@ -51,7 +55,7 @@ internal class CallManager
         DO.Call doCall = _dal.Call.Read(doCallId) ?? throw new Exception($"Call with ID={doCallId} does not exist");
 
 
-        var now = ClockManager.Now;
+        var now = AdminManager.Now;
         var callAssignments = AssignmentManager.GetCallAssignList(doCallId);
         var riskRangeEnd = doCall.CallTime + _dal.Config.RiskRange;
 
@@ -108,8 +112,8 @@ internal class CallManager
     /// </returns>
     public static TimeSpan? GetTimeLeft(int callId)
     {
-        if ((_dal.Call.Read(callId)!.TotalTime > ClockManager.Now))
-            return _dal.Call.Read(callId)!.TotalTime - ClockManager.Now;
+        if ((_dal.Call.Read(callId)!.TotalTime > AdminManager.Now))
+            return _dal.Call.Read(callId)!.TotalTime - AdminManager.Now;
 
         return null;
     }

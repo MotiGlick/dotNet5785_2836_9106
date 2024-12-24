@@ -15,6 +15,10 @@ using System.Xml.Linq;
 internal class VolunteerImplementation : BlApi.IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+
+
+
+    #region Stage 4
     /// <summary>
     /// Creates a new volunteer in the system.
     /// Validates the volunteer's data for proper formatting and logical correctness.
@@ -47,6 +51,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                     distance = (DO.DistanceType)boVolunteer.Distance
                 };
                 _dal.Volunteer.Create(doVolunteer);
+                VolunteerManager.Observers.NotifyListUpdated(); //stage 5 
             }
             else
                 throw new BO.BlNotValidException("The volunteer data is not valid");
@@ -73,6 +78,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
             if (VolunteerManager.CanDeleted(id))
             {
                 _dal.Volunteer.Delete(id);
+                VolunteerManager.Observers.NotifyListUpdated(); //stage 5 
             }
             else throw new BO.BlDeletionImpossible($"Volunteer with ID={id} can not be deleted because he/she handles call");
         }
@@ -247,12 +253,16 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                 if (isManager)
                 {// אם הוא מנהל 
                     _dal.Volunteer.Update(newDoVolunteer);
+                    VolunteerManager.Observers.NotifyItemUpdated(id);  //stage 5
+                    VolunteerManager.Observers.NotifyListUpdated();  //stage 5
                 }
                 else if (id == boVolunteer.Id)//אם זה המתנדב עצמו זה שמעדכן
                 {
                     if (oldDoVolunteer.duty != newDoVolunteer.duty && oldDoVolunteer.duty == DO.job.manager)//אם מעדכנים את התפקיד אז זה רק אם הוא מנהל
                     {
                         _dal.Volunteer.Update(newDoVolunteer);
+                        VolunteerManager.Observers.NotifyItemUpdated(id);  //stage 5
+                        VolunteerManager.Observers.NotifyListUpdated();  //stage 5
                     }
                     else if (oldDoVolunteer.duty == newDoVolunteer.duty) _dal.Volunteer.Update(newDoVolunteer);// אם הוא לא מנסה לעדכן את תפקיד 
                 }
@@ -264,6 +274,18 @@ internal class VolunteerImplementation : BlApi.IVolunteer
             throw new BO.BlDoesNotExistException($"Volunteer with ID={boVolunteer.Id} not exists", ex);
         }
     }
+    #endregion Stage 4
+
+    #region Stage 5
+    public void AddObserver(Action listObserver) =>
+    VolunteerManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+    VolunteerManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+    VolunteerManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+    VolunteerManager.Observers.RemoveObserver(id, observer); //stage 5
+    #endregion Stage 5
 }
 
 
