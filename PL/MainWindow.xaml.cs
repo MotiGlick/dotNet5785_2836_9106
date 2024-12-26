@@ -22,6 +22,18 @@ namespace PL
         {
             InitializeComponent();
         }
+        // Observer for clock updates
+        private void ClockObserver()
+        {
+            CurrentTime = s_bl.Admin.GetClock();
+        }
+
+        // Observer for configuration updates
+        private void ConfigObserver()
+        {
+            MaxYearRange = s_bl.Admin.GetMaxRange();
+        }
+
         public DateTime CurrentTime
         {
             get { return (DateTime)GetValue(CurrentTimeProperty); }
@@ -58,6 +70,36 @@ namespace PL
         private void btnShowList_Click(object sender, RoutedEventArgs e)
         {
             new VolunteerInListWindow().Show();
+        }
+
+        public TimeSpan MaxYearRange
+        {
+            get { return (TimeSpan)GetValue(CurrentRiskRangeProperty); }
+            set { SetValue(CurrentRiskRangeProperty, value); }
+        }
+        public static readonly DependencyProperty CurrentRiskRangeProperty =
+        DependencyProperty.Register("CurrentRiskRange",typeof(TimeSpan), typeof(MainWindow));
+
+        private void btnUpdateRiskRange_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetMaxRange(MaxYearRange);
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            CurrentTime = s_bl.Admin.GetClock();
+            MaxYearRange = s_bl.Admin.GetMaxRange();
+            s_bl.Admin.AddClockObserver(ClockObserver);
+            s_bl.Admin.AddConfigObserver(ConfigObserver);
+        }
+
+        private void MainWindow_Closed(object sender, EventArgs e)
+        {
+            // Remove clock observer
+            s_bl.Admin.RemoveClockObserver(ClockObserver);
+
+            // Remove configuration observer
+            s_bl.Admin.RemoveConfigObserver(ConfigObserver);
         }
     }
 }
