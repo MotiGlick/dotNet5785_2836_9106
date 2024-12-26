@@ -19,9 +19,38 @@ namespace PL.Volunteer
     /// </summary>
     public partial class VolunteerInListWindow : Window
     {
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public VolunteerInListWindow()
         {
             InitializeComponent();
         }
+
+
+
+        public IEnumerable<BO.VolunteerInList> VolunteersList
+        {
+            get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolunteersListProperty); }
+            set { SetValue(VolunteersListProperty, value); }
+        }
+
+        public static readonly DependencyProperty VolunteersListProperty =
+            DependencyProperty.Register("CourseList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerInListWindow), new PropertyMetadata(null));
+
+
+        public BO.VolunteerInListField Field { get; set; } = BO.VolunteerInListField.None;
+
+        private void IsActiv_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            VolunteersList = (Field == BO.VolunteerInListField.None) ?
+            s_bl?.Volunteer.ReadAll(null,null)! : s_bl?.Volunteer.ReadAll(null, BO.VolunteerInListField.None)!;
+
+        }
     }
+
+
+
+
+
+
 }

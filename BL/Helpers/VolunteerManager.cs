@@ -148,8 +148,8 @@ internal class VolunteerManager
             from assignment in assignments
             let relatedCall = calls.FirstOrDefault(c => c.Id == assignment.CallId)
             where relatedCall != null &&
-                  (CallManager.GetCallStatus(relatedCall.Id) == BO.StatusOfCall.Open ||
-                   CallManager.GetCallStatus(relatedCall.Id) == BO.StatusOfCall.OpenAtRisk)
+                  (CallManager.GetCallStatus(relatedCall.Id) == BO.StatusOfCall.InProgress ||
+                   CallManager.GetCallStatus(relatedCall.Id) == BO.StatusOfCall.InProgressAtRisk)
             select new BO.CallInProgress
             {
                 Id = assignment.Id,
@@ -210,7 +210,7 @@ internal class VolunteerManager
     /// </summary>
     /// <param name="volunteerId"></param>
     /// <returns></returns>
-    public static BO.CallType GetCurrentCallId(int volunteerId)
+    public static BO.CallType GetCurrentCallType(int volunteerId)
     {
         // שליפת כל המשימות של המתנדב
         IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == volunteerId);

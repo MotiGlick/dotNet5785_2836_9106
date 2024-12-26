@@ -80,7 +80,8 @@ public enum VolunteerInListField
     TotalCanceledCalls,
     TotalExpiredCalls,
     CurrentCallId,
-    CurrentCallType
+    CurrentCallType,
+    None
 }
 
 

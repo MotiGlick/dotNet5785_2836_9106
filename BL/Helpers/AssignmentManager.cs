@@ -33,15 +33,15 @@ internal class AssignmentManager
         var callAssignList = (from assignment in _dal.Assignment.ReadAll()
                               where assignment.CallId == CallId
                               let VolunteerName = _dal.Volunteer.Read(assignment.VolunteerId)!.Name
-                              let HndalEndTime = assignment.AssignmentTotalTime
-                              let ClosureType = assignment.type
+                              let HndalEndTime = assignment.AssignmentTotalTime ?? null
+                              let ClosureType = assignment.type == null ? null : (BO.CallClosureType?)assignment.type
                               select new BO.CallAssignInList
                               {
                                   VolunteerId = assignment.VolunteerId,
-                                  VolunteerName = VolunteerName,
+                                  VolunteerName =  VolunteerName,
                                   HndalStartTime = assignment.AssignmentTime,
                                   HndalEndTime = HndalEndTime,
-                                  ClosureType = (BO.CallClosureType)ClosureType,
+                                  ClosureType = ClosureType,
 
                               }).ToList();
 
@@ -164,7 +164,7 @@ internal class AssignmentManager
             return null;
 
         return assignments
-            //.OrderByDescending(assin => assin.HndalStartTime)
+            .OrderByDescending(assin => assin.HndalStartTime)
             .FirstOrDefault()?.VolunteerId;
 
     }
