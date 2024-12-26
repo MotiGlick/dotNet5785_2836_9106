@@ -134,7 +134,7 @@ internal class CallImplementation : BlApi.ICall
         DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
         DO.Call doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId}  does not exists");
 
-        if (CallManager.GetCallStatus(callId) != BO.StatusOfCall.Open || CallManager.GetCallStatus(callId) != BO.StatusOfCall.OpenAtRisk)
+        if (CallManager.GetCallStatus(callId) != BO.StatusOfCall.Open && CallManager.GetCallStatus(callId) != BO.StatusOfCall.OpenAtRisk)
             throw new BlNotAlowedException($"Call with ID={callId} does not open for hanling");
 
 

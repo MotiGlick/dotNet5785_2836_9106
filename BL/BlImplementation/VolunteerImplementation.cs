@@ -9,6 +9,7 @@ using Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Net;
 using System.Xml.Linq;
 
@@ -158,6 +159,8 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// <returns>A sorted list of volunteers (BO.VolunteerInList) based on the provided filters and sorting criteria.</returns>
     public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField)
     {
+        
+
         // שליפת כל המתנדבים עם או בלי פילטר לפי הפעילות
         IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll(v =>
             isActive == null || v.IsActive == isActive);
@@ -172,7 +175,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
             TotalCanceledCalls = VolunteerManager.GetNumOfSellfCancellation(v.Id),
             TotalExpiredCalls = VolunteerManager.GetNumOfExpired(v.Id),
             CurrentCallId = VolunteerManager.GetOpenCallId(v.Id),
-            CurrentCallType = VolunteerManager.GetCurrentCallId(v.Id)
+            CurrentCallType = VolunteerManager.GetCurrentCallType(v.Id)
 
         });
 
