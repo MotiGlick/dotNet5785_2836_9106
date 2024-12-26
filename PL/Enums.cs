@@ -2,10 +2,10 @@
 using System;
 using System.Collections;
 namespace PL;
-internal class VolunteerInListCollection : IEnumerable
+internal class CallTypeCollection : IEnumerable
 {
-    static readonly IEnumerable<BO.VolunteerInListField> s_enums =
-    (Enum.GetValues(typeof(BO.VolunteerInListField)) as IEnumerable<BO.VolunteerInListField>)!;
+    static readonly IEnumerable<BO.CallType> s_enums =
+    (Enum.GetValues(typeof(BO.CallType)) as IEnumerable<BO.CallType>)!;
 
     public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
 }

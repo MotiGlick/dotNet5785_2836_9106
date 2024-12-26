@@ -869,7 +869,7 @@ internal class Program
 
             try
             {
-                var allVolunteers = s_bl.Volunteer.ReadAll(isActiveFilter, sortByFild);
+                var allVolunteers = s_bl.Volunteer.ReadAll(isActiveFilter, sortByFild,null);
                 foreach (var volunteer in allVolunteers)
                 {
                     Console.WriteLine(volunteer); ;

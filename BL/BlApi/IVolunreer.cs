@@ -41,7 +41,7 @@ public interface IVolunteer :IObservable
     /// <param name="isActive">Filters volunteers based on their activity status (optional).</param>
     /// <param name="sortField">Specifies the field to sort the volunteer list by (optional).</param>
     /// <returns>A collection of volunteers in a summarized list format.</returns>
-    IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField);
+    IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField , BO.CallType? filterValue);
 
     /// <summary>
     /// Updates the details of an existing volunteer.

@@ -34,7 +34,8 @@ public enum CallType
     HospitalVisit,         // Support through a hospital visit
     DeliverMedicine,       // Delivery of medication to the requester
     CleaningAssistance,     // Assistance with cleaning
-    None                   // No call in progress
+    None,           // No call in progress
+    No_Filter
 }
 
 
@@ -80,8 +81,7 @@ public enum VolunteerInListField
     TotalCanceledCalls,
     TotalExpiredCalls,
     CurrentCallId,
-    CurrentCallType,
-    None
+    CurrentCallType
 }
 
 
