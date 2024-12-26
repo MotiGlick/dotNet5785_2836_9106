@@ -3,8 +3,85 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="640" Width="800">
-    
+        Title="MainWindow" Height="640" Width="800"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+
+        <!-- External Grid -->
+    <Grid>
+        <!-- Define Rows and Columns -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Header -->
+            <RowDefinition Height="*"/>
+            <!-- Main Content -->
+            <RowDefinition Height="Auto"/>
+            <!-- Footer -->
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <!-- Clock Area -->
+            <ColumnDefinition Width="2*"/>
+            <!-- Configuration Area -->
+        </Grid.ColumnDefinitions>
+
+       
+
+        <!-- Clock Area -->
+        <Grid Grid.Row="1" Grid.Column="0" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Clock Display -->
+                <RowDefinition Height="*"/>
+                <!-- Buttons -->
+            </Grid.RowDefinitions>
+
+              <!-- System Clock Display -->
+        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10">
+            <!-- Static Label -->
+            
+            
+            <!-- Dynamic Label: Binds to CurrentTime -->
+            <Label Content="{Binding CurrentTime}" FontWeight="Bold" FontSize="20" Foreground="Blue" Margin="5"/>
+        </StackPanel>
+
+            <!-- Clock Adjustment Buttons -->
+            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5">
+                <Button Content="Add One Minute" Margin="0,5" Click="btnAddOneMinute_Click"/>
+                <Button Content="Add One Hour" Margin="0,5" Click="btnAddOneHour_Click"/>
+                <Button Content="Add One Day" Margin="0,5" Click="btnAddOneDay_Click"/>
+                <Button Content="Add One Month" Margin="0,5" Click="btnAddOneMonth_Click"/>
+                <Button Content="Add One Year" Margin="0,5" Click="btnAddOneYear_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Configuration Area -->
+        <Grid Grid.Row="1" Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Configuration Variable -->
+                <RowDefinition Height="Auto"/>
+                <!-- Buttons -->
+            </Grid.RowDefinitions>
+
+            <!-- Configuration Variable -->
+            <StackPanel Grid.Row="0" Margin="5">
+                <!-- Display and Edit Configuration Variable -->
+                <Label Content="Configuration Variable:" FontSize="16" FontWeight="Bold"/>
+                <TextBox Text="Enter value here" Margin="0,5"/>
+                <Button Content="Update Variable" Width="150" Margin="0,10,0,0"/>
+            </StackPanel>
+
+            <!-- Action Buttons -->
+            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5">
+                <Button Content="Handle Volunteer List" Margin="0,5" Click="Button_Click" />
+                <Button Content="Initialize Database" Margin="0,5"/>
+                <Button Content="Reset Database" Margin="0,5"/>
+            </StackPanel>
+        </Grid>
+
+       
+    </Grid>
 </Window>
+
