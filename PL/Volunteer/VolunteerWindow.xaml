@@ -91,9 +91,8 @@
 
             <Label Grid.Row="7" Grid.Column="1" Content="Duty:" />
             <ComboBox Grid.Row="7" Grid.Column="2"
-             SelectedValue="{Binding CurrentVolunteer.Duty, Mode=TwoWay, NotifyOnValidationError=true, 
-            ValidatesOnExceptions=true}"/>
-            <!--   ItemsSource="{Binding Source={StaticResource YearsCollectionKey}}" -->
+             SelectedValue="{Binding Path=duty, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+               ItemsSource="{Binding Source={StaticResource JubCollectionKey}}" />
 
 
 
@@ -103,9 +102,9 @@
 
                 <Label Grid.Row="9" Grid.Column="1" Content="Distance Type:" />
             <ComboBox Grid.Row="9" Grid.Column="2" SelectionChanged="ComboBox_SelectionChanged" ScrollViewer.CanContentScroll="False"  
-             SelectedValue="{Binding CurrentVolunteer.Duty, Mode=TwoWay, NotifyOnValidationError=true, 
-            ValidatesOnExceptions=true}"/>
-            <!--   ItemsSource="{Binding Source={StaticResource YearsCollectionKey}}" -->
+             SelectedValue="{Binding Path=distanceType, Mode=TwoWay, NotifyOnValidationError=true, 
+            ValidatesOnExceptions=true}"
+             ItemsSource="{Binding Source={StaticResource DistanceTypeCollectionKey}}" />
 
 
             <Label Grid.Row="10" Grid.Column="1" Content="Handled Calls:" />

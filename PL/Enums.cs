@@ -1,4 +1,5 @@
 ﻿
+using BO;
 using System;
 using System.Collections;
 namespace PL;
@@ -10,3 +11,18 @@ internal class CallTypeCollection : IEnumerable
     public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
 }
 
+internal class JubCollection : IEnumerable
+{
+    static readonly IEnumerable<BO.job> s_enums =
+    (Enum.GetValues(typeof(BO.job)) as IEnumerable<BO.job>)!;
+
+    public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+}
+
+internal class DistanceTypeCollection : IEnumerable
+{
+    static readonly IEnumerable<BO.DistanceType> s_enums =
+    (Enum.GetValues(typeof(BO.DistanceType)) as IEnumerable<BO.DistanceType>)!;
+
+    public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+}

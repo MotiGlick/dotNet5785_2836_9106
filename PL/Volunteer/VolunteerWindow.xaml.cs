@@ -60,8 +60,6 @@ namespace PL.Volunteer
         }
 
 
-
-
         public BO.Volunteer? CurrentVolunteer
         {
             get { return (BO.Volunteer?)GetValue(CurrentVolunteerProperty); }
@@ -73,6 +71,9 @@ namespace PL.Volunteer
             DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindow), new PropertyMetadata(null));
 
 
+        public BO.job duty { get; set; } = BO.job.volunteer;
+
+        public BO.DistanceType distanceType { get; set; } = BO.DistanceType.car;
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
