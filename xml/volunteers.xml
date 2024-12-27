@@ -224,4 +224,18 @@
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
+  <Volunteer>
+    <Id>212329106</Id>
+    <Name>noti</Name>
+    <PhoneNumber>0547864028</PhoneNumber>
+    <Email>user@example.com</Email>
+    <pasword />
+    <AddressVolunteer />
+    <Latitude xsi:nil="true" />
+    <Longitude xsi:nil="true" />
+    <maximumDistace>0</maximumDistace>
+    <duty>volunteer</duty>
+    <IsActive>true</IsActive>
+    <distance>walk</distance>
+  </Volunteer>
 </ArrayOfVolunteer>

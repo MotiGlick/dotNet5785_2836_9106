@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,18 +35,33 @@ namespace PL.Volunteer
         }
 
         public static readonly DependencyProperty VolunteersListProperty =
-            DependencyProperty.Register("CourseList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerInListWindow), new PropertyMetadata(null));
+            DependencyProperty.Register("VolunteersList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerInListWindow), new PropertyMetadata(null));
 
 
-        public BO.VolunteerInListField Field { get; set; } = BO.VolunteerInListField.None;
+        public BO.CallType typeOfCall { get; set; } = BO.CallType.No_Filter;
 
-        private void IsActiv_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TypeOfCall_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            VolunteersList = (Field == BO.VolunteerInListField.None) ?
-            s_bl?.Volunteer.ReadAll(null,null)! : s_bl?.Volunteer.ReadAll(null, BO.VolunteerInListField.None)!;
+            queryVolunteerList();
 
         }
+
+
+
+        private void queryVolunteerList()
+        => VolunteersList = (typeOfCall == BO.CallType.No_Filter) ?
+        s_bl?.Volunteer.ReadAll(null,null,null)! : s_bl?.Volunteer.ReadAll(null, null, typeOfCall)!;
+
+        private void VolunteerListObserver()
+            => queryVolunteerList();
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+            => s_bl.Volunteer.AddObserver(VolunteerListObserver);
+
+        private void Window_Closed(object sender, EventArgs e)
+            => s_bl.Volunteer.RemoveObserver(VolunteerListObserver);
+
+        
     }
 
 

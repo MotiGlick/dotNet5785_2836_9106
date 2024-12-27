@@ -157,13 +157,12 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// <param name="isActive">Optional filter to specify if the volunteer should be active (true) or inactive (false). If null, no filter is applied.</param>
     /// <param name="sortField">Optional field to sort the volunteer list by. If null, the list is sorted by volunteer ID by default.</param>
     /// <returns>A sorted list of volunteers (BO.VolunteerInList) based on the provided filters and sorting criteria.</returns>
-    public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField)
+    public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive = null, BO.VolunteerInListField? sortField = null, BO.CallType? filterValue = null)
     {
-        
+
 
         // שליפת כל המתנדבים עם או בלי פילטר לפי הפעילות
-        IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll(v =>
-            isActive == null || v.IsActive == isActive);
+        IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll(v => isActive == null ? true : v.IsActive == isActive);//||isActive == null 
 
         // המרת הישויות הלוגיות (DO.Volunteer) ל-BO.VolunteerInList
         IEnumerable<BO.VolunteerInList> volunteersList = volunteers.Select(v => new BO.VolunteerInList
@@ -177,7 +176,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
             CurrentCallId = VolunteerManager.GetOpenCallId(v.Id),
             CurrentCallType = VolunteerManager.GetCurrentCallType(v.Id)
 
-        });
+        }).Where(v => filterValue == null ? true : v.CurrentCallType == filterValue);
 
         // מיון הרשימה לפי שדה המיון המבוקש
         if (sortField != null)
