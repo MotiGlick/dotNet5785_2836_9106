@@ -202,9 +202,9 @@
   </Call>
   <Call>
     <Id>20</Id>
-    <type>ProvideTransportation</type>
+    <type>HospitalVisit</type>
     <CallAddress>45 Mount Scopus, Jerusalem</CallAddress>
-    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7943</Latitude>
     <Longitude>35.2431</Longitude>
     <CallTime>2024-12-19T08:50:19</CallTime>
@@ -252,9 +252,9 @@
   </Call>
   <Call>
     <Id>25</Id>
-    <type>ProvideTransportation</type>
+    <type>EmotionalSupport</type>
     <CallAddress>17 Ussishkin Street, Jerusalem</CallAddress>
-    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
     <Latitude>31.7687</Latitude>
     <Longitude>35.2137</Longitude>
     <CallTime>2024-12-16T08:50:19</CallTime>
@@ -432,9 +432,9 @@
   </Call>
   <Call>
     <Id>43</Id>
-    <type>HomeCare</type>
+    <type>MedicalAssistance</type>
     <CallAddress>6 Shlomo HaMelech Street, Jerusalem</CallAddress>
-    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.7767</Latitude>
     <Longitude>35.2157</Longitude>
     <CallTime>2024-12-20T08:50:19</CallTime>
@@ -472,9 +472,9 @@
   </Call>
   <Call>
     <Id>47</Id>
-    <type>EmotionalSupport</type>
+    <type>HomeCare</type>
     <CallAddress>34 Lincoln Street, Jerusalem</CallAddress>
-    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7761</Latitude>
     <Longitude>35.2234</Longitude>
     <CallTime>2024-12-15T08:50:19</CallTime>

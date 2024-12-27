@@ -21,13 +21,14 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Filter" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
+            <Label Grid.Column="0" Content="Filter by current call type" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
             <ComboBox Grid.Column="1"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
-                      ItemsSource="{Binding Source={StaticResource VolunteerInListCollectionKey}}" SelectedValue="{Binding Path=Field, Mode=TwoWay}" SelectionChanged="IsActiv_SelectionChanged"/>
+                      ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=typeOfCall, Mode=TwoWay}" SelectionChanged="TypeOfCall_SelectionChanged"/>
         </Grid>
         
         <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
-        <ListView Grid.Row="1" ItemsSource="{Binding Path=CourseList}" >
+        
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=VolunteersList}" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
