@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfVolunteer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Volunteer>
-    <Id>31989482</Id>
+    <Id>33328270</Id>
     <Name>Noam Ben-David</Name>
     <PhoneNumber>0547864028</PhoneNumber>
     <Email>noam_benDavid@gmail.com</Email>
@@ -9,13 +9,13 @@
     <AddressVolunteer>10 King David St, Jerusalem</AddressVolunteer>
     <Latitude>31.7767</Latitude>
     <Longitude>35.2345</Longitude>
-    <maximumDistace>83042</maximumDistace>
+    <maximumDistace>3767</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>29818270</Id>
+    <Id>35774520</Id>
     <Name>Lior Shmuel</Name>
     <PhoneNumber>0523345567</PhoneNumber>
     <Email>lior_shmuel@gmail.com</Email>
@@ -23,13 +23,13 @@
     <AddressVolunteer>15 Jaffa Rd, Jerusalem</AddressVolunteer>
     <Latitude>31.7834</Latitude>
     <Longitude>35.2138</Longitude>
-    <maximumDistace>67693</maximumDistace>
+    <maximumDistace>5734</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>39505887</Id>
+    <Id>34669608</Id>
     <Name>Neta Golan</Name>
     <PhoneNumber>0506789123</PhoneNumber>
     <Email>neta_golan@gmail.com</Email>
@@ -37,13 +37,13 @@
     <AddressVolunteer>8 Agron St, Jerusalem</AddressVolunteer>
     <Latitude>31.7795</Latitude>
     <Longitude>35.229</Longitude>
-    <maximumDistace>49615</maximumDistace>
+    <maximumDistace>36974</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>20576372</Id>
+    <Id>21585904</Id>
     <Name>Aviv Mizrahi</Name>
     <PhoneNumber>0532234455</PhoneNumber>
     <Email>aviv_mizrahi@gmail.com</Email>
@@ -51,13 +51,13 @@
     <AddressVolunteer>3 Shlomzion HaMalka St, Jerusalem</AddressVolunteer>
     <Latitude>31.7784</Latitude>
     <Longitude>35.2111</Longitude>
-    <maximumDistace>14542</maximumDistace>
+    <maximumDistace>53471</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>28949417</Id>
+    <Id>38110497</Id>
     <Name>Yael Rubin</Name>
     <PhoneNumber>0589475621</PhoneNumber>
     <Email>yael_rubin@gmail.com</Email>
@@ -65,13 +65,13 @@
     <AddressVolunteer>20 Yitzhak Kariv St, Jerusalem</AddressVolunteer>
     <Latitude>31.774</Latitude>
     <Longitude>35.2095</Longitude>
-    <maximumDistace>46105</maximumDistace>
+    <maximumDistace>68542</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>22466193</Id>
+    <Id>29631343</Id>
     <Name>Omer Sasson</Name>
     <PhoneNumber>0541234567</PhoneNumber>
     <Email>omer_sasson@gmail.com</Email>
@@ -79,13 +79,13 @@
     <AddressVolunteer>5 Emek Refaim St, Jerusalem</AddressVolunteer>
     <Latitude>31.7648</Latitude>
     <Longitude>35.2211</Longitude>
-    <maximumDistace>24706</maximumDistace>
+    <maximumDistace>23835</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>21394156</Id>
+    <Id>28108512</Id>
     <Name>Tal Peretz</Name>
     <PhoneNumber>0529876543</PhoneNumber>
     <Email>tal_peretz@gmail.com</Email>
@@ -93,13 +93,13 @@
     <AddressVolunteer>2 HaPalmach St, Jerusalem</AddressVolunteer>
     <Latitude>31.7612</Latitude>
     <Longitude>35.2256</Longitude>
-    <maximumDistace>35895</maximumDistace>
+    <maximumDistace>73665</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>26450328</Id>
+    <Id>20127134</Id>
     <Name>Yonatan Elbaz</Name>
     <PhoneNumber>0501122334</PhoneNumber>
     <Email>yonatan_elbaz@gmail.com</Email>
@@ -107,13 +107,13 @@
     <AddressVolunteer>12 Ben Yehuda St, Jerusalem</AddressVolunteer>
     <Latitude>31.7801</Latitude>
     <Longitude>35.2119</Longitude>
-    <maximumDistace>59949</maximumDistace>
+    <maximumDistace>73223</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>26083564</Id>
+    <Id>20280334</Id>
     <Name>Roni Malka</Name>
     <PhoneNumber>0537894561</PhoneNumber>
     <Email>roni_malka@gmail.com</Email>
@@ -121,13 +121,13 @@
     <AddressVolunteer>7 Hillel St, Jerusalem</AddressVolunteer>
     <Latitude>31.7806</Latitude>
     <Longitude>35.2213</Longitude>
-    <maximumDistace>38462</maximumDistace>
+    <maximumDistace>55769</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>35569686</Id>
+    <Id>22083002</Id>
     <Name>Hodaya Avrahami</Name>
     <PhoneNumber>0581237890</PhoneNumber>
     <Email>hodaya_avrahami@gmail.com</Email>
@@ -135,13 +135,13 @@
     <AddressVolunteer>18 Keren HaYesod St, Jerusalem</AddressVolunteer>
     <Latitude>31.7715</Latitude>
     <Longitude>35.228</Longitude>
-    <maximumDistace>23473</maximumDistace>
+    <maximumDistace>36712</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>38450280</Id>
+    <Id>27273505</Id>
     <Name>Idan Azulai</Name>
     <PhoneNumber>0545566778</PhoneNumber>
     <Email>idan_azulai@gmail.com</Email>
@@ -149,13 +149,13 @@
     <AddressVolunteer>25 HaNevi'im St, Jerusalem</AddressVolunteer>
     <Latitude>31.7851</Latitude>
     <Longitude>35.2242</Longitude>
-    <maximumDistace>68355</maximumDistace>
+    <maximumDistace>61668</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>26393187</Id>
+    <Id>35851697</Id>
     <Name>Maor Levi</Name>
     <PhoneNumber>0526677889</PhoneNumber>
     <Email>maor_levi@gmail.com</Email>
@@ -163,13 +163,13 @@
     <AddressVolunteer>4 Rachel Imenu St, Jerusalem</AddressVolunteer>
     <Latitude>31.7632</Latitude>
     <Longitude>35.2323</Longitude>
-    <maximumDistace>18527</maximumDistace>
+    <maximumDistace>81908</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>21752344</Id>
+    <Id>38653275</Id>
     <Name>Shaked Kaplan</Name>
     <PhoneNumber>0503344556</PhoneNumber>
     <Email>shaked_kaplan@gmail.com</Email>
@@ -177,13 +177,13 @@
     <AddressVolunteer>30 Hebron Rd, Jerusalem</AddressVolunteer>
     <Latitude>31.757</Latitude>
     <Longitude>35.2407</Longitude>
-    <maximumDistace>79895</maximumDistace>
+    <maximumDistace>37954</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>36775378</Id>
+    <Id>23524941</Id>
     <Name>Bar Nir</Name>
     <PhoneNumber>0539988776</PhoneNumber>
     <Email>bar_nir@gmail.com</Email>
@@ -191,13 +191,13 @@
     <AddressVolunteer>14 Haneviim St, Jerusalem</AddressVolunteer>
     <Latitude>31.7837</Latitude>
     <Longitude>35.2134</Longitude>
-    <maximumDistace>68012</maximumDistace>
+    <maximumDistace>55241</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>26759483</Id>
+    <Id>35325071</Id>
     <Name>Erez Goldstein</Name>
     <PhoneNumber>0584455667</PhoneNumber>
     <Email>erez_goldstein@gmail.com</Email>
@@ -205,13 +205,13 @@
     <AddressVolunteer>6 Gaza St, Jerusalem</AddressVolunteer>
     <Latitude>31.7718</Latitude>
     <Longitude>35.2279</Longitude>
-    <maximumDistace>73523</maximumDistace>
+    <maximumDistace>40011</maximumDistace>
     <duty>volunteer</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
-    <Id>20423264</Id>
+    <Id>21972419</Id>
     <Name>Moti glick</Name>
     <PhoneNumber>0527540619</PhoneNumber>
     <Email>moti_glick@gmail.com</Email>
@@ -223,19 +223,5 @@
     <duty>manager</duty>
     <IsActive>true</IsActive>
     <distance>Air</distance>
-  </Volunteer>
-  <Volunteer>
-    <Id>212329106</Id>
-    <Name>noti</Name>
-    <PhoneNumber>0547864028</PhoneNumber>
-    <Email>user@example.com</Email>
-    <pasword />
-    <AddressVolunteer />
-    <Latitude xsi:nil="true" />
-    <Longitude xsi:nil="true" />
-    <maximumDistace>0</maximumDistace>
-    <duty>volunteer</duty>
-    <IsActive>true</IsActive>
-    <distance>walk</distance>
   </Volunteer>
 </ArrayOfVolunteer>
