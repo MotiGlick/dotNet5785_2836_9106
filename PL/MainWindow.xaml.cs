@@ -101,5 +101,89 @@ namespace PL
             // Remove configuration observer
             s_bl.Admin.RemoveConfigObserver(ConfigObserver);
         }
+
+        private void btnInitializeDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            // הודעה למשתמש
+            MessageBoxResult result = MessageBox.Show(
+                "Are you sure you want to initialize the database?",
+                "Confirm Initialization",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    // שינוי האייקון של העכבר לשעון חול
+                    Mouse.OverrideCursor = Cursors.Wait;
+
+                    // סגירת כל החלונות פרט לחלון הראשי
+                    foreach (Window window in Application.Current.Windows)
+                    {
+                        if (window != this)
+                        {
+                            window.Close();
+                        }
+                    }
+
+                    // קריאה למתודת האתחול
+                    s_bl.Admin.InitializeDB();
+
+                    MessageBox.Show("Database initialized successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred during initialization: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    // החזרת האייקון של העכבר למצב רגיל
+                    Mouse.OverrideCursor = null;
+                }
+            }
+        }
+
+        private void btnResetDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            // הודעה למשתמש
+            MessageBoxResult result = MessageBox.Show(
+                "Are you sure you want to reset the database?",
+                "Confirm Reset",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    // שינוי האייקון של העכבר לשעון חול
+                    Mouse.OverrideCursor = Cursors.Wait;
+
+                    // סגירת כל החלונות פרט לחלון הראשי
+                    foreach (Window window in Application.Current.Windows)
+                    {
+                        if (window != this)
+                        {
+                            window.Close();
+                        }
+                    }
+
+                    // קריאה למתודת האיפוס
+                    s_bl.Admin.ResetDB();
+
+                    MessageBox.Show("Database reset successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred during reset: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    // החזרת האייקון של העכבר למצב רגיל
+                    Mouse.OverrideCursor = null;
+                }
+            }
+        }
     }
 }
