@@ -56,10 +56,11 @@
                     <GridViewColumn Header="Current Call Type" DisplayMemberBinding="{Binding CurrentCallType}" Width="Auto"/>
                     <!--GridViewColumn/-->   
                     <GridViewColumn Header="Handled calls" DisplayMemberBinding="{Binding TotalHandledCalls}" Width="Auto" />
-                    <GridViewColumn Header="Actions" Width="100">
+                    <GridViewColumn Header="Delete" Width="Auto">
+                        
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Delete"  Click="btnDeleteVolunteer_Click" />
+                                <Button Content="Delete"  Click="btnDeleteVolunteer_Click" Tag="{Binding}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
