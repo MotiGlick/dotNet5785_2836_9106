@@ -26,6 +26,7 @@ namespace PL.Volunteer
             InitializeComponent();
         }
 
+        public BO.VolunteerInList? SelectedVolunteer { get; set; }
 
 
         public IEnumerable<BO.VolunteerInList> VolunteersList
@@ -61,8 +62,45 @@ namespace PL.Volunteer
         private void Window_Closed(object sender, EventArgs e)
             => s_bl.Volunteer.RemoveObserver(VolunteerListObserver);
 
-        
+        private void lsvVolunteerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (SelectedVolunteer != null)
+                new VolunteerWindow(SelectedVolunteer.Id).Show();
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedVolunteer != null)
+                new VolunteerWindow().Show();
+        }
+
+        private void btnDeleteVolunteer_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button?.Tag is BO.Volunteer volunteer)
+            {
+                // Display confirmation dialog
+                var result = MessageBox.Show($"Are you sure you want to delete {volunteer.Name}?",
+                                             "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        // Attempt to delete the volunteer
+                        s_bl.Volunteer.Delete(volunteer.Id);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Show error message if deletion fails
+                        MessageBox.Show($"Failed to delete volunteer: {ex.Message}",
+                                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
     }
+    
 
 
 

@@ -52,9 +52,9 @@
   </Call>
   <Call>
     <Id>5</Id>
-    <type>ProvideTransportation</type>
+    <type>HomeCare</type>
     <CallAddress>40 Agripas Street, Jerusalem</CallAddress>
-    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7835</Latitude>
     <Longitude>35.215</Longitude>
     <CallTime>2024-12-17T02:00:23</CallTime>
@@ -172,9 +172,9 @@
   </Call>
   <Call>
     <Id>17</Id>
-    <type>EmotionalSupport</type>
+    <type>HomeCare</type>
     <CallAddress>7 Derech HaAtsmaut, Jerusalem</CallAddress>
-    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7717</Latitude>
     <Longitude>35.2238</Longitude>
     <CallTime>2024-12-14T02:00:23</CallTime>
@@ -282,9 +282,9 @@
   </Call>
   <Call>
     <Id>28</Id>
-    <type>EmotionalSupport</type>
+    <type>MedicalAssistance</type>
     <CallAddress>6 Sderot Eshkol, Jerusalem</CallAddress>
-    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.7972</Latitude>
     <Longitude>35.2308</Longitude>
     <CallTime>2024-12-26T02:00:23</CallTime>
@@ -302,9 +302,9 @@
   </Call>
   <Call>
     <Id>30</Id>
-    <type>ProvideTransportation</type>
+    <type>HospitalVisit</type>
     <CallAddress>19 HaAri Street, Jerusalem</CallAddress>
-    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7789</Latitude>
     <Longitude>35.2178</Longitude>
     <CallTime>2024-12-16T02:00:23</CallTime>
@@ -332,9 +332,9 @@
   </Call>
   <Call>
     <Id>33</Id>
-    <type>DeliverMedicine</type>
+    <type>ProvideTransportation</type>
     <CallAddress>9 Ma'alot Street, Jerusalem</CallAddress>
-    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
     <Latitude>31.77</Latitude>
     <Longitude>35.2089</Longitude>
     <CallTime>2024-12-13T02:00:23</CallTime>
@@ -392,9 +392,9 @@
   </Call>
   <Call>
     <Id>39</Id>
-    <type>MedicalAssistance</type>
+    <type>HospitalVisit</type>
     <CallAddress>18 Kiryat Moshe Street, Jerusalem</CallAddress>
-    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7881</Latitude>
     <Longitude>35.2156</Longitude>
     <CallTime>2024-12-17T02:00:23</CallTime>
@@ -412,9 +412,9 @@
   </Call>
   <Call>
     <Id>41</Id>
-    <type>HomeCare</type>
+    <type>DeliverMedicine</type>
     <CallAddress>31 Pierre Koenig Street, Jerusalem</CallAddress>
-    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7519</Latitude>
     <Longitude>35.2084</Longitude>
     <CallTime>2024-12-16T02:00:23</CallTime>
@@ -472,9 +472,9 @@
   </Call>
   <Call>
     <Id>47</Id>
-    <type>HomeCare</type>
+    <type>DeliverMedicine</type>
     <CallAddress>34 Lincoln Street, Jerusalem</CallAddress>
-    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7761</Latitude>
     <Longitude>35.2234</Longitude>
     <CallTime>2024-12-26T02:00:23</CallTime>
