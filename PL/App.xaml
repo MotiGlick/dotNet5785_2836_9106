@@ -5,8 +5,8 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <local:CallTypeCollection x:Key="CallTypeCollectionKey" />
-        <local:CallTypeCollection x:Key="JubCollectionKey" />
-        <local:CallTypeCollection x:Key="DistanceTypeCollectionKey" />
+        <local:JubCollection x:Key="JubCollectionKey" />
+        <local:DistanceTypeCollection x:Key="DistanceTypeCollectionKey" />
     </Application.Resources>
 </Application>
 
