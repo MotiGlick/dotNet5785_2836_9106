@@ -74,6 +74,8 @@ namespace PL.Volunteer
                 new VolunteerWindow().Show();
         }
 
+       
+
         private void btnDeleteVolunteer_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
