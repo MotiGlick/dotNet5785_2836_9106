@@ -60,8 +60,9 @@ internal class VolunteerImplementation : BlApi.IVolunteer
         }
         catch (DO.DalAlreadyExistsException ex)
         {
-            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
+            throw new BO.BlAlreadyExistsException($"Volunteer with ID:{boVolunteer.Id} already exists", ex);
         }
+
     }
 
 
@@ -273,7 +274,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
         }
         catch (DO.DalDoesNotExistException ex)
         {
-            throw new BO.BlDoesNotExistException($"Volunteer with ID={boVolunteer.Id} not exists", ex);
+            throw new BO.BlDoesNotExistException($"Volunteer with ID:{boVolunteer.Id} not exists", ex);
         }
     }
     #endregion Stage 4

@@ -24,6 +24,7 @@ namespace PL.Volunteer
         public VolunteerInListWindow()
         {
             InitializeComponent();
+
         }
 
         public BO.VolunteerInList? SelectedVolunteer { get; set; }
@@ -70,14 +71,16 @@ namespace PL.Volunteer
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedVolunteer != null)
-                new VolunteerWindow().Show();
+          //  if (SelectedVolunteer != null)
+             {   new VolunteerWindow().Show();
+                queryVolunteerList();
+            }
         }
 
         private void btnDeleteVolunteer_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            if (button?.Tag is BO.Volunteer volunteer)
+            if (button?.Tag is BO.VolunteerInList volunteer)
             {
                 // Display confirmation dialog
                 var result = MessageBox.Show($"Are you sure you want to delete {volunteer.Name}?",
@@ -89,6 +92,7 @@ namespace PL.Volunteer
                     {
                         // Attempt to delete the volunteer
                         s_bl.Volunteer.Delete(volunteer.Id);
+                        queryVolunteerList();
                     }
                     catch (Exception ex)
                     {

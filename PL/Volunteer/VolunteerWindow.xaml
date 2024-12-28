@@ -7,14 +7,17 @@
         mc:Ignorable="d"
         Title="VolunteerWindow" Height="650" Width="650" Background="#FF435565"
          DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+
     <Window.Resources>
+
         <!-- Style for Label-->
         <Style TargetType="Label">
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Background" Value="LightBlue"/>
+            <Setter Property="Background" Value="#FF435565"/>
+
         </Style>
 
         <!-- Style for TextBox -->
@@ -71,56 +74,64 @@
                 <ColumnDefinition Width="0.2*" />
                 <ColumnDefinition Width="0.05*" />
             </Grid.ColumnDefinitions>
+            
             <Label  Grid.Row="1" Grid.Column="1" Content="ID:"  />
-            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding CurrentVolunteer.Id, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
+            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding CurrentVolunteer.Id, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"  />
 
             <Label Grid.Row="2" Grid.Column="1" Content="Full Name:" />
             <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding CurrentVolunteer.Name, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" />
 
+
+            <!--Phone number line-->
             <Label Grid.Row="3" Grid.Column="1" Content="Phone:" />
-            <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding CurrentVolunteer.PhoneNumber, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" />
+            <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding CurrentVolunteer.PhoneNumber, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+
 
             <Label Grid.Row="4" Grid.Column="1" Content="Email:" />
-            <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding CurrentVolunteer.Email, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" />
+                <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding CurrentVolunteer.Email, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" />
 
-            <Label Grid.Row="5" Grid.Column="1" Content="Password:" />
+
+                <Label Grid.Row="5" Grid.Column="1" Content="Password:" />
             <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding CurrentVolunteer.Password, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
 
             <Label Grid.Row="6" Grid.Column="1" Content="Address:" />
             <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding CurrentVolunteer.Address, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
 
-            <Label Grid.Row="7" Grid.Column="1" Content="Duty:" />
-            <ComboBox Grid.Row="7" Grid.Column="2"
+
+
+
+
+            <Label Grid.Row="7" Grid.Column="1" Content="Maximum Distance:" />
+            <TextBox Grid.Row="7" Grid.Column="2" Text="{Binding CurrentVolunteer.MaximumDistance, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
+
+
+
+            <Label Grid.Row="8" Grid.Column="1" Content="Handled Calls:" />
+            <TextBox Grid.Row="8" Grid.Column="2" Text="{Binding CurrentVolunteer.HandeledCalls, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
+
+            <Label Grid.Row="9" Grid.Column="1" Content="Canceled Calls:" />
+            <TextBox Grid.Row="9" Grid.Column="2" Text="{Binding CurrentVolunteer.CanceledCalls, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" />
+
+            <Label Grid.Row="10" Grid.Column="1" Content="Expired Calls:" />
+            <TextBox Grid.Row="10" Grid.Column="2" Text="{Binding CurrentVolunteer.ExpiredCalls, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
+            
+            <Label Grid.Row="11" Grid.Column="1" Content="Duty:" />
+            <ComboBox Grid.Row="11" Grid.Column="2"
              SelectedValue="{Binding Path=duty, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                ItemsSource="{Binding Source={StaticResource JubCollectionKey}}" />
-
-
-
-
-            <Label Grid.Row="8" Grid.Column="1" Content="Maximum Distance:" />
-                <TextBox Grid.Row="8" Grid.Column="2" Text="{Binding CurrentVolunteer.MaximumDistance, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
-
-                <Label Grid.Row="9" Grid.Column="1" Content="Distance Type:" />
-            <ComboBox Grid.Row="9" Grid.Column="2" SelectionChanged="ComboBox_SelectionChanged" ScrollViewer.CanContentScroll="False"  
+            
+            <Label Grid.Row="12" Grid.Column="1" Content="Distance Type:" />
+            <ComboBox Grid.Row="12" Grid.Column="2" SelectionChanged="ComboBox_SelectionChanged" ScrollViewer.CanContentScroll="False"  
              SelectedValue="{Binding Path=distanceType, Mode=TwoWay, NotifyOnValidationError=true, 
             ValidatesOnExceptions=true}"
              ItemsSource="{Binding Source={StaticResource DistanceTypeCollectionKey}}" />
+            
+
+            <Label Grid.Row="13" Grid.Column="1" Content="Is Active:" />
+            <CheckBox Grid.Row="13" Grid.Column="2" Grid.ColumnSpan="2"/>
 
 
-            <Label Grid.Row="10" Grid.Column="1" Content="Handled Calls:" />
-                <TextBox Grid.Row="10" Grid.Column="2" Text="{Binding CurrentVolunteer.HandeledCalls, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
-
-                <Label Grid.Row="11" Grid.Column="1" Content="Canceled Calls:" />
-                <TextBox Grid.Row="11" Grid.Column="2" Text="{Binding CurrentVolunteer.CanceledCalls, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" />
-
-                <Label Grid.Row="12" Grid.Column="1" Content="Expired Calls:" />
-                <TextBox Grid.Row="12" Grid.Column="2" Text="{Binding CurrentVolunteer.ExpiredCalls, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
-
-                <Label Grid.Row="13" Grid.Column="1" Content="Is Active:" />
-                <CheckBox Grid.Row="13" Grid.Column="2" Grid.ColumnSpan="2"/>
-
-
-                <Button Grid.Row="14" Background="LightBlue" Grid.Column="3" Content="{Binding ButtonText}" Click="btnAddUpdate_Click"/>
+            <Button Grid.Row="14" Background="LightBlue" Grid.Column="3" Content="{Binding Path= ButtonText}" Click="btnAddUpdate_Click"/>
 
         </Grid>
     </DockPanel>
