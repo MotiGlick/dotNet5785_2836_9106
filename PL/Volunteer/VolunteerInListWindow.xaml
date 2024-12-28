@@ -28,6 +28,9 @@
 
         <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
         <ListView Grid.Row="1" ItemsSource="{Binding Path=VolunteersList}" Foreground= "Blue" >
+        
+        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="btnAdd_Click"/>
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=VolunteersList}" SelectedItem="{Binding SelectedVolunteer}" MouseDoubleClick="lsvVolunteerList_MouseDoubleClick" Height="531" VerticalAlignment="Top" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}"  Width="Auto"  />
@@ -39,8 +42,17 @@
                     <GridViewColumn Header="Current Call Id" DisplayMemberBinding="{Binding CurrentCallId}" Width="Auto"/>
                     <GridViewColumn Header="Current Call Type" DisplayMemberBinding="{Binding CurrentCallType}" Width="Auto"/>
                     <!--GridViewColumn/-->
+                    <GridViewColumn />
+                    <GridViewColumn Header="Actions" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Delete" Click="btnDeleteVolunteer_Click" Tag="{Binding}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
+
     </Grid>
 </Window>
