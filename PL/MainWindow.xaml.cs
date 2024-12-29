@@ -82,7 +82,16 @@ namespace PL
 
         private void btnUpdateRiskRange_Click(object sender, RoutedEventArgs e)
         {
-            s_bl.Admin.SetMaxRange(MaxYearRange);
+            try
+            {
+                s_bl.Admin.SetMaxRange(MaxYearRange);
+                MessageBox.Show("Risk Range updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred during updating Risk Range: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
