@@ -37,10 +37,10 @@ public static class Initialization
                 "omer_sasson@gmail.com", "tal_peretz@gmail.com", "yonatan_elbaz@gmail.com", "roni_malka@gmail.com", "hodaya_avrahami@gmail.com",
                  "idan_azulai@gmail.com", "maor_levi@gmail.com", "shaked_kaplan@gmail.com", "bar_nir@gmail.com", "erez_goldstein@gmail.com" };
 
-        string[] VolunteerAddresses ={ "10 King David St, Jerusalem", "15 Jaffa Rd, Jerusalem", "8 Agron St, Jerusalem", "3 Shlomzion HaMalka St, Jerusalem",
-              "20 Yitzhak Kariv St, Jerusalem", "5 Emek Refaim St, Jerusalem", "2 HaPalmach St, Jerusalem", "12 Ben Yehuda St, Jerusalem",
-              "7 Hillel St, Jerusalem", "18 Keren HaYesod St, Jerusalem", "25 HaNevi'im St, Jerusalem", "4 Rachel Imenu St, Jerusalem",
-               "30 Hebron Rd, Jerusalem", "14 Haneviim St, Jerusalem", "6 Gaza St, Jerusalem"};
+        string[] VolunteerAddresses ={ "King David St 10, Jerusalem", " Jaffa Rd 15, Jerusalem", "Agron 8, Jerusalem", "Shlomzion HaMalka 3, Jerusalem",
+              "Yitzhak Kariv St 20, Jerusalem", "Emek Refaim 5, Jerusalem", "HaPalmach St 2, Jerusalem", "Ben Yehuda 11, Jerusalem",
+              "Hillel 7, Jerusalem", "Keren HaYesod St 18, Jerusalem", "HaNevi'im 25, Jerusalem", "Rachel Imenu 4, Jerusalem",
+               "Hebron Rd 30, Jerusalem", "Haneviim St 14, Jerusalem", "Gaza St 6, Jerusalem"};
 
         string[] VolunteerPasswords ={ "83749205", "39482715", "52987412", "74859302", "10293847",
               "37482910", "95847120", "28374619", "49582037", "17649582",

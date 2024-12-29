@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="VolunteerWindow" Height="650" Width="650" Background="#FF435565"
-         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+        Title="VolunteerWindow" Height="650" Width="650" Background="Gray"
+         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
 
     <Window.Resources>
 
@@ -16,7 +16,7 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Background" Value="#FF435565"/>
+            <Setter Property="Background" Value="Gray"/>
 
         </Style>
 
@@ -98,13 +98,8 @@
             <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding CurrentVolunteer.Address, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
 
 
-
-
-
             <Label Grid.Row="7" Grid.Column="1" Content="Maximum Distance:" />
             <TextBox Grid.Row="7" Grid.Column="2" Text="{Binding CurrentVolunteer.MaximumDistance, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
-
-
 
             <Label Grid.Row="8" Grid.Column="1" Content="Handled Calls:" />
             <TextBox Grid.Row="8" Grid.Column="2" Text="{Binding CurrentVolunteer.HandeledCalls, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"/>
@@ -132,6 +127,7 @@
 
 
             <Button Grid.Row="14" Background="LightBlue" Grid.Column="3" Content="{Binding Path= ButtonText}" Click="btnAddUpdate_Click"/>
+            
 
         </Grid>
     </DockPanel>

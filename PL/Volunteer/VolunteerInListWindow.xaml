@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
         Title="VolunteerInListWindow" Height="640" Width="800"
-         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" >
+         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
 
     <!--External Grid-->
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="500*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -21,7 +21,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Filter" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
+            <Label Grid.Column="0" Content="Filter by current call" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
             <ComboBox Grid.Column="1"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
                       ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=typeOfCall, Mode=TwoWay}" SelectionChanged="TypeOfCall_SelectionChanged"/>
         </Grid>
@@ -41,7 +41,7 @@
                     <GridViewColumn Header="Name" Width="Auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}" Foreground="Blue" FontWeight="Bold" />
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -60,7 +60,7 @@
                         
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Delete"  Click="btnDeleteVolunteer_Click" Tag="{Binding}" />
+                                <Button Content="Delete"  Click="btnDeleteVolunteer_Click" Tag="{Binding}" Background="LightBlue"  />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
