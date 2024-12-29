@@ -48,7 +48,7 @@
     <PhoneNumber>0532234455</PhoneNumber>
     <Email>aviv_mizrahi@gmail.com</Email>
     <pasword>74859302</pasword>
-    <AddressVolunteer>3 Shlomzion HaMalka St, Jerusalem</AddressVolunteer>
+    <AddressVolunteer>Shlomzion HaMalka 3, Jerusalem</AddressVolunteer>
     <Latitude>31.7784</Latitude>
     <Longitude>35.2111</Longitude>
     <maximumDistace>9441</maximumDistace>
@@ -90,7 +90,7 @@
     <PhoneNumber>0529876543</PhoneNumber>
     <Email>tal_peretz@gmail.com</Email>
     <pasword>95847120</pasword>
-    <AddressVolunteer>2 HaPalmach St, Jerusalem</AddressVolunteer>
+    <AddressVolunteer>HaPalmach St 2, Jerusalem</AddressVolunteer>
     <Latitude>31.7612</Latitude>
     <Longitude>35.2256</Longitude>
     <maximumDistace>57886</maximumDistace>
@@ -104,7 +104,7 @@
     <PhoneNumber>0501122334</PhoneNumber>
     <Email>yonatan_elbaz@gmail.com</Email>
     <pasword>28374619</pasword>
-    <AddressVolunteer>12 Ben Yehuda St, Jerusalem</AddressVolunteer>
+    <AddressVolunteer>Ben Yehuda 11, Jerusalem</AddressVolunteer>
     <Latitude>31.7801</Latitude>
     <Longitude>35.2119</Longitude>
     <maximumDistace>72722</maximumDistace>
@@ -118,7 +118,7 @@
     <PhoneNumber>0537894561</PhoneNumber>
     <Email>roni_malka@gmail.com</Email>
     <pasword>49582037</pasword>
-    <AddressVolunteer>7 Hillel St, Jerusalem</AddressVolunteer>
+    <AddressVolunteer>Hillel 7, Jerusalem</AddressVolunteer>
     <Latitude>31.7806</Latitude>
     <Longitude>35.2213</Longitude>
     <maximumDistace>80239</maximumDistace>
@@ -132,7 +132,7 @@
     <PhoneNumber>0581237890</PhoneNumber>
     <Email>hodaya_avrahami@gmail.com</Email>
     <pasword>17649582</pasword>
-    <AddressVolunteer>18 Keren HaYesod St, Jerusalem</AddressVolunteer>
+    <AddressVolunteer>Keren HaYesod St 18, Jerusalem</AddressVolunteer>
     <Latitude>31.7715</Latitude>
     <Longitude>35.228</Longitude>
     <maximumDistace>87347</maximumDistace>
@@ -146,7 +146,7 @@
     <PhoneNumber>0545566778</PhoneNumber>
     <Email>idan_azulai@gmail.com</Email>
     <pasword>82937465</pasword>
-    <AddressVolunteer>25 HaNevi'im St, Jerusalem</AddressVolunteer>
+    <AddressVolunteer>HaNevi'im 25, Jerusalem</AddressVolunteer>
     <Latitude>31.7851</Latitude>
     <Longitude>35.2242</Longitude>
     <maximumDistace>76055</maximumDistace>
