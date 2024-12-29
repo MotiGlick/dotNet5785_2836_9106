@@ -3,7 +3,9 @@
 using BO;
 using DalApi;
 using System.Net;
+using System.Numerics;
 using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Helpers;
 
@@ -24,31 +26,31 @@ internal class VolunteerManager
     {
 
         // בדיקת ת.ז (האם מספרי)
-        if (!int.TryParse(volunteer.Id.ToString(), out int id) || id <= 0) return false;
+        if (!int.TryParse(volunteer.Id.ToString(), out int id) || id <= 0) throw new BO.BlNotValidException("Incorrect ID");
 
         // בדיקת שם מלא (אורך נדרש)
         if (string.IsNullOrWhiteSpace(volunteer.Name) || volunteer.Name.Length < 2 || volunteer.Name.Length > 50)
-            return false;
+            throw new BO.BlNotValidException("Incorrect name\n name must have at least 2 letters");
 
         // בדיקת טלפון סלולרי (אורך ומבנה תקין)
         if (string.IsNullOrWhiteSpace(volunteer.PhoneNumber) ||
           !Regex.IsMatch(volunteer.PhoneNumber, @"^\d{10}$"))
-            return false;
+            throw new BO.BlNotValidException("Incorrect phone number\n phone number must have 10 letters and start with 0");
 
 
         //בדיקת מרחק מרבי(אם קיים)
-        if (volunteer.MaximumDistance != 0 && (!double.TryParse(volunteer.MaximumDistance.ToString(), out double maxDistance) || maxDistance <= 0)) return false;
+        if (volunteer.MaximumDistance != 0 && (!double.TryParse(volunteer.MaximumDistance.ToString(), out double maxDistance) || maxDistance <= 0)) throw new BO.BlNotValidException("Invalid maximum distance.\nThe value must be a positive number."); 
 
         if (string.IsNullOrWhiteSpace(volunteer.Email))
-            return false;
+            throw new BO.BlNotValidException("Incorrect email");
 
         string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
         if (!Regex.IsMatch(volunteer.Email, emailPattern))
-            return false;
+            throw new BO.BlNotValidException("Incorrect email");
 
         // בדיקת כתובת מלאה (אורך נדרש אם קיים)
         if (volunteer.Address != "" && (volunteer.Address.Length < 5 || volunteer.Address.Length > 100) && volunteer.Address != null)
-            return false;
+            throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
 
 
         return true;
@@ -58,7 +60,7 @@ internal class VolunteerManager
     /// </summary>
     /// <param name="volunteer"></param>
     /// <returns></returns>
-    public static bool logicCheckToVolunteer(ref BO.Volunteer volunteer)
+    public static bool logicCheckToVolunteer(BO.Volunteer volunteer)
     {
         //if (!IsValidId(volunteer.Id))
         //{
@@ -66,16 +68,11 @@ internal class VolunteerManager
         //}
         if (!IsValidPhoneNumber(volunteer.PhoneNumber))
         {
-            return false; // מספר טלפון לא תקין
+            throw new BO.BlNotValidException("Incorrect phone number\n phone number must have 10 letters and start with 0"); // מספר טלפון לא תקין
         }
         if (volunteer.Address != "")
-            if (Tools.AddressExists(volunteer.Address))
-            {
-                volunteer.Latitude = Tools.GetLatitude(volunteer.Address);
-                volunteer.Longitude = Tools.GetLongitude(volunteer.Address);
-            }
-            else
-                return false;
+            if (!Tools.AddressExists(volunteer.Address))
+                throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
 
         return true;
     }
@@ -163,11 +160,11 @@ internal class VolunteerManager
                 DistanceFromVolunteer = Tools.CalculateDistance(_dal.Volunteer.Read(assignment.Id), relatedCall),
                 status = CallManager.GetCallStatus(relatedCall.Id)
             }).FirstOrDefault(); // לוקח את התוצאה הראשונה או null אם אין תוצאה
-       
+
         if (result != null)
-           {
-            Observers.NotifyItemUpdated(id); //stage 5
-            Observers.NotifyListUpdated(); //stage 5
+        {
+            // Observers.NotifyItemUpdated(id); //stage 5
+            // Observers.NotifyListUpdated(); //stage 5
         }
 
         return result;
@@ -268,9 +265,9 @@ internal class VolunteerManager
 
         // בדיקה אם המתנדב מטפל כרגע או טיפל בעבר בכל קריאה
         bool hasActiveOrPastAssignments = assignments.Any(a =>
-            CallManager.GetCallStatus(a.CallId) is BO.StatusOfCall.InProgress or
-            BO.StatusOfCall.InProgressAtRisk or
-            BO.StatusOfCall.Open);
+            CallManager.GetCallStatus(a.CallId) == BO.StatusOfCall.InProgress ||
+             CallManager.GetCallStatus(a.CallId) == BO.StatusOfCall.InProgressAtRisk ||
+            CallManager.GetCallStatus(a.CallId) == BO.StatusOfCall.Open);
 
         // אם יש משימה פעילה או קריאה שטופלה בעבר, לא ניתן למחוק
         if (hasActiveOrPastAssignments)

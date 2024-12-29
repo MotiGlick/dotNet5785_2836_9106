@@ -3,6 +3,7 @@
 namespace BlImplementation;
 using BlApi;
 using BO;
+using DalApi;
 //using DalApi;
 using DO;
 using Helpers;
@@ -34,7 +35,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
 
         try
         {
-            if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(ref boVolunteer))
+            if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(boVolunteer))
             {
                 DO.Volunteer doVolunteer = new DO.Volunteer()
                 {
@@ -44,8 +45,8 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                     Email = boVolunteer.Email,
                     pasword = boVolunteer.Password,
                     AddressVolunteer = boVolunteer.Address,
-                    Latitude = boVolunteer.Latitude,
-                    Longitude = boVolunteer.Longitude,
+                    Latitude = boVolunteer.Address == "" ? null : Tools.GetLatitude(boVolunteer.Address),
+                    Longitude = boVolunteer.Address == "" ? null : Tools.GetLongitude(boVolunteer.Address),
                     maximumDistace = boVolunteer.MaximumDistance,
                     duty = (DO.job)boVolunteer.Duty,
                     IsActive = boVolunteer.IsActive,
@@ -53,6 +54,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                 };
                 _dal.Volunteer.Create(doVolunteer);
                 VolunteerManager.Observers.NotifyListUpdated(); //stage 5 
+
             }
             else
                 throw new BO.BlNotValidException("The volunteer data is not valid");
@@ -232,7 +234,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     {
         try
         {
-            if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(ref boVolunteer))//בדיקה לוגית ותקינות
+            if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(boVolunteer))//בדיקה לוגית ותקינות
             {
                 bool isManager = _dal.Volunteer.Read(id).duty == DO.job.manager;
                 DO.Volunteer oldDoVolunteer = _dal.Volunteer.Read(boVolunteer.Id);
@@ -244,19 +246,18 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                     Email = boVolunteer.Email,
                     pasword = boVolunteer.Password,
                     AddressVolunteer = boVolunteer.Address,
-                    Latitude = boVolunteer.Latitude,
-                    Longitude = boVolunteer.Longitude,
+                    Latitude = boVolunteer.Address == "" ? null : Tools.GetLatitude(boVolunteer.Address),
+                    Longitude = boVolunteer.Address == "" ? null : Tools.GetLongitude(boVolunteer.Address),
                     maximumDistace = boVolunteer.MaximumDistance,
                     duty = (DO.job)boVolunteer.Duty,
                     IsActive = boVolunteer.IsActive,
                     distance = (DO.DistanceType)boVolunteer.Distance
                 };
 
-
                 if (isManager)
                 {// אם הוא מנהל 
                     _dal.Volunteer.Update(newDoVolunteer);
-                    VolunteerManager.Observers.NotifyItemUpdated(id);  //stage 5
+                    VolunteerManager.Observers.NotifyItemUpdated(newDoVolunteer.Id);  //stage 5
                     VolunteerManager.Observers.NotifyListUpdated();  //stage 5
                 }
                 else if (id == boVolunteer.Id)//אם זה המתנדב עצמו זה שמעדכן
@@ -264,17 +265,28 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                     if (oldDoVolunteer.duty != newDoVolunteer.duty && oldDoVolunteer.duty == DO.job.manager)//אם מעדכנים את התפקיד אז זה רק אם הוא מנהל
                     {
                         _dal.Volunteer.Update(newDoVolunteer);
-                        VolunteerManager.Observers.NotifyItemUpdated(id);  //stage 5
+                        VolunteerManager.Observers.NotifyItemUpdated(newDoVolunteer.Id);  //stage 5
                         VolunteerManager.Observers.NotifyListUpdated();  //stage 5
                     }
-                    else if (oldDoVolunteer.duty == newDoVolunteer.duty) _dal.Volunteer.Update(newDoVolunteer);// אם הוא לא מנסה לעדכן את תפקיד 
+                    else if (oldDoVolunteer.duty == newDoVolunteer.duty)
+                    {
+                        _dal.Volunteer.Update(newDoVolunteer);// אם הוא לא מנסה לעדכן את תפקיד 
+                        VolunteerManager.Observers.NotifyItemUpdated(newDoVolunteer.Id);  //stage 5
+                        VolunteerManager.Observers.NotifyListUpdated();  //stage 5
+                    }
                 }
-            }
 
+
+
+            }
         }
         catch (DO.DalDoesNotExistException ex)
         {
             throw new BO.BlDoesNotExistException($"Volunteer with ID:{boVolunteer.Id} not exists", ex);
+        }
+        catch (BO.BlNotValidException ex)
+        {
+            throw ex;
         }
     }
     #endregion Stage 4
