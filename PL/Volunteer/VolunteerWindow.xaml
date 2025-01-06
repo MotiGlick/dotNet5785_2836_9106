@@ -17,6 +17,7 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Foreground" Value="DarkSlateGray"/>
 
         </Style>
 
@@ -27,7 +28,7 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="BorderBrush" Value="Gray"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="LightBlue"/>
+            
         </Style>
 
         <!--  Style for ComboBox -->
@@ -74,9 +75,11 @@
                 <ColumnDefinition Width="0.2*" />
                 <ColumnDefinition Width="0.05*" />
             </Grid.ColumnDefinitions>
-            
+
             <Label  Grid.Row="1" Grid.Column="1" Content="ID:"  />
-            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding CurrentVolunteer.Id, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"  />
+            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding CurrentVolunteer.Id, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}"  
+                      IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToTrueKey}}"
+                    Foreground="{Binding ButtonText, Converter={StaticResource TextColorConverterKey}}"/>
 
             <Label Grid.Row="2" Grid.Column="1" Content="Full Name:" />
             <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding CurrentVolunteer.Name, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" />
@@ -112,22 +115,22 @@
             
             <Label Grid.Row="11" Grid.Column="1" Content="Duty:" />
             <ComboBox Grid.Row="11" Grid.Column="2"
-             SelectedValue="{Binding Path=duty, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+             SelectedValue="{Binding CurrentVolunteer.Duty, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                ItemsSource="{Binding Source={StaticResource JubCollectionKey}}" />
             
             <Label Grid.Row="12" Grid.Column="1" Content="Distance Type:" />
-            <ComboBox Grid.Row="12" Grid.Column="2" SelectionChanged="ComboBox_SelectionChanged" ScrollViewer.CanContentScroll="False"  
-             SelectedValue="{Binding Path=distanceType, Mode=TwoWay, NotifyOnValidationError=true, 
+            <ComboBox Grid.Row="12" Grid.Column="2"  ScrollViewer.CanContentScroll="False"  
+             SelectedValue="{Binding  CurrentVolunteer.Distance, Mode=TwoWay, NotifyOnValidationError=true, 
             ValidatesOnExceptions=true}"
              ItemsSource="{Binding Source={StaticResource DistanceTypeCollectionKey}}" />
             
 
             <Label Grid.Row="13" Grid.Column="1" Content="Is Active:" />
-            <CheckBox Grid.Row="13" Grid.Column="2" Grid.ColumnSpan="2"/>
+            <CheckBox Grid.Row="13" Grid.Column="2" Grid.ColumnSpan="2" IsChecked="{Binding CurrentVolunteer.IsActive, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
 
-            <Button Grid.Row="14" Background="LightBlue" Grid.Column="3" Content="{Binding Path= ButtonText}" Click="btnAddUpdate_Click"/>
-            
+            <Button Grid.Row="14" Background="Gray" Grid.Column="3" Content="{Binding Path= ButtonText}" Click="btnAddUpdate_Click"/>
+         
 
         </Grid>
     </DockPanel>

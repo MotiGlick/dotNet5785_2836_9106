@@ -100,11 +100,22 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// <param name="pasward"></param>
     /// <returns >user role</returns>
     /// <exception cref="BO.BlInvalidCredentialsException"></exception>
-    public BO.job EnterToTheSystem(string name, string? pasward)
+    public BO.job EnterToTheSystem(string? name = null, string? pasward = null, int? id = null)
     {
+        DO.Volunteer? doVolunteer = null;
 
-        DO.Volunteer? doVolunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Name == name && v.pasword == pasward);
+        if (id != null)
+            doVolunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == id && v.pasword == pasward);
+        else if (name != null)
+        {
+            doVolunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Name == name && v.pasword == pasward);
+        }
+        else
+        {
+            throw new BlNotValidException("Must provide either ID or Name and Password.");
+        }
 
+     
         if (doVolunteer != null)
         {
             return (BO.job)doVolunteer.duty;
@@ -275,7 +286,6 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                         VolunteerManager.Observers.NotifyListUpdated();  //stage 5
                     }
                 }
-
 
 
             }

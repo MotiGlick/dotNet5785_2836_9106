@@ -28,9 +28,4 @@ internal class Bl : IBl
     public IAdmin Admin { get; }=new IAdminImplementation();
 
 
-
-
-
-
-
 }
