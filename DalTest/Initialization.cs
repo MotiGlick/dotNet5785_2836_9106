@@ -85,7 +85,7 @@ public static class Initialization
 
             // Add the manager to the data access layer
             s_dal.Volunteer!.Create(new(id, "Moti glick", "0527540619", "moti_glick@gmail.com",
-                    "00324366", " 21 HaVaad HaLeumi St, Jerusalem", 31.7853, 35.2137, 100, job.manager, true, DistanceType.Air));
+                    "1234", " 21 HaVaad HaLeumi St, Jerusalem", 31.7853, 35.2137, 100, job.manager, true, DistanceType.Air));
         }
     }
     /// <summary>

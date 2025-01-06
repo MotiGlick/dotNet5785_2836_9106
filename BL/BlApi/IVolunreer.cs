@@ -19,7 +19,7 @@ public interface IVolunteer :IObservable
     /// <param name="name">The name of the volunteer attempting to log in.</param>
     /// <param name="passward">The password of the volunteer (optional).</param>
     /// <returns>The job role of the volunteer (e.g., Manager, Volunteer).</returns>
-    BO.job EnterToTheSystem(string name , string? passward);
+    BO.job EnterToTheSystem(string? name , string? passward ,int? id);
 
     /// <summary>
     /// Creates a new volunteer.

@@ -56,6 +56,7 @@ namespace PL.Volunteer
         public BO.CallType typeOfCall { get; set; } = BO.CallType.No_Filter;
 
 
+
         /// <summary>
         /// Handles selection changes in the call type ComboBox.
         /// </summary>

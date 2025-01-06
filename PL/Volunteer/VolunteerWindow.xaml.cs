@@ -77,13 +77,12 @@ namespace PL.Volunteer
         /// <summary>
         /// Represents the volunteer's  duty.
         /// </summary>
-        public BO.job duty { get; set; } = BO.job.volunteer;
+        //public BO.job duty { get; set; } = BO.job.volunteer;
 
-        /// <summary>
-        /// Represents the distance type for the volunteer.
-        /// </summary>
-        public BO.DistanceType distanceType { get; set; } = BO.DistanceType.car;
-
+        ///// <summary>
+        ///// Represents the distance type for the volunteer.
+        ///// </summary>
+        //public BO.DistanceType distanceType { get; set; } = BO.DistanceType.car;
 
         /// <summary>
         /// Updates the CurrentVolunteer by getting the data from the business logic layer.
@@ -166,11 +165,7 @@ namespace PL.Volunteer
           
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
+     
 
     }
 }
