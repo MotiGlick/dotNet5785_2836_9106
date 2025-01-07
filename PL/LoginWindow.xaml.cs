@@ -44,8 +44,7 @@ namespace PL
                 BO.job j= s_bl.Volunteer.EnterToTheSystem(null,CurrentVolunteer.Password,CurrentVolunteer.Id);
                 if (j == BO.job.volunteer)
                 {
-
-                  
+                    new MainVolunteerWindow(CurrentVolunteer.Id).Show();
                 }
                 else if (j == BO.job.manager)
                 {
