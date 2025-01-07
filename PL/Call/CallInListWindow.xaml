@@ -1,0 +1,69 @@
+﻿<Window x:Class="PL.Call.CallInListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Call"
+        mc:Ignorable="d"
+        Title="CallInListWindow" Height="450" Width="850"
+         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
+    <!--External Grid-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="500*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!--Internal, Upper Grid-->
+        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Filter by call type" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
+            <ComboBox Grid.Column="1"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
+                    ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=callTypeFilter, Mode=TwoWay}" SelectionChanged="callTypeFilter_SelectionChanged" />
+            
+            <Label Grid.Column="2" Content="Filter by status" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
+            <ComboBox Grid.Column="3"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
+                   ItemsSource="{Binding Source={StaticResource StatusOfCallCollectionKey}}" SelectedValue="{Binding Path=statusFilter, Mode=TwoWay}" SelectionChanged="statusFilter_SelectionChanged" />
+
+            <Label Grid.Column="4" Content="Order by:" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
+            <ComboBox Grid.Column="5"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
+       ItemsSource="{Binding Source={StaticResource  CallInListFieldCollectionKey}}" SelectedValue="{Binding Path=orderCallsList, Mode=TwoWay}" SelectionChanged="statusFilter_SelectionChanged" />
+        </Grid>
+
+       
+        <!--Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="btnAdd_Click"/-->
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=CallsList}" SelectedItem="{Binding SelectedCall}" MouseDoubleClick="lsvVolunteerList_MouseDoubleClick" Height="531" VerticalAlignment="Top" >
+            <ListView.View>
+                <GridView>
+
+
+                    <GridViewColumn Header="Assignment id" DisplayMemberBinding="{Binding Id}"  Width="Auto"  />
+                    <GridViewColumn Header="Call id" DisplayMemberBinding="{Binding CallId}" Width="Auto"/>
+                    <GridViewColumn Header="CallType" DisplayMemberBinding="{Binding  CallType}" Width="Auto"/>
+                    <GridViewColumn Header="Opening time" DisplayMemberBinding="{Binding OpeningTime}" Width="Auto"/>
+                    <GridViewColumn Header="Time left" DisplayMemberBinding="{Binding TimeLeft}" Width="Auto"/>
+                    <GridViewColumn Header="Last volunteer name" DisplayMemberBinding="{Binding LastVolunteerName}" Width="Auto"/>
+                    <GridViewColumn Header="Total handling time" DisplayMemberBinding="{Binding  HandlingTime}" Width="Auto" />
+                    <GridViewColumn Header="Call status" DisplayMemberBinding="{Binding  status}" Width="Auto" />
+                    <GridViewColumn Header="Amount of assigns" DisplayMemberBinding="{Binding  AmountOfAssigns}" Width="Auto" />
+                    <GridViewColumn Header="Delete" Width="Auto">
+
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Delete"  Click="btnDeleteCall_Click" Tag="{Binding}" Background="LightBlue" Visibility="{Binding CallId , Converter={StaticResource buttonvisibilityConverterKey}}"  />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>

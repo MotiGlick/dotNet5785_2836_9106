@@ -1,4 +1,5 @@
-﻿using PL.Volunteer;
+﻿using PL.Call;
+using PL.Volunteer;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -67,7 +68,7 @@ namespace PL
             s_bl.Admin.ForwardClock(BO.TimeUnit.Year);
         }
 
-        private void btnShowList_Click(object sender, RoutedEventArgs e)
+        private void btnShowVolunteerList_Click(object sender, RoutedEventArgs e)
         {
             new VolunteerInListWindow().Show();
         }
@@ -193,6 +194,11 @@ namespace PL
                     Mouse.OverrideCursor = null;
                 }
             }
+        }
+
+        private void btnShowCallList_Click(object sender, RoutedEventArgs e)
+        {
+            new CallInListWindow().Show();
         }
     }
 }

@@ -90,7 +90,7 @@ internal class Program
                             string name = Console.ReadLine();
                             Console.WriteLine("Enter password (if nedded):");
                             string? password = Console.ReadLine();
-                            BO.job jub = s_bl.Volunteer.EnterToTheSystem(name, password);
+                            BO.job jub = s_bl.Volunteer.EnterToTheSystem(name, password,null);
                             Console.WriteLine("Enter to the system successfully");
                             break;
 
