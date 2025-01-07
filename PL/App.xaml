@@ -7,9 +7,14 @@
         <local:CallTypeCollection x:Key="CallTypeCollectionKey" />
         <local:JubCollection x:Key="JubCollectionKey" />
         <local:DistanceTypeCollection x:Key="DistanceTypeCollectionKey" />
+        <local:StatusOfCallCollection x:Key="StatusOfCallCollectionKey" />
+        <local:CallInListFieldCollection x:Key="CallInListFieldCollectionKey" />
         <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
         <local:TextColorConverter x:Key="TextColorConverterKey" />
-        
+        <local:buttonvisibilityConverter x:Key="buttonvisibilityConverterKey" />
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterKey" />
+
+       
     </Application.Resources>
 </Application>
 

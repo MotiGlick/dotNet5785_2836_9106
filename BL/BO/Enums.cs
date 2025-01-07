@@ -64,7 +64,8 @@ public enum CallInListField
     LastVolunteerName,
     HandlingTime,
     status,
-    AmountOfAssigns
+    AmountOfAssigns,
+    //No_Filter  //stage 6 
 }
 
 
@@ -189,7 +190,8 @@ public enum StatusOfCall
     Closed,              // The call has been successfully resolved
     Expired,             // The call was not handled in time or expired without being assigned
     OpenAtRisk,           // The call is open and approaching its maximum allowed time (within the risk threshold)
-    InProgressAtRisk      // The call is InProgress and approaching its maximum allowed time (within the risk threshold)
+    InProgressAtRisk,     // The call is InProgress and approaching its maximum allowed time (within the risk threshold)
+    No_Filter //stage 6
 }
 
 
