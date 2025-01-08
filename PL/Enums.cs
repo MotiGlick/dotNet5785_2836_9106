@@ -1,8 +1,7 @@
-﻿
+﻿namespace PL;
 using BO;
 using System;
 using System.Collections;
-namespace PL;
 internal class CallTypeCollection : IEnumerable
 {
     static readonly IEnumerable<BO.CallType> s_enums =
@@ -46,3 +45,10 @@ internal class CallInListFieldCollection : IEnumerable
 }
 
 
+internal class CallClosureTypeCollection : IEnumerable
+{
+    static readonly IEnumerable<BO.CallClosureType> s_enums =
+    (Enum.GetValues(typeof(BO.CallClosureType)) as IEnumerable<BO.CallClosureType>)!;
+
+    public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+}
