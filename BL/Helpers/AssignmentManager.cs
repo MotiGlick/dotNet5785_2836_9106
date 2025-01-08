@@ -183,7 +183,7 @@ internal class AssignmentManager
         else
         {
             var lastAssignment = _dal.Assignment.ReadAll()//GetCallAssignList(doCallId)
-            //.OrderByDescending(assin => assin.HndalStartTime)
+            //.OrderByDescending(assin => assin.AssignmentTime)
             .FirstOrDefault(assin => assin.VolunteerId == VolunteerId);
 
             return lastAssignment;
@@ -197,16 +197,6 @@ internal class AssignmentManager
     //    return GetCallAssignList(doCallId).OrderByDescending(Assin => Assin.HndalStartTime).First();
 
     //}
-
-
-
-
-
-
-
-
-
-
 
 
 
