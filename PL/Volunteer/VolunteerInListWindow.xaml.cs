@@ -57,7 +57,7 @@ namespace PL.Volunteer
 
 
 
-        /// <summary>
+        /// <summary> 
         /// Handles selection changes in the call type ComboBox.
         /// </summary>
         private void TypeOfCall_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -72,7 +72,7 @@ namespace PL.Volunteer
         /// </summary>
         private void queryVolunteerList()
         => VolunteersList = (typeOfCall == BO.CallType.No_Filter) ?
-        s_bl?.Volunteer.ReadAll(null,null,null)! : s_bl?.Volunteer.ReadAll(null, null, typeOfCall)!;
+        s_bl?.Volunteer.ReadAll(null, null, null)! : s_bl?.Volunteer.ReadAll(null, null, typeOfCall)!;
 
 
         /// <summary>
@@ -109,9 +109,10 @@ namespace PL.Volunteer
         /// </summary>
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-          //  if (SelectedVolunteer != null)
-             {   new VolunteerWindow().Show();
-                
+            //  if (SelectedVolunteer != null)
+            {
+                new VolunteerWindow().Show();
+
             }
         }
 
@@ -136,7 +137,7 @@ namespace PL.Volunteer
                     {
                         // Attempt to delete the volunteer
                         s_bl.Volunteer.Delete(volunteer.Id);
-                       
+
                     }
                     catch (Exception ex)
                     {
@@ -148,7 +149,7 @@ namespace PL.Volunteer
             }
         }
     }
-    
+
 
 
 

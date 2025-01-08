@@ -2,9 +2,9 @@
 <ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Call>
     <Id>0</Id>
-    <type>HomeCare</type>
+    <type>DeliverMedicine</type>
     <CallAddress>23 Jaffa Street, Jerusalem</CallAddress>
-    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7833</Latitude>
     <Longitude>35.2196</Longitude>
     <CallTime>2024-12-24T18:31:13</CallTime>
@@ -12,9 +12,9 @@
   </Call>
   <Call>
     <Id>1</Id>
-    <type>EmotionalSupport</type>
+    <type>MedicalAssistance</type>
     <CallAddress>15 King George Street, Jerusalem</CallAddress>
-    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.7798</Latitude>
     <Longitude>35.2193</Longitude>
     <CallTime>2025-01-02T18:31:13</CallTime>
@@ -32,9 +32,9 @@
   </Call>
   <Call>
     <Id>3</Id>
-    <type>DeliverMedicine</type>
+    <type>EmotionalSupport</type>
     <CallAddress>78 Hebron Road, Jerusalem</CallAddress>
-    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
     <Latitude>31.7487</Latitude>
     <Longitude>35.2127</Longitude>
     <CallTime>2024-12-25T18:31:13</CallTime>
@@ -42,9 +42,9 @@
   </Call>
   <Call>
     <Id>4</Id>
-    <type>HomeCare</type>
+    <type>MedicalAssistance</type>
     <CallAddress>42 Herzl Boulevard, Jerusalem</CallAddress>
-    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.7903</Latitude>
     <Longitude>35.206</Longitude>
     <CallTime>2024-12-27T18:31:13</CallTime>
@@ -82,9 +82,9 @@
   </Call>
   <Call>
     <Id>8</Id>
-    <type>DeliverMedicine</type>
+    <type>HomeCare</type>
     <CallAddress>18 Keren Hayesod Street, Jerusalem</CallAddress>
-    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7743</Latitude>
     <Longitude>35.2167</Longitude>
     <CallTime>2024-12-27T18:31:13</CallTime>
@@ -132,9 +132,9 @@
   </Call>
   <Call>
     <Id>13</Id>
-    <type>ProvideTransportation</type>
+    <type>EmotionalSupport</type>
     <CallAddress>12 Derech Beit Lechem, Jerusalem</CallAddress>
-    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
     <Latitude>31.7641</Latitude>
     <Longitude>35.2234</Longitude>
     <CallTime>2024-12-26T18:31:13</CallTime>
@@ -142,9 +142,9 @@
   </Call>
   <Call>
     <Id>14</Id>
-    <type>ProvideTransportation</type>
+    <type>MedicalAssistance</type>
     <CallAddress>50 Sderot Ben Gurion, Jerusalem</CallAddress>
-    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.7785</Latitude>
     <Longitude>35.2104</Longitude>
     <CallTime>2024-12-31T18:31:13</CallTime>
@@ -172,9 +172,9 @@
   </Call>
   <Call>
     <Id>17</Id>
-    <type>HospitalVisit</type>
+    <type>DeliverMedicine</type>
     <CallAddress>7 Derech HaAtsmaut, Jerusalem</CallAddress>
-    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7717</Latitude>
     <Longitude>35.2238</Longitude>
     <CallTime>2025-01-04T18:31:13</CallTime>
@@ -242,9 +242,9 @@
   </Call>
   <Call>
     <Id>24</Id>
-    <type>DeliverMedicine</type>
+    <type>EmotionalSupport</type>
     <CallAddress>4 Ben Maimon Street, Jerusalem</CallAddress>
-    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
     <Latitude>31.7819</Latitude>
     <Longitude>35.2233</Longitude>
     <CallTime>2025-01-04T18:31:13</CallTime>
@@ -302,9 +302,9 @@
   </Call>
   <Call>
     <Id>30</Id>
-    <type>DeliverMedicine</type>
+    <type>HomeCare</type>
     <CallAddress>19 HaAri Street, Jerusalem</CallAddress>
-    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7789</Latitude>
     <Longitude>35.2178</Longitude>
     <CallTime>2024-12-31T18:31:13</CallTime>
@@ -482,9 +482,9 @@
   </Call>
   <Call>
     <Id>48</Id>
-    <type>MedicalAssistance</type>
+    <type>HomeCare</type>
     <CallAddress>11 Haneviim Street, Jerusalem</CallAddress>
-    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7689</Latitude>
     <Longitude>35.2116</Longitude>
     <CallTime>2025-01-04T18:31:13</CallTime>
