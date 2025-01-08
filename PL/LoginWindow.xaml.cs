@@ -36,19 +36,20 @@ namespace PL
 
         public BO.Volunteer CurrentVolunteer { get; set; } = new BO.Volunteer();
 
+  
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
 
-                BO.job j= s_bl.Volunteer.EnterToTheSystem(null,CurrentVolunteer.Password,CurrentVolunteer.Id);
-                if (j == BO.job.volunteer)
+                BO.job duty= s_bl.Volunteer.EnterToTheSystem(null,CurrentVolunteer.Password,CurrentVolunteer.Id);
+                if (duty == BO.job.volunteer)
                 {
                     new MainVolunteerWindow(CurrentVolunteer.Id).Show();
                 }
-                else if (j == BO.job.manager)
+                else if (duty == BO.job.manager)
                 {
-                    MainWindow mw = new MainWindow();
+                    MainWindow mw = new MainWindow(CurrentVolunteer.Id);
                     mw.Show();
                    // this.Hide();
 
