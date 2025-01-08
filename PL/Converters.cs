@@ -36,9 +36,53 @@ public class TextColorConverter : IValueConverter
         string key = (string)value;
         if (key == "Update")
         {
-            return  Brushes.Gray;
+            return Brushes.Gray;
         }
-        return Brushes.Black; 
+        return Brushes.Black;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class buttonvisibilityConverter : IValueConverter
+{
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        int callId = (int)value;
+        if (s_bl.Call.CanBeDeleted(callId))
+        {
+            return Visibility.Visible;
+        }
+        return Visibility.Hidden;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+
+
+
+public class BoolToVisibilityConverter : IValueConverter
+{
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+      
+         //BO.CallInProgress currentCall = (BO.CallInProgress)value;
+        if (value is BO.CallInProgress currentCall && currentCall != null)
+        {
+            return Visibility.Visible;
+        }
+        return Visibility.Collapsed;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

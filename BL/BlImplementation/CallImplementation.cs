@@ -154,24 +154,19 @@ internal class CallImplementation : BlApi.ICall
     public void DeleteCall(int callId)//#
     {
 
-        DO.Call doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist");//Exception
-        try
+        DO.Call doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist");//Exception    
+                                                                                                                                 // Check if there are no assignments and call is open or open-at-risk
+        if (AssignmentManager.GetCallAssignList(callId).Count == 0 &&
+           (CallManager.GetCallStatus(callId) == BO.StatusOfCall.Open ||
+            CallManager.GetCallStatus(callId) == BO.StatusOfCall.OpenAtRisk))
         {
-            // Check if there are no assignments and call is open or open-at-risk
-            if (AssignmentManager.GetCallAssignList(callId) == null &&
-                (CallManager.GetCallStatus(callId) == BO.StatusOfCall.Open) || CallManager.GetCallStatus(callId) == BO.StatusOfCall.OpenAtRisk)
-            {
-                _dal.Call.Delete(callId);
-                CallManager.Observers.NotifyListUpdated(); //stage 5
-            }
+            _dal.Call.Delete(callId);
+            CallManager.Observers.NotifyListUpdated(); //stage 5
+        }
 
-            else
-                throw new BO.BlNotAlowedException($"Call with ID={callId} is not allow to delete");
-        }
-        catch (Exception ex)
-        {
-            throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist", ex);
-        }
+        else
+            throw new BO.BlNotAlowedException($"Call with ID={callId} is not allow to delete");
+
     }
 
 
@@ -422,6 +417,18 @@ internal class CallImplementation : BlApi.ICall
     CallManager.Observers.RemoveObserver(id, observer); //stage 5
     #endregion Stage 5
 
+
+    #region Stage 6
+    public bool CanBeDeleted(int callId)
+    {
+        if (AssignmentManager.GetCallAssignList(callId).Count == 0 &&
+           (CallManager.GetCallStatus(callId) == BO.StatusOfCall.Open ||
+            CallManager.GetCallStatus(callId) == BO.StatusOfCall.OpenAtRisk))
+            return true;
+
+        return false;
+    }
+    #endregion Stage 6
 
 
 
