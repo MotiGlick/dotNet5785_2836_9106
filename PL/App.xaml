@@ -13,8 +13,8 @@
         <local:TextColorConverter x:Key="TextColorConverterKey" />
         <local:buttonvisibilityConverter x:Key="buttonvisibilityConverterKey" />
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterKey" />
+        <local:CallClosureTypeCollection x:Key="CallClosureTypeCollectionKey" />
 
-       
     </Application.Resources>
 </Application>
 
