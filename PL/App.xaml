@@ -14,8 +14,8 @@
         <local:buttonvisibilityConverter x:Key="buttonvisibilityConverterKey" />
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterKey" />
 
-       
     </Application.Resources>
 </Application>
 
 
+ 
