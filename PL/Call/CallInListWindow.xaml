@@ -44,7 +44,7 @@
                 <GridView>
 
 
-                    <GridViewColumn Header="Assignment id" DisplayMemberBinding="{Binding Id}"  Width="Auto"  />
+                    <GridViewColumn Header="Assignment id" DisplayMemberBinding="{Binding Id}"  Width="Auto" />
                     <GridViewColumn Header="Call id" DisplayMemberBinding="{Binding CallId}" Width="Auto"/>
                     <GridViewColumn Header="CallType" DisplayMemberBinding="{Binding  CallType}" Width="Auto"/>
                     <GridViewColumn Header="Opening time" DisplayMemberBinding="{Binding OpeningTime}" Width="Auto"/>
@@ -53,14 +53,24 @@
                     <GridViewColumn Header="Total handling time" DisplayMemberBinding="{Binding  HandlingTime}" Width="Auto" />
                     <GridViewColumn Header="Call status" DisplayMemberBinding="{Binding  status}" Width="Auto" />
                     <GridViewColumn Header="Amount of assigns" DisplayMemberBinding="{Binding  AmountOfAssigns}" Width="Auto" />
-                    <GridViewColumn Header="Delete" Width="Auto">
-
+                    <GridViewColumn Header="Delete call" Width="Auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="Delete"  Click="btnDeleteCall_Click" Tag="{Binding}" Background="LightBlue" Visibility="{Binding CallId , Converter={StaticResource buttonvisibilityConverterKey}}"  />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
+
+                    <GridViewColumn Header="Cancel assignment" Width="Auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Cancel assignment"  Click="btnCancelAssignment_Click" Tag="{Binding}" Background="LightYellow"  />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+
+
                 </GridView>
             </ListView.View>
         </ListView>

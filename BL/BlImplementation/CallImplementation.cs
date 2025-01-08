@@ -107,6 +107,9 @@ internal class CallImplementation : BlApi.ICall
                     _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.SelfCancellation));
                 else
                     _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.ManagerCancellation));
+
+                //CallManager.Observers.NotifyItemUpdated(boCall.Id);  //stage 5
+                CallManager.Observers.NotifyListUpdated();  //stage 5
             }
             catch (Exception ex)
             {

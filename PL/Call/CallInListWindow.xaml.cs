@@ -3,6 +3,7 @@ using PL.Volunteer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,16 +20,19 @@ namespace PL.Call
     /// <summary>
     /// Interaction logic for CallInListWindow.xaml
     /// </summary>
-    public partial class CallInListWindow : Window
+    public partial class CallInListWindow: Window
     {
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        public CallInListWindow()
+        public CallInListWindow(int managerId=0)
         {
+         
+            this.ManagerId = managerId;
             InitializeComponent();
         }
-
+        int ManagerId { get; set; }
+        
 
         public BO.CallInList? SelectedCall { get; set; }
 
@@ -114,8 +118,36 @@ namespace PL.Call
 
         }
 
+        private void btnCancelAssignment_Click(object sender, RoutedEventArgs e)
+        {
 
-        private void lsvVolunteerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+
+            var button = sender as Button;
+            if (button?.Tag is BO.CallInList call)
+            {
+                // Display confirmation dialog
+                var result = MessageBox.Show($"Are you sure you want to cancel Assignment with id={call.Id}?",
+                                             "Confirm Cancelation", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        s_bl.Call.GetCallDetails(call.CallId);
+                           s_bl.Call.CancelHandling(ManagerId, (int)call.Id);
+                        MessageBox.Show("Assignment canceled successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Show error message if deletion fails
+                        MessageBox.Show($"Failed to cancel Assignment: {ex.Message}",
+                                        "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+
+        }
+            private void lsvVolunteerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             //if (SelectedVolunteer != null)
             //    new VolunteerWindow(SelectedVolunteer.Id).Show();

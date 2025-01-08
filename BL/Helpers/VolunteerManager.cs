@@ -161,11 +161,11 @@ internal class VolunteerManager
                 status = CallManager.GetCallStatus(relatedCall.Id)
             }).FirstOrDefault(); // לוקח את התוצאה הראשונה או null אם אין תוצאה
 
-        if (result != null)
-        {
-            // Observers.NotifyItemUpdated(id); //stage 5
-            // Observers.NotifyListUpdated(); //stage 5
-        }
+        //if (result != null)
+        //{
+        //    // Observers.NotifyItemUpdated(id); //stage 5
+        //    // Observers.NotifyListUpdated(); //stage 5
+        //}
 
         return result;
     }

@@ -19,9 +19,12 @@ namespace PL
     public partial class MainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        public MainWindow()
+
+        int UserId { get; set; }
+        public MainWindow(int userId)
         {
             InitializeComponent();
+            UserId = userId;
         }
         // Observer for clock updates
         private void ClockObserver()
@@ -198,7 +201,7 @@ namespace PL
 
         private void btnShowCallList_Click(object sender, RoutedEventArgs e)
         {
-            new CallInListWindow().Show();
+            new CallInListWindow(UserId).Show();
         }
     }
 }
