@@ -13,9 +13,14 @@
         <local:TextColorConverter x:Key="TextColorConverterKey" />
         <local:buttonvisibilityConverter x:Key="buttonvisibilityConverterKey" />
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterKey" />
+        <local:BooleanToWidthConverter x:Key="BooleanToWidthConverterKey" />
+        <local:ConvertStatusOfCallToBool x:Key="ConvertStatusOfCallToBoolKey" />
+        <local:ConvertStatusOfCallToBoolForMaxTime x:Key="ConvertStatusOfCallToBoolForMaxTimeKey" />
+        <local:ConvertCallStatusToColor x:Key="ConvertCallStatusToColorKey" />
 
+        
     </Application.Resources>
 </Application>
 
-
+ 
  

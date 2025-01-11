@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="640" Width="800"
-    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Loaded="MainWindow_Loaded" Closed="MainWindow_Closed" Background="Gray">
+        Title="MainWindow" Height="640" Width="800" Icon="sticker.ico"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Loaded="MainWindow_Loaded" Closed="MainWindow_Closed" Background="Gainsboro">
     <Window.Resources>
         <!-- Button Style -->
         <Style TargetType="Button" >

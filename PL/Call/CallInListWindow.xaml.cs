@@ -147,13 +147,19 @@ namespace PL.Call
             }
 
         }
-            private void lsvVolunteerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            //if (SelectedVolunteer != null)
-            //    new VolunteerWindow(SelectedVolunteer.Id).Show();
-        }
-      
+   
 
+        private void lsvCallList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (SelectedCall != null)
+                new CallWindow(SelectedCall.CallId).Show();
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            new CallWindow().Show();
+
+        }
     }
 }
 

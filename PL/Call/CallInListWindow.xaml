@@ -5,8 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Call"
         mc:Ignorable="d"
-        Title="CallInListWindow" Height="450" Width="850"
+        Title="CallInListWindow" Height="450" Width="950" 
          DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
+
+
+    <Window.Resources>
+        <!-- Button Style -->
+        <Style TargetType="Button">
+            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="BorderBrush" Value="#FF6C757D" />
+            <Setter Property="Background" Value="#FF343A40" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                      Name="PART_Border">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- טריגר לעכבר נכנס -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_Border" Property="Background" Value="#FF495057"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
     <!--External Grid-->
     <Grid>
         <Grid.RowDefinitions>
@@ -39,11 +69,9 @@
 
        
         <!--Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="btnAdd_Click"/-->
-        <ListView Grid.Row="1" ItemsSource="{Binding Path=CallsList}" SelectedItem="{Binding SelectedCall}" MouseDoubleClick="lsvVolunteerList_MouseDoubleClick" Height="531" VerticalAlignment="Top" >
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=CallsList}" SelectedItem="{Binding SelectedCall}" MouseDoubleClick="lsvCallList_MouseDoubleClick" Height="Auto" VerticalAlignment="Top" >
             <ListView.View>
                 <GridView>
-
-
                     <GridViewColumn Header="Assignment id" DisplayMemberBinding="{Binding Id}"  Width="Auto" />
                     <GridViewColumn Header="Call id" DisplayMemberBinding="{Binding CallId}" Width="Auto"/>
                     <GridViewColumn Header="CallType" DisplayMemberBinding="{Binding  CallType}" Width="Auto"/>
@@ -51,8 +79,16 @@
                     <GridViewColumn Header="Time left" DisplayMemberBinding="{Binding TimeLeft}" Width="Auto"/>
                     <GridViewColumn Header="Last volunteer name" DisplayMemberBinding="{Binding LastVolunteerName}" Width="Auto"/>
                     <GridViewColumn Header="Total handling time" DisplayMemberBinding="{Binding  HandlingTime}" Width="Auto" />
-                    <GridViewColumn Header="Call status" DisplayMemberBinding="{Binding  status}" Width="Auto" />
+              
                     <GridViewColumn Header="Amount of assigns" DisplayMemberBinding="{Binding  AmountOfAssigns}" Width="Auto" />
+                    <GridViewColumn Header="Call status" Width="Auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding status}"  
+                       Foreground="{Binding status, Converter={StaticResource ConvertCallStatusToColorKey}}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="Delete call" Width="Auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -64,7 +100,7 @@
                     <GridViewColumn Header="Cancel assignment" Width="Auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Cancel assignment"  Click="btnCancelAssignment_Click" Tag="{Binding}" Background="LightYellow"  />
+                                <Button Content="Cancel assignment"  Click="btnCancelAssignment_Click" Tag="{Binding}" Background="Gray"  />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -74,6 +110,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
+        <Button Content="Add New Call" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="btnAdd_Click"  Background="#0078D7" Foreground="White" BorderBrush="Transparent" />
     </Grid>
 </Window>

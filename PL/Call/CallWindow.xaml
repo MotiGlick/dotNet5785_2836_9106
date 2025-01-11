@@ -5,8 +5,148 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Call"
         mc:Ignorable="d"
-        Title="CallWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="CallWindow" Height="610" Width="730"
+         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Background="Gainsboro">
+
+    <Window.Resources>
+        <!-- Style for Label -->
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Gainsboro"/>
+            <Setter Property="Foreground" Value="DarkSlateGray"/>
+        </Style>
+
+        <!-- Style for TextBox -->
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+    </Window.Resources>
+
+    <DockPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid ShowGridLines="False">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.7*"/>
+                   
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Right Grid (Volunteer Fields) -->
+                <Grid Grid.Row="0" Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!-- כותרת -->
+                    <StackPanel Grid.Row="0" Orientation="Vertical" Margin="0,0,0,10">
+                        <TextBlock Text="Call Details" 
+                   FontSize="20" 
+                   FontWeight="Bold" 
+                   Foreground="DarkSlateGray" 
+                   HorizontalAlignment="Center" />
+                        <Separator Background="DarkSlateGray" Height="2"/>
+                    </StackPanel>
+
+                    <!-- פרטי הקריאה -->
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- שדות פרטי הקריאה -->
+                        <!--Label Grid.Row="0" Grid.Column="0" Content="Call ID:" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CurrentCall.Id, Mode=TwoWay}" IsEnabled="False"/-->
+
+                        <Label Grid.Row="1" Grid.Column="0" Content="Call Type:" />
+                        <ComboBox Grid.Row="1" Grid.Column="1" IsEnabled="{Binding CurrentCall.status, Converter={StaticResource ConvertStatusOfCallToBoolKey}}"  Margin="4"
+                                  ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding CurrentCall.CallType, Mode=TwoWay}"></ComboBox>
+                        <!--" TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CurrentCall.CallType, Mode=TwoWay}" IsEnabled="{Binding CurrentCall.status, Converter={StaticResource ConvertStatusOfCallToBoolKey}}" /-->
+
+                        <Label Grid.Row="2" Grid.Column="0" Content="Description:" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CurrentCall.Description, Mode=TwoWay}" IsEnabled="{Binding CurrentCall.status, Converter={StaticResource ConvertStatusOfCallToBoolKey}}" />
+
+                        <Label Grid.Row="3" Grid.Column="0" Content="Call Address:" />
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CurrentCall.Address, Mode=TwoWay}" IsEnabled="{Binding CurrentCall.status, Converter={StaticResource ConvertStatusOfCallToBoolKey}}" />
+
+                        <Label Grid.Row="4" Grid.Column="0" Content="Opening Time:" />
+                        <DatePicker Grid.Row="4" Grid.Column="4" SelectedDate="{Binding CurrentCall.OpeningTime}"   Margin="4" IsEnabled="False"/>
+                        <!--TextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentCall.OpeningTime, Mode=TwoWay}" IsEnabled="False" /-->
+
+                        <Label Grid.Row="5" Grid.Column="0" Content="Max Time to Handle:" />
+                        <!--TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CurrentCall.MaxTime, Mode=TwoWay}" IsEnabled="{Binding CurrentCall.status, Converter={StaticResource ConvertStatusOfCallToBoolForMaxTimeKey}}"/-->
+                        <DatePicker Grid.Row="5" Grid.Column="1" SelectedDate="{Binding CurrentCall.MaxTime}"   Margin="5" IsEnabled="{Binding CurrentCall.status, Converter={StaticResource ConvertStatusOfCallToBoolForMaxTimeKey}}"/>
+
+
+                        <Label Grid.Row="6" Grid.Column="0" Content="Status:" />
+                        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding CurrentCall.status, Mode=TwoWay}" IsEnabled="False" />
+                    </Grid>
+                </Grid>
+
+
+                <!-- Left Grid (CallAssignInList Fields) -->
+                <StackPanel Grid.Row="1"  Margin="10">
+                    <!-- Title -->
+                    <TextBlock Text="Call Assignments" 
+               FontSize="20" 
+               FontWeight="Bold" 
+               Foreground="DarkSlateGray" 
+               Margin="0,0,0,10"
+               HorizontalAlignment="Center" />
+                    <Separator Background="DarkSlateGray" Height="2"/>
+                    <!-- ListView with Border -->
+                    <Border BorderBrush="DarkSlateGray" 
+            BorderThickness="7" 
+            CornerRadius="5" 
+            Padding="5" 
+            Background="LightGray">
+                        <ListView ItemsSource="{Binding CurrentCall.CallAssignsList}"   
+                  SelectedItem="{Binding SelectedCall}"  
+                  Height="Auto" 
+                  VerticalAlignment="Top">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Volunteer Id" DisplayMemberBinding="{Binding VolunteerId}" Width="Auto" />
+                                    <GridViewColumn Header="Volunteer name" DisplayMemberBinding="{Binding VolunteerName}" Width="Auto" />
+                                    <GridViewColumn Header="Handle start time" DisplayMemberBinding="{Binding HndalStartTime}" Width="Auto" />
+                                    <GridViewColumn Header="Handle end time" DisplayMemberBinding="{Binding HndalEndTime}" Width="Auto" />
+                                    <GridViewColumn Header="Closure type" DisplayMemberBinding="{Binding ClosureType}" Width="Auto" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Border>
+                </StackPanel>
+
+
+                <!-- Submit Button (Bottom) -->
+                <Button Grid.Row="2" Grid.Column="1" Width="100" Height="40" Background="Gainsboro" Content="{Binding Path= ButtonText}" Click="btnAddUpdate_Click" HorizontalAlignment="Left" Margin="20"/>
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
 </Window>
