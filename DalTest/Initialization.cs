@@ -266,7 +266,7 @@ public static class Initialization
         //s_dalVolunteer.DeleteAll();
         //s_dalCall.DeleteAll();
         // Reset configurations and delete all existing data
-        s_dal.ResetDB();//stage 2
+        s_dal.ResetDB();//stage 2 
 
         // Initialize the lists of volunteers, calls, and assignments
         creatVolunteer();

@@ -33,11 +33,11 @@ internal class CallImplementation : BlApi.ICall
     public void AddCall(BO.Call boCall)//#
     {
 
+            if (!CallManager.LogicalCheck(boCall))
+                throw new BO.BlNotValidException("Call is not valid");
         try
         {
 
-            if (!CallManager.LogicalCheck(boCall))
-                throw new BO.BlNotValidException("Call is not valid");
 
             _dal.Call.Create(
                 new(

@@ -90,3 +90,89 @@ public class BoolToVisibilityConverter : IValueConverter
         throw new NotImplementedException();
     }
 }
+
+
+
+public class BooleanToWidthConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+       
+        if (value is BO.CallInProgress call)
+        {
+            
+            return call != null ? 950 : 470;
+        }
+
+       
+        return 470; 
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+internal class ConvertStatusOfCallToBoolForMaxTime : IValueConverter
+{
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        BO.StatusOfCall CallStatus = (BO.StatusOfCall)value;
+        if (CallStatus == BO.StatusOfCall.InProgressAtRisk
+            || CallStatus == BO.StatusOfCall.InProgress
+            || CallStatus == BO.StatusOfCall.Open
+            || CallStatus == BO.StatusOfCall.OpenAtRisk)
+           return true;
+
+        return false;
+        
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+
+internal class ConvertStatusOfCallToBool : IValueConverter
+{
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        BO.StatusOfCall CallStatus = (BO.StatusOfCall)value;
+        if ( CallStatus == BO.StatusOfCall.Open || CallStatus == BO.StatusOfCall.OpenAtRisk)
+            return true;
+
+        return false;
+
+    }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+
+internal class ConvertCallStatusToColor : IValueConverter
+{
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        BO.StatusOfCall CallStatus = (BO.StatusOfCall)value;
+        if (CallStatus == BO.StatusOfCall.Open || CallStatus == BO.StatusOfCall.Closed
+            || CallStatus==BO.StatusOfCall.Expired ||CallStatus==BO.StatusOfCall.InProgress )
+            return Brushes.Black; ;
+
+        return Brushes.Red; ;
+
+    }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+
