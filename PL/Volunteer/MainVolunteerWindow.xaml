@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Background="Gainsboro"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
-        Title="MainVolunteerWindow" Height="670" Width="800">
+        Title="MainVolunteerWindow" Height="700" Width="900">
 
     <Window.Resources>
         <!-- Style for Label -->
@@ -120,7 +120,7 @@
         </GroupBox>
 
         <!-- Call Section -->
-        <GroupBox Header="Call Details" Grid.Row="0" Grid.Column="1" Margin="10" Background="WhiteSmoke">
+        <GroupBox Header="Call Details" Grid.Row="0" Grid.Column="1" Margin="10" Background="WhiteSmoke" Visibility="{Binding CurrentVolunteer.CallInProgress, Converter={StaticResource BoolToVisibilityConverterKey}}">
             <StackPanel>
                 <Label Content="Current Call Details:"/>
                 <Grid>
@@ -156,7 +156,7 @@
                     <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CurrentCall.MaxTime}" IsReadOnly="True"/>
                 </Grid>
 
-                <ListView ItemsSource="{Binding CurrentCall.CallAssignsList}" Margin="5">
+                <ListView ItemsSource="{Binding CurrentCall.CallAssignsList}" Margin="5" >
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Volunteer Id" DisplayMemberBinding="{Binding VolunteerId}"/>

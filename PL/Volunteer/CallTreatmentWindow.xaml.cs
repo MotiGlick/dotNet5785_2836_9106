@@ -36,8 +36,12 @@ namespace PL.Volunteer
 
         public static readonly DependencyProperty OpenCallsListProperty =
             DependencyProperty.Register("OpenCallsList", typeof(IEnumerable<BO.OpenCallInList>), typeof(CallTreatmentWindow), new PropertyMetadata(null));
+        
+        
         public BO.OpenCallInList? SelectedCall { get; set; }
+        
         public BO.CallType? typeOfCall { get; set; }
+        
         private void BtCooseCall_Click(object sender, RoutedEventArgs e)
         {
             try {
@@ -50,30 +54,36 @@ namespace PL.Volunteer
                                 "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void queryVolunteerList()
+
+
+        private void queryOpenCallsList()
         => OpenCallsList = (typeOfCall == BO.CallType.No_Filter) ?
           s_bl?.Call.GetOpenCallsForVolunteer(UserId, null, null)! : s_bl?.Call.GetOpenCallsForVolunteer(UserId,  typeOfCall,null)!;
 
 
         /// <summary>
-        /// Observes changes to the volunteer list and updates the screen.
+        /// Observes changes to the call list and updates the screen.
         /// </summary>
-        private void VolunteerListObserver()
-            => queryVolunteerList();
+        private void CallListObserver()
+            => queryOpenCallsList();
 
 
         /// <summary>
-        /// Registers the observer for volunteer list updates when the window loads.
+        /// Registers the observer for call list updates when the window loads.
         /// </summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
-            => s_bl.Volunteer.AddObserver(VolunteerListObserver);
+            => s_bl.Volunteer.AddObserver(CallListObserver);
 
 
         /// <summary>
-        /// Unregisters the observer for volunteer list updates when the window is closed.
+        /// Unregisters the observer for call list updates when the window is closed.
         /// </summary>
         private void Window_Closed(object sender, EventArgs e)
-            => s_bl.Volunteer.RemoveObserver(VolunteerListObserver);
+            => s_bl.Call.RemoveObserver(CallListObserver);
 
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            queryOpenCallsList();
+        }
     }
 }
