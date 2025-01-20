@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,60 @@ namespace PL.Volunteer
     /// </summary>
     public partial class CallTreatmentWindow : Window
     {
-        public CallTreatmentWindow()
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        public CallTreatmentWindow(int id)
         {
+            this.UserId = id;
             InitializeComponent();
         }
+        int UserId { get; set; }
+
+        public IEnumerable<BO.OpenCallInList> OpenCallsList
+        {
+            get { return (IEnumerable<BO.OpenCallInList>)GetValue(OpenCallsListProperty); }
+            set { SetValue(OpenCallsListProperty, value); }
+        }
+
+        public static readonly DependencyProperty OpenCallsListProperty =
+            DependencyProperty.Register("OpenCallsList", typeof(IEnumerable<BO.OpenCallInList>), typeof(CallTreatmentWindow), new PropertyMetadata(null));
+        public BO.OpenCallInList? SelectedCall { get; set; }
+        public BO.CallType? typeOfCall { get; set; }
+        private void BtCooseCall_Click(object sender, RoutedEventArgs e)
+        {
+            try {
+                s_bl.Call.ChoosingCallForHandling(UserId, SelectedCall.Id);
+            }
+            catch (Exception ex)
+            {
+                // Show error message if deletion fails
+                MessageBox.Show($"Failed to choose call for handling : {ex.Message}",
+                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void queryVolunteerList()
+        => OpenCallsList = (typeOfCall == BO.CallType.No_Filter) ?
+          s_bl?.Call.GetOpenCallsForVolunteer(UserId, null, null)! : s_bl?.Call.GetOpenCallsForVolunteer(UserId,  typeOfCall,null)!;
+
+
+        /// <summary>
+        /// Observes changes to the volunteer list and updates the screen.
+        /// </summary>
+        private void VolunteerListObserver()
+            => queryVolunteerList();
+
+
+        /// <summary>
+        /// Registers the observer for volunteer list updates when the window loads.
+        /// </summary>
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+            => s_bl.Volunteer.AddObserver(VolunteerListObserver);
+
+
+        /// <summary>
+        /// Unregisters the observer for volunteer list updates when the window is closed.
+        /// </summary>
+        private void Window_Closed(object sender, EventArgs e)
+            => s_bl.Volunteer.RemoveObserver(VolunteerListObserver);
+
     }
 }

@@ -211,12 +211,12 @@ namespace PL.Volunteer
 
         private void BtnHistoryWindows_Click(object sender, MouseButtonEventArgs e)
         {
-           //new  CallHistoryWindow(CurrentVolunteer.Id).Show();
+           new  CallHistoryWindow(CurrentVolunteer.Id).Show();
         }
 
         private void BtnTreatmentWindow_Click(object sender, MouseButtonEventArgs e)
         {
-            new CallTreatmentWindow().Show();
+            new CallTreatmentWindow(CurrentVolunteer.Id).Show();
         }
     }
 }
