@@ -533,7 +533,7 @@ internal class Program
             switch (sortChoice)
             {
                 case 1:
-                    sortField = BO.CallInListField.Id;
+                    sortField = BO.CallInListField.AssignmentId;
                     break;
                 case 2:
                     sortField = BO.CallInListField.CallId;

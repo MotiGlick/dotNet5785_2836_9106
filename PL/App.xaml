@@ -1,9 +1,10 @@
 ﻿<Application x:Class="PL.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"    
              xmlns:local="clr-namespace:PL"
              StartupUri="LoginWindow.xaml">
     <Application.Resources>
+        
         <local:CallTypeCollection x:Key="CallTypeCollectionKey" />
         <local:JubCollection x:Key="JubCollectionKey" />
         <local:DistanceTypeCollection x:Key="DistanceTypeCollectionKey" />
@@ -13,10 +14,21 @@
         <local:TextColorConverter x:Key="TextColorConverterKey" />
         <local:buttonvisibilityConverter x:Key="buttonvisibilityConverterKey" />
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterKey" />
-        <local:CallClosureTypeCollection x:Key="CallClosureTypeCollectionKey" />
+        <local:BooleanToWidthConverter x:Key="BooleanToWidthConverterKey" />
+        <local:ConvertStatusOfCallToBool x:Key="ConvertStatusOfCallToBoolKey" />
+        <local:ConvertStatusOfCallToBoolForMaxTime x:Key="ConvertStatusOfCallToBoolForMaxTimeKey" />
+        <local:ConvertCallStatusToColor x:Key="ConvertCallStatusToColorKey" />
+        <local:visibilityFotVolunteererConverter x:Key="visibilityFotVolunteererConverterKey" />
+        <local:PasswordConverter x:Key="PasswordConverterKey" />
+
+        
+
+
+
 
     </Application.Resources>
+    
 </Application>
 
-
+ 
  

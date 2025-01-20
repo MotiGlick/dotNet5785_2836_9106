@@ -5,8 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="VolunteerInListWindow" Height="640" Width="800"
+        Title="VolunteerInListWindow" Height="640" Width="850" WindowStartupLocation="CenterScreen"
          DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
+
+
+    <Window.Resources>
+        <!-- Button Style -->
+        <Style TargetType="Button">
+            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="BorderBrush" Value="#FF6C757D" />
+            <Setter Property="Background" Value="#FF343A40" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                         Name="PART_Border">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- טריגר לעכבר נכנס -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_Border" Property="Background" Value="#FF495057"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
 
     <!--External Grid-->
     <Grid>
@@ -19,16 +50,22 @@
         <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/> 
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="Filter by current call" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
             <ComboBox Grid.Column="1"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
                       ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=typeOfCall, Mode=TwoWay}" SelectionChanged="TypeOfCall_SelectionChanged"/>
         </Grid>
 
-        
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="btnAdd_Click"/>
-        <ListView Grid.Row="1" ItemsSource="{Binding Path=VolunteersList}" SelectedItem="{Binding SelectedVolunteer}" MouseDoubleClick="lsvVolunteerList_MouseDoubleClick" Height="531" VerticalAlignment="Top" >
+
+        <Button Content="Add New Volunteer" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="120" Click="btnAdd_Click"   Background="#0078D7" Foreground="White" BorderBrush="Transparent" />
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=VolunteersList}" SelectedItem="{Binding SelectedVolunteer}" MouseDoubleClick="lsvVolunteerList_MouseDoubleClick" Height="531" VerticalAlignment="Top">
+            <ListView.ItemContainerStyle>
+                    <!-- Height of each line -->
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Height" Value="30" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Is Active" Width="Auto">
@@ -53,14 +90,18 @@
                     <GridViewColumn Header="Canceled calls" DisplayMemberBinding="{Binding TotalCanceledCalls}" Width="Auto"/>
                     <GridViewColumn Header="Expired calls" DisplayMemberBinding="{Binding TotalExpiredCalls}" Width="Auto"/>
                     <GridViewColumn Header="Current Call Id" DisplayMemberBinding="{Binding CurrentCallId}" Width="Auto"/>
-                    <GridViewColumn Header="Current Call Type" DisplayMemberBinding="{Binding CurrentCallType}" Width="Auto"/>
+                    <GridViewColumn Header="Current Call Type" DisplayMemberBinding="{Binding CurrentCallType}" Width="Auto"  />
                     <!--GridViewColumn/-->   
                     <GridViewColumn Header="Handled calls" DisplayMemberBinding="{Binding TotalHandledCalls}" Width="Auto" />
                     <GridViewColumn Header="Delete" Width="Auto">
-                        
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Delete"  Click="btnDeleteVolunteer_Click" Tag="{Binding}" Background="LightBlue"  />
+                                <Button Content="Delete" 
+                    Click="btnDeleteVolunteer_Click" 
+                    Tag="{Binding}" 
+                    Background="IndianRed" 
+                    BorderThickness="1" 
+                    Visibility="{Binding Id, Converter={StaticResource visibilityFotVolunteererConverterKey}}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

@@ -37,8 +37,8 @@ public static class Initialization
                 "omer_sasson@gmail.com", "tal_peretz@gmail.com", "yonatan_elbaz@gmail.com", "roni_malka@gmail.com", "hodaya_avrahami@gmail.com",
                  "idan_azulai@gmail.com", "maor_levi@gmail.com", "shaked_kaplan@gmail.com", "bar_nir@gmail.com", "erez_goldstein@gmail.com" };
 
-        string[] VolunteerAddresses ={ "King David St 10, Jerusalem", " Jaffa Rd 15, Jerusalem", "Agron 8, Jerusalem", "Shlomzion HaMalka 3, Jerusalem",
-              "Yitzhak Kariv St 20, Jerusalem", "Emek Refaim 5, Jerusalem", "HaPalmach St 2, Jerusalem", "Ben Yehuda 11, Jerusalem",
+        string[] VolunteerAddresses ={ "King David 10, Jerusalem", " Jaffa Rd 15, Jerusalem", "Agron 8, Jerusalem", "Shlomzion HaMalka 3, Jerusalem",
+              "Yitzhak Kariv 20, Jerusalem", "Emek Refaim 5, Jerusalem", "HaPalmach St 2, Jerusalem", "Ben Yehuda 11, Jerusalem",
               "Hillel 7, Jerusalem", "Keren HaYesod St 18, Jerusalem", "HaNevi'im 25, Jerusalem", "Rachel Imenu 4, Jerusalem",
                "Hebron Rd 30, Jerusalem", "Haneviim St 14, Jerusalem", "Gaza St 6, Jerusalem"};
 
@@ -101,7 +101,7 @@ public static class Initialization
         //List<Volunteer> VList = (List<Volunteer>) s_dal.Volunteer.ReadAll();
 
         // Loop for creating assignments for volunteers who handled many calls
-        for (int i = 0; i < 20; i++)
+        for (int i = 5; i < 25; i++)//(0-20)
         {
             int randNum1 = s_rand.Next(0, 5); // Random index to select a volunteer from the first 5 volunteers
             int randNum2 = s_rand.Next(0, 4);//Random number for CallStatus
@@ -114,11 +114,11 @@ public static class Initialization
             DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
 
             // Create an assignment and add it to the data access layer
-            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime, AssignmentTotalTime, (CallClosureType)randNum2));
+            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime,null,null));//AssignmentTotalTime,(CallClosureType)randNum2)
         }
 
         // Loop for creating assignments for volunteers who handled fewer calls
-        for (int i = 20; i < 45; i++)
+        for (int i = 25; i < 50; i++)//(20-45)
         {
             int randNum1 = s_rand.Next(6, 13); // Random index to select a volunteer from a different range (6 to 13)
             int randNum2 = s_rand.Next(0, 4);//Random number for CallStatus
@@ -132,7 +132,7 @@ public static class Initialization
             DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
 
             // Create an assignment and add it to the data access layer
-            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime, AssignmentTotalTime, (CallClosureType)randNum2));
+            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime, null, null));//AssignmentTotalTime, (CallClosureType)randNum2)
         }
     }
 
@@ -171,16 +171,16 @@ public static class Initialization
         // Define arrays for call addresses, latitudes, longitudes, and descriptions.
         string[] CallAddresses = new string[]
         {
-        "23 Jaffa Street, Jerusalem", "15 King George Street, Jerusalem", "37 HaNeviim Street, Jerusalem", "78 Hebron Road, Jerusalem", "42 Herzl Boulevard, Jerusalem",
-        "40 Agripas Street, Jerusalem", "29 Gaza Street, Jerusalem", "9 Emek Refaim Street, Jerusalem", "18 Keren Hayesod Street, Jerusalem", "10 Shlomzion Hamalka Street, Jerusalem",
-        "5 David HaMelech Street, Jerusalem", "33 Ben Yehuda Street, Jerusalem", "25 HaPalmach Street, Jerusalem", "12 Derech Beit Lechem, Jerusalem", "50 Sderot Ben Gurion, Jerusalem",
-        "22 Azza Street, Jerusalem", "16 Rachel Imeinu Street, Jerusalem", "7 Derech HaAtsmaut, Jerusalem", "60 Yitzhak Rabin Boulevard, Jerusalem", "3 HaTzanchanim Street, Jerusalem",
-        "45 Mount Scopus, Jerusalem", "8 Shmuel HaNavi Street, Jerusalem", "11 Shivtei Israel Street, Jerusalem", "28 Rehov Hillel, Jerusalem", "4 Ben Maimon Street, Jerusalem",
-        "17 Ussishkin Street, Jerusalem", "2 HaPisga Street, Jerusalem", "32 Beit HaKerem Street, Jerusalem", "6 Sderot Eshkol, Jerusalem", "14 Jabotinsky Street, Jerusalem",
-        "19 HaAri Street, Jerusalem", "36 Betzalel Street, Jerusalem", "24 Rehov Mevo HaGalil, Jerusalem", "9 Ma'alot Street, Jerusalem", "21 Sderot Shazar, Jerusalem",
-        "13 Shai Agnon Street, Jerusalem", "27 Haganah Street, Jerusalem", "53 Hamelech Shlomo Street, Jerusalem", "39 Hanassi Street, Jerusalem", "18 Kiryat Moshe Street, Jerusalem",
-        "41 Agron Street, Jerusalem", "31 Pierre Koenig Street, Jerusalem", "29 French Hill, Jerusalem", "6 Shlomo HaMelech Street, Jerusalem", "37 Ein Kerem Street, Jerusalem",
-        "49 Herzog Street, Jerusalem", "20 Strauss Street, Jerusalem", "34 Lincoln Street, Jerusalem", "11 Haneviim Street, Jerusalem", "56 Malha Road, Jerusalem"
+        "Jaffa 23, Jerusalem", "King George 15, Jerusalem", "HaNeviim 37, Jerusalem", "Hebron 78, Jerusalem", "Herzl Boulevard 14, Jerusalem",
+        "Agripas 40, Jerusalem", "29 Gaza Street, Jerusalem", "9 Emek Refaim Street, Jerusalem", "Keren Hayesod 18, Jerusalem", "Shlomzion Hamalka 10, Jerusalem",
+        "David HaMelech 5, Jerusalem", "33 Ben Yehuda Street, Jerusalem", "HaPalmach 25, Jerusalem", "Derech Beit Lechem 12, Jerusalem", "Sderot Ben Gurion 50, Jerusalem",
+        "Azza 22, Jerusalem", "Rachel Imeinu 16, Jerusalem", "Derech HaAtsmaut 7, Jerusalem", "Yitzhak Rabin Boulevard 60, Jerusalem", "HaTzanchanim 3, Jerusalem",
+        "Mount Scopus 25, Jerusalem", "Shmuel HaNavi 8, Jerusalem", "Shivtei Israel 11, Jerusalem", "Rehov Hillel 28, Jerusalem", "Ben Maimon 4, Jerusalem",
+        "Ussishkin 17, Jerusalem", "HaPisga 2, Jerusalem", "Beit HaKerem 32, Jerusalem", "Sderot Eshkol 6, Jerusalem", "Jabotinsky 14, Jerusalem",
+        "HaAri 19, Jerusalem", "Betzalel 36, Jerusalem", "Rehov Mevo HaGalil 24, Jerusalem", "Ma'alot 9, Jerusalem", "Sderot Shazar 21, Jerusalem",
+        "Shai Agnon 13, Jerusalem", "Haganah 27, Jerusalem", "Hamelech Shlomo 53, Jerusalem", "Hanassi 39, Jerusalem", "Kiryat Moshe 18, Jerusalem",
+        "Agron 41, Jerusalem", "Pierre Koenig 31, Jerusalem", "French Hill 29, Jerusalem", "Shlomo HaMelech 6, Jerusalem", "Ein Kerem 37, Jerusalem",
+        "Herzog 49, Jerusalem", "Strauss 20, Jerusalem", "Lincoln 34, Jerusalem","Haneviim 11, Jerusalem","Malha Road 56, Jerusalem"
         };
 
         double[] Calllatitude = new double[]
@@ -240,6 +240,8 @@ public static class Initialization
             // Create an expired call with random address, description, coordinates, and dates
             s_dal!.Call.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start.AddDays(s_rand.Next(range)), s_dal.Config.Clock.AddDays(-1)));
         }
+
+
     }
 
     /// <summary>
@@ -266,7 +268,7 @@ public static class Initialization
         //s_dalVolunteer.DeleteAll();
         //s_dalCall.DeleteAll();
         // Reset configurations and delete all existing data
-        s_dal.ResetDB();//stage 2
+        s_dal.ResetDB();//stage 2 
 
         // Initialize the lists of volunteers, calls, and assignments
         creatVolunteer();
