@@ -308,19 +308,19 @@ internal class CallImplementation : BlApi.ICall
     {
 
 
-        return GetCallList()
-            .Where(call => AssignmentManager.GetCallAssignList(call.CallId).Any(assign => assign.VolunteerId == volunteerId))
-            .Select(call => new ClosedCallInList
-            {
-                Id = (int)call.Id!,
-                CallType = call.CallType,
-                Address = _dal.Call.Read(call.CallId)!.CallAddress,
-                OpeningTime = call.OpeningTime,
-                HndalStartTime = AssignmentManager.GetAssignmentStartTime(call.CallId, volunteerId),
-                EndTime = AssignmentManager.GetAssignmentEndTime(call.CallId, volunteerId),
-                ClosureType = AssignmentManager.GetAssignmentClosureType(call.CallId, volunteerId)
-            })
-            .Where(call => callTypeFilter == null ? true : call.CallType == callTypeFilter)
+        var o = GetCallList()
+             .Where(call => AssignmentManager.GetCallAssignList(call.CallId).Any(assign => assign.VolunteerId == volunteerId))
+             .Select(call => new ClosedCallInList
+             {
+                 Id = (int)call.Id!,
+                 CallType = call.CallType,
+                 Address = _dal.Call.Read(call.CallId)!.CallAddress,
+                 OpeningTime = call.OpeningTime,
+                 HndalStartTime = AssignmentManager.GetAssignmentStartTime(call.CallId, volunteerId),
+                 EndTime = AssignmentManager.GetAssignmentEndTime(call.CallId, volunteerId),
+                 ClosureType = AssignmentManager.GetAssignmentClosureType(call.CallId, volunteerId)
+             });
+            o=o.Where(call => callTypeFilter == null ? true : call.CallType == callTypeFilter)
             .OrderBy<BO.ClosedCallInList, object?>((call => sortField switch
             {
                 ClosedCallInListField.Id => call.Id,
@@ -332,6 +332,7 @@ internal class CallImplementation : BlApi.ICall
                 ClosedCallInListField.ClosureType => call.ClosureType,
                 _ => call.Id
             }));
+        return o;
 
     }
 

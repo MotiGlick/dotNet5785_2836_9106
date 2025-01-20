@@ -37,9 +37,6 @@
         <ListView Grid.Row="1" ItemsSource="{Binding Path=ClosedCallsInList}"   >
             <ListView.View>
                 <GridView>
-
-
-
                     <GridViewColumn Header="Call id" DisplayMemberBinding="{Binding Id}"  Width="Auto" />
                     <GridViewColumn Header="CallType" DisplayMemberBinding="{Binding  CallType}" Width="Auto"/>
                     <GridViewColumn Header="Address" DisplayMemberBinding="{Binding  Address}" Width="Auto"/>

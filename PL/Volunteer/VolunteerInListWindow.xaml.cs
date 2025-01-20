@@ -72,7 +72,7 @@ namespace PL.Volunteer
         /// </summary>
         private void queryVolunteerList()
         => VolunteersList = (typeOfCall == BO.CallType.No_Filter) ?
-        s_bl?.Volunteer.ReadAll(null, null, null)! : s_bl?.Volunteer.ReadAll(null, null, typeOfCall)!;
+        s_bl?.Volunteer.ReadA...ll(null, null, null)! : s_bl?.Volunteer.ReadAll(null, null, typeOfCall)!;
 
 
         /// <summary>
