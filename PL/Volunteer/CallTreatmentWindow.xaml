@@ -5,8 +5,95 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="CallTreatmentWindow" Height="450" Width="800">
+        Title="CallTreatmentWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
+    <Window.Resources>
+        <!-- Button Style -->
+        <Style TargetType="Button">
+            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="BorderBrush" Value="#FF6C757D" />
+            <Setter Property="Background" Value="#FF343A40" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                    BorderBrush="{TemplateBinding BorderBrush}" 
+                    BorderThickness="{TemplateBinding BorderThickness}" 
+                     Name="PART_Border">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- טריגר לעכבר נכנס -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_Border" Property="Background" Value="#FF495057"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+
+    <!--External Grid-->
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="500*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!--Internal, Upper Grid-->
+        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Filter by call type" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
+            <ComboBox Grid.Column="1"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
+                  ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=typeOfCall, Mode=TwoWay}" />
+        </Grid>
+
+
+        <TextBlock Text= "{Binding SelectedCall.Description}" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="120"  />
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=OpenCallsList}" SelectedItem="{Binding SelectedCall}"  Height="531" VerticalAlignment="Top">
+            <ListView.ItemContainerStyle>
+                <!-- Height of each line -->
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Height" Value="30" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+
+
+                    <GridViewColumn Header="CallID" DisplayMemberBinding="{Binding Id}"  Width="Auto"  />
+                    <GridViewColumn Header="Address" DisplayMemberBinding="{Binding Address}" Width="Auto"/>
+                    <GridViewColumn Header="Opening Time" DisplayMemberBinding="{Binding OpeningTime}" Width="Auto"/>
+                    <GridViewColumn Header="Max Time" DisplayMemberBinding="{Binding MaxTime}" Width="Auto"/>
+                    <GridViewColumn Header="Distance From volanteer" DisplayMemberBinding="{Binding DistanceFromvolanteer}" Width="Auto"/>
+                    <GridViewColumn Header="Call Type" DisplayMemberBinding="{Binding CallType}" Width="Auto"  />
+
+                    <GridViewColumn Header="Hendel" Width="Auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Hendel" 
+                                      Click="BtCooseCall_Click" 
+                                      Tag="{Binding}" 
+                                      Background="Blue" 
+                                      BorderThickness="1" 
+                                      />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+
+            </ListView.View>
+        </ListView>
+
+
+
     </Grid>
 </Window>

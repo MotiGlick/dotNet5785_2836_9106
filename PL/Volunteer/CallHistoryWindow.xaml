@@ -30,8 +30,8 @@
                 ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=callTypeFilter, Mode=TwoWay}" SelectionChanged="callTypeFilter_SelectionChanged" />
 
             <Label Grid.Column="2" Content="Order by:" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
-            <!--<ComboBox Grid.Column="3"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
-               ItemsSource="{Binding Source={StaticResource CallClosureTypeCollectionKey}}" SelectedValue="{Binding Path=orderCallsList, Mode=TwoWay}" SelectionChanged="statusFilter_SelectionChanged" />-->
+            <ComboBox Grid.Column="3"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
+               ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=orderCallsList, Mode=TwoWay}" SelectionChanged="statusFilter_SelectionChanged" />
         </Grid>
         <!--Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="btnAdd_Click"/-->
         <ListView Grid.Row="1" ItemsSource="{Binding Path=ClosedCallsInList}"   >
