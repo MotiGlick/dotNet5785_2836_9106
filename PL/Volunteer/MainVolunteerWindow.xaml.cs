@@ -216,7 +216,7 @@ namespace PL.Volunteer
 
         private void BtnTreatmentWindow_Click(object sender, MouseButtonEventArgs e)
         {
-            new CallTreatmentWindow().Show();
+            new CallTreatmentWindow(CurrentVolunteer.Id).Show();
         }
     }
 }
