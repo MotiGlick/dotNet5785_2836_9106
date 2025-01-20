@@ -149,7 +149,7 @@
                                     <GridViewColumn Header="Handle end time" DisplayMemberBinding="{Binding HndalEndTime}" Width="Auto" />
                                     <GridViewColumn Header="Closure type" DisplayMemberBinding="{Binding ClosureType}" Width="Auto" />
                                 </GridView>
-                            </ListView.View>
+                            </ListView.View> 
                         </ListView>
                     </Border>
                 </StackPanel>

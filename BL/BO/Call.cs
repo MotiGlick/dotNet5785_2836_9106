@@ -65,7 +65,7 @@ public class Call
     /// Gets or sets the list of assignments related to the call (nullable).
     /// </summary>
     public List<BO.CallAssignInList>? CallAssignsList { get; set; }//???->init
-
+      
     /// <summary>
     /// Returns a string representation of the call with its properties.
     /// </summary>
