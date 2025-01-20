@@ -20,9 +20,10 @@
         <local:ConvertCallStatusToColor x:Key="ConvertCallStatusToColorKey" />
         <local:visibilityFotVolunteererConverter x:Key="visibilityFotVolunteererConverterKey" />
         <local:PasswordConverter x:Key="PasswordConverterKey" />
+        <local:IsChacedConverter x:Key="IsChacedConverterKey" />
+        <local:ChusingCallEnableConverter x:Key="ChusingCallEnableConverterKey" />
 
         
-
 
 
 
