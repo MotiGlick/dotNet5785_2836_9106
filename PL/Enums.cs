@@ -50,5 +50,5 @@ internal class CallClosureTypeCollection : IEnumerable
     static readonly IEnumerable<BO.CallClosureType> s_enums =
     (Enum.GetValues(typeof(BO.CallClosureType)) as IEnumerable<BO.CallClosureType>)!;
 
-    public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
-}
+
+
