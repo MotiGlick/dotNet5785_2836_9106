@@ -39,6 +39,8 @@ namespace PL.Volunteer
             DependencyProperty.Register("CallsList", typeof(IEnumerable<BO.ClosedCallInList>), typeof(CallHistoryWindow), new PropertyMetadata(null));
 
         public BO.CallType callTypeFilter { get; set; } = BO.CallType.No_Filter;
+        
+        
         public BO.ClosedCallInListField orderCallsList { get; set; }/// <summary>
         /// = BO.ClosedCallInListField.HndalStartTime;
         /// </summary>

@@ -242,7 +242,7 @@ public class ChusingCallEnableConverter : IValueConverter
         BO.Volunteer volunteer = (BO.Volunteer)value;
 
 
-        if (volunteer != null && volunteer.IsActive)//&& (volunteer.CallInProgress!= null))
+        if (volunteer!=null&&volunteer.IsActive )//&& (volunteer.CallInProgress!= null))
         {
             return Visibility.Visible;
         }
