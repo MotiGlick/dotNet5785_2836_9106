@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
         Background="Gainsboro"
-         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded"
+         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         Title="VolunteerWindow" Height="670" Width="{Binding CurrentVolunteer.CallInProgress, Converter={StaticResource BooleanToWidthConverterKey}}">
 
 
@@ -68,7 +68,7 @@
         </Style>
     </Window.Resources>
 
-    <DockPanel>
+  
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <Grid ShowGridLines="FALSE">
                 <Grid.RowDefinitions>
@@ -204,5 +204,5 @@
                 <Button Grid.Row="2" Grid.Column="2" Width="70" Height="40" Background="LightGray" Content="{Binding Path= ButtonText}" Click="btnAddUpdate_Click" HorizontalAlignment="Center" Margin="10"/>
             </Grid>
         </ScrollViewer>
-    </DockPanel>
+   
 </Window>

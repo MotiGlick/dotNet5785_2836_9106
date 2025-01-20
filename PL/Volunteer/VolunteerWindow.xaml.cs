@@ -141,7 +141,6 @@ namespace PL.Volunteer
                 {
                     s_bl.Volunteer.Update(CurrentVolunteer!, CurrentVolunteer!.Id);
                     MessageBox.Show("Volunteer updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    //VolunteerObserver();
                     Mouse.OverrideCursor = null;
                     this.Close();
                 }

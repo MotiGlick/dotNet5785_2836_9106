@@ -101,7 +101,7 @@ public class BooleanToWidthConverter : IValueConverter
         if (value is BO.CallInProgress call)
         {
             
-            return call != null ? 950 : 470;
+            return call != null ? 980 : 470;
         }
 
        
@@ -166,7 +166,7 @@ internal class ConvertCallStatusToColor : IValueConverter
             || CallStatus==BO.StatusOfCall.Expired ||CallStatus==BO.StatusOfCall.InProgress )
             return Brushes.Black; ;
 
-        return Brushes.Red; ;
+        return Brushes.OrangeRed; ;
 
     }
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -175,4 +175,38 @@ internal class ConvertCallStatusToColor : IValueConverter
     }
 }
 
+public class visibilityFotVolunteererConverter : IValueConverter
+{
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        int VolunteererId = (int)value;
+        if (s_bl.Volunteer.CanDeleted(VolunteererId))
+        {
+            return Visibility.Visible;
+        }
+        return Visibility.Hidden;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+public class PasswordConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value != null && value is string password)
+        {
+            return new string('*', password.Length); 
+        }
+        return string.Empty;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value;
+    }
+}

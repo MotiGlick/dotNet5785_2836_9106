@@ -30,6 +30,7 @@ namespace PL
 
         public LoginWindow()
         {
+           
             InitializeComponent();
            
         }

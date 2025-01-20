@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="640" Width="800" Icon="sticker.ico"
-    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Loaded="MainWindow_Loaded" Closed="MainWindow_Closed" Background="Gainsboro">
+        Title="MainWindow" Height="650" Width="800" Icon="sticker.ico" WindowStartupLocation="CenterScreen"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Loaded="MainWindow_Loaded" Closed="MainWindow_Closed" Background="#34495E">
     <Window.Resources>
         <!-- Button Style -->
         <Style TargetType="Button" >
@@ -14,7 +14,7 @@
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="10"/>
             <Setter Property="Padding" Value="12,6"/>
-            <Setter Property="Background" Value="#FF343A40"/>
+            <Setter Property="Background" Value="DarkSlateGray"/>
             <!-- אפור כהה -->
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderBrush" Value="#FF6C757D"/>
@@ -51,7 +51,7 @@
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="8"/>
-            <Setter Property="Foreground" Value="#FF343A40"/>
+            <Setter Property="Foreground" Value="DarkSlateGray"/>
             <!-- אפור כהה -->
         </Style>
 
@@ -61,13 +61,11 @@
             <Setter Property="Margin" Value="8"/>
             <Setter Property="Padding" Value="10"/>
             <Setter Property="Background" Value="Lavender"/>
-            <!-- לבן -->
             <Setter Property="BorderBrush" Value="#FF6C757D"/>
-            <!-- גבול אפור כהה -->
             <Setter Property="BorderThickness" Value="1.5"/>
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect Color="Gray" BlurRadius="6" ShadowDepth="2"/>
+                    <DropShadowEffect Color="Gray" BlurRadius="4" ShadowDepth="2"/>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -92,41 +90,39 @@
             <!-- Configuration Area -->
         </Grid.ColumnDefinitions>
 
-       
 
         <!-- Clock Area -->
-        <Grid Grid.Row="1" Grid.Column="0" Margin="10" Background="Lavender">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <!-- Clock Display -->
-                <RowDefinition Height="*"/>
-                <!-- Buttons -->
-            </Grid.RowDefinitions>
+        <Border Grid.Row="1" Grid.Column="0" Margin="10" Background="#2C3E50" CornerRadius="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Clock Display -->
+                    <RowDefinition Height="*"/>
+                    <!-- Buttons -->
+                </Grid.RowDefinitions>
 
-              <!-- System Clock Display -->
-        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10">
-            <!-- Static Label -->
-            
-            
-            <!-- Dynamic Label: Binds to CurrentTime -->
-            <Label Content="{Binding CurrentTime}" FontWeight="Bold" FontSize="20" Foreground="Blue" Margin="5"/>
-        </StackPanel>
+                <!-- System Clock Display -->
+                <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10">
+                    <!-- Static Label -->
+                    <Label Content="{Binding CurrentTime}" FontWeight="Bold" FontSize="20" Foreground="White" Margin="5" HorizontalAlignment="Center"/>
+                </StackPanel>
 
-            <!-- Clock Adjustment Buttons -->
-            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5">
-                <Button Content="Add One Minute" Margin="0,5" Click="btnAddOneMinute_Click" />
-                <Button Content="Add One Hour" Margin="0,5" Click="btnAddOneHour_Click" BorderBrush="#FF2A5275"/>
-                <Button Content="Add One Day" Margin="0,5" Click="btnAddOneDay_Click"/>
-                <Button Content="Add One Month" Margin="0,5" Click="btnAddOneMonth_Click"/>
-                <Button Content="Add One Year" Margin="0,5" Click="btnAddOneYear_Click"/>
-            </StackPanel>
-        </Grid>
+                <!-- Clock Adjustment Buttons -->
+                <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5">
+                    <Button Content="Add One Minute" Margin="0,5" Click="btnAddOneMinute_Click" />
+                    <Button Content="Add One Hour" Margin="0,5" Click="btnAddOneHour_Click" />
+                    <Button Content="Add One Day" Margin="0,5" Click="btnAddOneDay_Click"/>
+                    <Button Content="Add One Month" Margin="0,5" Click="btnAddOneMonth_Click"/>
+                    <Button Content="Add One Year" Margin="0,5" Click="btnAddOneYear_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
 
         <!-- Configuration Area -->
         <Grid Grid.Row="1" Grid.Column="1" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <!-- Configuration Variable -->
+              
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <!-- Buttons -->
@@ -135,7 +131,7 @@
             <!-- Configuration Variable -->
             <StackPanel Grid.Row="0" Margin="5">
                 <!-- Display and Edit Configuration Variable -->
-                <Label Content="                   Configuration Variable" FontSize="17" FontWeight="Bold"/>
+                <Label Content="Configuration Variable" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
           
             </StackPanel>
             <Grid Grid.Row="1" Margin="5">
@@ -149,10 +145,10 @@
 
             <!-- Action Buttons -->
             <StackPanel Grid.Row="2" Orientation="Vertical" Margin="5">
-                <Button Content="Handle Volunteer List" Margin="0,5" Click="btnShowVolunteerList_Click" />
-                <Button Content="Handle Call List" Margin="0,5" Click="btnShowCallList_Click"/>
-                <Button Content="Initialize Database" Margin="0,5" Click="btnInitializeDatabase_Click"/>
-                <Button Content="Reset Database" Margin="0,5" Click="btnResetDatabase_Click"/>
+                <Button Content="Handle Volunteers" Margin="0,5" Click="btnShowVolunteerList_Click" Height="30" />
+                <Button Content="Handle Calls" Margin="0,5" Click="btnShowCallList_Click"  Height="30"/>
+                <Button Content="Initialize Database" Margin="0,5" Click="btnInitializeDatabase_Click"  Height="30"/>
+                <Button Content="Reset Database" Margin="0,5" Click="btnResetDatabase_Click"  Height="30"/>
             </StackPanel>
         </Grid>
 
