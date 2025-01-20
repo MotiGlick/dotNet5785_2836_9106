@@ -161,11 +161,8 @@ namespace PL.Volunteer
                 Mouse.OverrideCursor = null;
                 MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
           
         }
-
-     
 
     }
 }
