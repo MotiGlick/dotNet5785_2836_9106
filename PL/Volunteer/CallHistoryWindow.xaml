@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="CallHistoryWindow" Height="450" Width="800">
+        Title="CallHistoryWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
+    
     <!--External Grid-->
     <Grid>
         <Grid.RowDefinitions>
@@ -21,48 +23,33 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
-            <Label Grid.Column="0" Content="Filter by call type" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
+       
+        
+           <Label Grid.Column="0" Content="Filter by call type" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
             <ComboBox Grid.Column="1"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
                 ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=callTypeFilter, Mode=TwoWay}" SelectionChanged="callTypeFilter_SelectionChanged" />
 
             <Label Grid.Column="2" Content="Order by:" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
-            <ComboBox Grid.Column="3"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
-               ItemsSource="{Binding Source={StaticResource CallClosureTypeCollectionKey}}" SelectedValue="{Binding Path=orderCallsList, Mode=TwoWay}" SelectionChanged="statusFilter_SelectionChanged" />
-
-            <!--Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="btnAdd_Click"/-->
-            <ListView Grid.Row="1" ItemsSource="{Binding Path=CallsList}" SelectedItem="{Binding SelectedCall}" MouseDoubleClick="lsvVolunteerList_MouseDoubleClick" Height="531" VerticalAlignment="Top" >
-                <ListView.View>
-                    <GridView>
-
-
-                        <GridViewColumn Header="Assignment id" DisplayMemberBinding="{Binding Id}"  Width="Auto" />
-                        <GridViewColumn Header="Call id" DisplayMemberBinding="{Binding CallId}" Width="Auto"/>
-                        <GridViewColumn Header="CallType" DisplayMemberBinding="{Binding  CallType}" Width="Auto"/>
-                        <GridViewColumn Header="Opening time" DisplayMemberBinding="{Binding OpeningTime}" Width="Auto"/>
-                        <GridViewColumn Header="Time left" DisplayMemberBinding="{Binding TimeLeft}" Width="Auto"/>
-                        <GridViewColumn Header="Last volunteer name" DisplayMemberBinding="{Binding LastVolunteerName}" Width="Auto"/>
-                        <GridViewColumn Header="Total handling time" DisplayMemberBinding="{Binding  HandlingTime}" Width="Auto" />
-                        <GridViewColumn Header="Call status" DisplayMemberBinding="{Binding  status}" Width="Auto" />
-                        <GridViewColumn Header="Amount of assigns" DisplayMemberBinding="{Binding  AmountOfAssigns}" Width="Auto" />
-                        <GridViewColumn Header="Delete call" Width="Auto">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="Delete"  Click="btnDeleteCall_Click" Tag="{Binding}" Background="LightBlue" Visibility="{Binding CallId , Converter={StaticResource buttonvisibilityConverterKey}}"  />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-
-                        <GridViewColumn Header="Cancel assignment" Width="Auto">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="Cancel assignment"  Click="btnCancelAssignment_Click" Tag="{Binding}" Background="LightYellow"  />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+            <!--<ComboBox Grid.Column="3"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
+               ItemsSource="{Binding Source={StaticResource CallClosureTypeCollectionKey}}" SelectedValue="{Binding Path=orderCallsList, Mode=TwoWay}" SelectionChanged="statusFilter_SelectionChanged" />-->
         </Grid>
+        <!--Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="btnAdd_Click"/-->
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=ClosedCallsInList}"   >
+            <ListView.View>
+                <GridView>
+
+
+
+                    <GridViewColumn Header="Call id" DisplayMemberBinding="{Binding Id}"  Width="Auto" />
+                    <GridViewColumn Header="CallType" DisplayMemberBinding="{Binding  CallType}" Width="Auto"/>
+                    <GridViewColumn Header="Address" DisplayMemberBinding="{Binding  Address}" Width="Auto"/>
+                    <GridViewColumn Header="Opening time" DisplayMemberBinding="{Binding OpeningTime}" Width="Auto"/>
+                    <GridViewColumn Header="HndalStartTime" DisplayMemberBinding="{Binding HndalStartTime}" Width="Auto"/>
+                    <GridViewColumn Header="EndTime" DisplayMemberBinding="{Binding EndTime}" Width="Auto"/>
+                    <GridViewColumn Header="ClosureType" DisplayMemberBinding="{Binding ClosureType}" Width="Auto"/>
+
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>
