@@ -6,6 +6,7 @@ using System.Net.Http;
 using System;
 using System.Reflection;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 
 /// <summary>
@@ -192,5 +193,33 @@ public static bool AddressExists(string address)//#
         return str;
     }
 
+
+
+
+    public static bool IsPasswordGood(string password)
+    {
+    
+        // דרישה לאות גדולה לפחות אחת
+        if (!Regex.IsMatch(password, @"[A-Z]"))
+        {
+            return false;
+        }
+
+        // דרישה לאות קטנה לפחות אחת
+        if (!Regex.IsMatch(password, @"[a-z]"))
+        {
+            return false;
+        }
+
+        // דרישה לפחות ל-6 מספרים
+        if (!Regex.IsMatch(password, @"(\d.*){6,}"))
+        {
+            return false;
+        }
+
+    
+
+        return true;
+    }
 
 }

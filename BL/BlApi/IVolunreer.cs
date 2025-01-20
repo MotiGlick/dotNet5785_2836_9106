@@ -58,4 +58,8 @@ public interface IVolunteer :IObservable
     void Delete(int id);
 
 
+
+    bool CanDeleted(int id);
+
+
 }

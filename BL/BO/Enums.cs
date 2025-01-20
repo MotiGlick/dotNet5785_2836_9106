@@ -56,8 +56,8 @@ public enum CallClosureType
 /// </summary>
 public enum CallInListField
 {
-    Id,     
     CallId,
+    AssignmentId,     
     CallType,
     OpeningTime,
     TimeLeft,

@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="VolunteerWindow" Height="950" Width="950" Background="Gray"
-        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
+        Background="Gainsboro"
+         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
+        Title="VolunteerWindow" Height="670" Width="{Binding CurrentVolunteer.CallInProgress, Converter={StaticResource BooleanToWidthConverterKey}}">
+
 
     <Window.Resources>
         <!-- Style for Label -->
@@ -15,7 +17,7 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Background" Value="Gainsboro"/>
             <Setter Property="Foreground" Value="DarkSlateGray"/>
         </Style>
 
@@ -27,6 +29,27 @@
             <Setter Property="BorderBrush" Value="Gray"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
+
+    <!--</Window.Resources>
+    <Window.Resources>
+        --><!-- Style for Label --><!--
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Foreground" Value="DarkSlateGray"/>
+        </Style>
+
+        --><!-- Style for TextBox --><!--
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>-->
 
         <!-- Style for ComboBox -->
         <Style TargetType="ComboBox">
@@ -45,7 +68,7 @@
         </Style>
     </Window.Resources>
 
-    <DockPanel>
+  
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <Grid ShowGridLines="FALSE">
                 <Grid.RowDefinitions>
@@ -58,6 +81,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="0.9*"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
@@ -177,8 +201,8 @@
                 </Grid>
 
                 <!-- Submit Button (Bottom) -->
-                <Button Grid.Row="2" Grid.Column="1" Background="Gray" Content="{Binding Path= ButtonText}" Click="btnAddUpdate_Click" HorizontalAlignment="Center" Margin="10"/>
+                <Button Grid.Row="2" Grid.Column="2" Width="70" Height="40" Background="LightGray" Content="{Binding Path= ButtonText}" Click="btnAddUpdate_Click" HorizontalAlignment="Center" Margin="10"/>
             </Grid>
         </ScrollViewer>
-    </DockPanel>
+   
 </Window>

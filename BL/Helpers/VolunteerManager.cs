@@ -62,10 +62,14 @@ internal class VolunteerManager
     /// <returns></returns>
     public static bool logicCheckToVolunteer(BO.Volunteer volunteer)
     {
+
+        if(!Tools.IsPasswordGood(volunteer.Password))
+            throw new BO.BlNotValidException("Password too weak \nThe password must contain an uppercase letter, a lowercase letter and 6 digits ");
+
         //if (!IsValidId(volunteer.Id))
-        //{
-        //    return false; // תעודת זהות לא תקינה
-        //}
+        //    throw new BO.BlNotValidException("Incorrect ID");
+
+
         if (!IsValidPhoneNumber(volunteer.PhoneNumber))
         {
             throw new BO.BlNotValidException("Incorrect phone number\n phone number must have 10 letters and start with 0"); // מספר טלפון לא תקין

@@ -1,6 +1,7 @@
 ﻿
 
 using BO;
+using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
@@ -34,11 +35,11 @@ internal class AssignmentManager
                               where assignment.CallId == CallId
                               let VolunteerName = _dal.Volunteer.Read(assignment.VolunteerId)!.Name
                               let HndalEndTime = assignment.AssignmentTotalTime ?? null
-                              let ClosureType = assignment.type == null ? null : (BO.CallClosureType?)assignment.type
+                              let ClosureType = GetCallClosureType(assignment.Id)
                               select new BO.CallAssignInList
                               {
                                   VolunteerId = assignment.VolunteerId,
-                                  VolunteerName =  VolunteerName,
+                                  VolunteerName = VolunteerName,
                                   HndalStartTime = assignment.AssignmentTime,
                                   HndalEndTime = HndalEndTime,
                                   ClosureType = ClosureType,
@@ -54,6 +55,21 @@ internal class AssignmentManager
         return callAssignList;
     }
 
+    
+    public static BO.CallClosureType? GetCallClosureType(int assignmentId)
+    {
+
+
+        DO.Assignment assignment = _dal.Assignment.Read(assignmentId)!;
+        DO.Call call = _dal.Call.Read(assignment.CallId)!;
+        if (assignment!.type != null )
+            return (BO.CallClosureType?)assignment.type;
+
+        if (call.TotalTime < AdminManager.Now)
+            return BO.CallClosureType.ExpiredCancellation;
+
+        return null;
+    }
 
     /// <summary>
     /// Retrieves the start time of an assignment for a given call and volunteer.
