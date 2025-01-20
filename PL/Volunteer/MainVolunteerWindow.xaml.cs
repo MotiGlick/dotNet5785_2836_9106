@@ -35,13 +35,13 @@ namespace PL.Volunteer
         /// <param name="id">The ID of the volunteer to edit, or 0 to create a new volunteer.</param>
         public MainVolunteerWindow(int id = 0)
         {
-            
+
             InitializeComponent();
 
             try
             {
                 CurrentVolunteer = s_bl.Volunteer.Read(id);
-                if(CurrentVolunteer.CallInProgress != null)
+                if (CurrentVolunteer.CallInProgress != null)
                     CurrentCall = s_bl.Call.GetCallDetails(CurrentVolunteer.CallInProgress.CallId);
                 else { }
             }
@@ -70,7 +70,7 @@ namespace PL.Volunteer
 
 
 
-        
+
         /// <summary>
         /// The currently edited volunteer.
         /// </summary>
@@ -125,7 +125,7 @@ namespace PL.Volunteer
         /// </summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if(CurrentVolunteer.CallInProgress != null)
+            if (CurrentVolunteer != null && CurrentVolunteer.CallInProgress != null)
             {
                 s_bl.Volunteer.AddObserver(CurrentVolunteer!.Id, VolunteerObserver);
                 s_bl.Call.AddObserver(CurrentCall!.Id, CallObserver);
@@ -139,7 +139,7 @@ namespace PL.Volunteer
         private void Window_Closed(object sender, EventArgs e)
         {
 
-            s_bl.Volunteer.RemoveObserver(CurrentVolunteer!.Id, VolunteerObserver);
+            s_bl.Call.RemoveObserver(CurrentVolunteer!.Id, VolunteerObserver);
             if (CurrentVolunteer.CallInProgress != null)
                 s_bl.Call.RemoveObserver(CurrentCall!.Id, CallObserver);
         }
@@ -154,13 +154,13 @@ namespace PL.Volunteer
             try
             {
                 Mouse.OverrideCursor = Cursors.Wait;
-              
-                
-                    s_bl.Volunteer.Update(CurrentVolunteer!, CurrentVolunteer!.Id);
-                    MessageBox.Show("Volunteer updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Mouse.OverrideCursor = null;
-                    this.Close();
-                
+
+
+                s_bl.Volunteer.Update(CurrentVolunteer!, CurrentVolunteer!.Id);
+                MessageBox.Show("Volunteer updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                Mouse.OverrideCursor = null;
+                this.Close();
+
             }
             catch (BO.BlDoesNotExistException ex)
             {
@@ -188,9 +188,10 @@ namespace PL.Volunteer
             {
                 s_bl.Call.EndHandling(CurrentVolunteer.Id, CurrentVolunteer.CallInProgress.Id);
                 MessageBox.Show("Call ended successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                
+
             }
-            catch (Exception ex){
+            catch (Exception ex)
+            {
                 MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -209,14 +210,36 @@ namespace PL.Volunteer
             }
         }
 
-        private void BtnHistoryWindows_Click(object sender, MouseButtonEventArgs e)
+        //private void BtnHistoryWindows_Click(object sender, MouseButtonEventArgs e)
+        //{
+        //    new CallHistoryWindow(CurrentVolunteer.Id).Show();
+        //}
+
+        //private void BtnTreatmentWindow_Click(object sender, MouseButtonEventArgs e)
+        //{
+        //    new CallTreatmentWindow(CurrentVolunteer.Id).Show();
+        //}
+
+        private void CallCancel_Click(object sender, RoutedEventArgs e)
         {
-           new  CallHistoryWindow(CurrentVolunteer.Id).Show();
+
         }
 
-        private void BtnTreatmentWindow_Click(object sender, MouseButtonEventArgs e)
+        private void btnEndCall_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void BtnHistoryWindows_Click(object sender, RoutedEventArgs e)
+        {
+            new CallHistoryWindow(CurrentVolunteer.Id).Show();
+
+        }
+
+        private void BtnTreatmentWindow_Click(object sender, RoutedEventArgs e)
         {
             new CallTreatmentWindow(CurrentVolunteer.Id).Show();
+
         }
+
     }
 }
