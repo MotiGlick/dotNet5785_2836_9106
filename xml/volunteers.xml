@@ -81,7 +81,7 @@
     <Longitude>35.2211</Longitude>
     <maximumDistace>94215</maximumDistace>
     <duty>volunteer</duty>
-    <IsActive>true</IsActive>
+    <IsActive>false</IsActive>
     <distance>Air</distance>
   </Volunteer>
   <Volunteer>
@@ -201,7 +201,7 @@
     <Name>Erez Goldstein</Name>
     <PhoneNumber>0584455667</PhoneNumber>
     <Email>erez_goldstein@gmail.com</Email>
-    <pasword>91028475</pasword>
+    <pasword>111</pasword>
     <AddressVolunteer>Gaza St 6, Jerusalem</AddressVolunteer>
     <Latitude>31.7718</Latitude>
     <Longitude>35.2279</Longitude>
