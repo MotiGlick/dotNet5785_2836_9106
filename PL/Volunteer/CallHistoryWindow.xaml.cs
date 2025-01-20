@@ -39,11 +39,11 @@ namespace PL.Volunteer
             DependencyProperty.Register("CallsList", typeof(IEnumerable<BO.ClosedCallInList>), typeof(CallHistoryWindow), new PropertyMetadata(null));
 
         public BO.CallType callTypeFilter { get; set; } = BO.CallType.No_Filter;
-        
-        
-        public BO.ClosedCallInListField orderCallsList { get; set; }/// <summary>
-        /// = BO.ClosedCallInListField.HndalStartTime;
-        /// </summary>
+      
+
+
+        public BO.ClosedCallInListField orderCallsList { get; set; }
+     
 
         private void queryCallsList() => ClosedCallsInList = (callTypeFilter == BO.CallType.No_Filter) ?
            s_bl?.Call.GetClosedCallsByVolunteer(UserId, null, orderCallsList)! : s_bl?.Call.GetClosedCallsByVolunteer(UserId, callTypeFilter, orderCallsList)!;
@@ -67,7 +67,7 @@ namespace PL.Volunteer
             queryCallsList();
         }
         //  => queryCallsList();
-
+      
         private void Window_Loaded(object sender, RoutedEventArgs e)
             => s_bl.Call.AddObserver(CallListObserver);
 

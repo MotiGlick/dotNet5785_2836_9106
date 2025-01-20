@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="CallHistoryWindow" Height="450" Width="800"
+        Title="CallHistoryWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
     
     <!--External Grid-->
@@ -33,8 +33,8 @@
             <ComboBox Grid.Column="3"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
                ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=orderCallsList, Mode=TwoWay}" SelectionChanged="statusFilter_SelectionChanged" />
         </Grid>
-        <!--Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="btnAdd_Click"/-->
-        <ListView Grid.Row="1" ItemsSource="{Binding Path=ClosedCallsInList}"   >
+
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=ClosedCallsInList}"   SelectedItem="{Binding SelectedCall}"  >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Call id" DisplayMemberBinding="{Binding Id}"  Width="Auto" />

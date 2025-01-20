@@ -308,7 +308,7 @@ internal class CallImplementation : BlApi.ICall
     {
 
 
-        var o = GetCallList()
+        return GetCallList()
              .Where(call => AssignmentManager.GetCallAssignList(call.CallId).Any(assign => assign.VolunteerId == volunteerId))
              .Select(call => new ClosedCallInList
              {
@@ -319,8 +319,8 @@ internal class CallImplementation : BlApi.ICall
                  HndalStartTime = AssignmentManager.GetAssignmentStartTime(call.CallId, volunteerId),
                  EndTime = AssignmentManager.GetAssignmentEndTime(call.CallId, volunteerId),
                  ClosureType = AssignmentManager.GetAssignmentClosureType(call.CallId, volunteerId)
-             });
-            o=o.Where(call => callTypeFilter == null ? true : call.CallType == callTypeFilter)
+             })
+            .Where(call => callTypeFilter == null ? true : call.CallType == callTypeFilter)
             .OrderBy<BO.ClosedCallInList, object?>((call => sortField switch
             {
                 ClosedCallInListField.Id => call.Id,
@@ -332,7 +332,6 @@ internal class CallImplementation : BlApi.ICall
                 ClosedCallInListField.ClosureType => call.ClosureType,
                 _ => call.Id
             }));
-        return o;
 
     }
 
