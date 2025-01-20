@@ -209,4 +209,49 @@ public class PasswordConverter : IValueConverter
     {
         return value;
     }
+
+
+}
+
+public class IsChacedConverter : IValueConverter
+{
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        BO.Call CalL = (BO.Call)value;
+        
+        if (CalL != null )
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value;
+    }
+
+}
+
+public class ChusingCallEnableConverter : IValueConverter
+{
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        BO.Volunteer volunteer = (BO.Volunteer)value;
+        
+
+        if (volunteer.IsActive && (volunteer.CallInProgress!= null))
+        {
+            return Visibility.Visible;
+        }
+        return Visibility.Hidden;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value;
+    }
+
 }
