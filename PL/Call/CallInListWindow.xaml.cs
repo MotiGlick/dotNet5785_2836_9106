@@ -20,19 +20,19 @@ namespace PL.Call
     /// <summary>
     /// Interaction logic for CallInListWindow.xaml
     /// </summary>
-    public partial class CallInListWindow: Window
+    public partial class CallInListWindow : Window
     {
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        public CallInListWindow(int managerId=0)
+        public CallInListWindow(int managerId = 0)
         {
-         
+
             this.ManagerId = managerId;
             InitializeComponent();
         }
         int ManagerId { get; set; }
-        
+
 
         public BO.CallInList? SelectedCall { get; set; }
 
@@ -53,7 +53,7 @@ namespace PL.Call
 
         public BO.StatusOfCall statusFilter { get; set; } = BO.StatusOfCall.No_Filter;
 
-        public BO.CallInListField orderCallsList { get; set; } = BO.CallInListField.Id;
+        public BO.CallInListField orderCallsList { get; set; } = BO.CallInListField.CallId;
 
         private void queryCallsListByType() => CallsList = (callTypeFilter == BO.CallType.No_Filter) ?
             s_bl?.Call.GetCallList(null, null, orderCallsList)! : s_bl?.Call.GetCallList(CallInListField.CallType, callTypeFilter, orderCallsList)!;
@@ -126,15 +126,14 @@ namespace PL.Call
             if (button?.Tag is BO.CallInList call)
             {
                 // Display confirmation dialog
-                var result = MessageBox.Show($"Are you sure you want to cancel Assignment with id={call.Id}?",
+                var result = MessageBox.Show($"Are you sure you want to cancel this Assignment?",
                                              "Confirm Cancelation", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
-                        s_bl.Call.GetCallDetails(call.CallId);
-                           s_bl.Call.CancelHandling(ManagerId, (int)call.Id);
+                        s_bl.Call.CancelHandling(ManagerId, call.Id ?? throw new Exception("No active assignment found to cancel."));
                         MessageBox.Show("Assignment canceled successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     catch (Exception ex)
@@ -147,7 +146,6 @@ namespace PL.Call
             }
 
         }
-   
 
         private void lsvCallList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {

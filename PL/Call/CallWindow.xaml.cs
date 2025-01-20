@@ -47,9 +47,9 @@ namespace PL.Call
                         Latitude = 0,
                         Longitude = 0,
                         OpeningTime = s_bl.Admin.GetClock(),
-                        MaxTime =null,
+                        MaxTime = null,
                         status = BO.StatusOfCall.Open,
-                        CallAssignsList = null,                  
+                        CallAssignsList = null,
                     };
 
             }
@@ -67,6 +67,7 @@ namespace PL.Call
         {
             get { return (BO.Call?)GetValue(CurrentCallProperty); }
             set { SetValue(CurrentCallProperty, value); }
+            
         }
 
         /// <summary>
@@ -76,42 +77,96 @@ namespace PL.Call
             DependencyProperty.Register("CurrentCall", typeof(BO.Call), typeof(CallWindow), new PropertyMetadata(null));
 
 
+        private void Callbserver()
+        {
+
+            int id = CurrentCall!.Id;
+            CurrentCall = null;
+            CurrentCall = s_bl.Call.GetCallDetails(id);
+
+        }
+
+        /// <summary>
+        /// Event handler for when the window is loaded.
+        /// Adds an observer to the volunteer's updates.
+        /// </summary>
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+           
+                s_bl.Call.AddObserver(CurrentCall!.Id, Callbserver);
+            
+        }
+
+        /// <summary>
+        /// Event handler for when the window is closed.
+        /// Removes the observer from the volunteer's updates.
+        /// </summary>
+        private void Window_Closed(object sender, EventArgs e)
+        {
+
+            s_bl.Call.RemoveObserver(CurrentCall!.Id, Callbserver);
+
+        }
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Mouse.OverrideCursor = Cursors.Wait;
-                if (ButtonText == "Add")
+            if (chackFormet())
+                try
                 {
-                    s_bl.Call.AddCall(CurrentCall!);
-                    MessageBox.Show("Call added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Mouse.OverrideCursor = null;
-                    this.Close();
+                    Mouse.OverrideCursor = Cursors.Wait;
+                    if (ButtonText == "Add")
+                    {
+                        s_bl.Call.AddCall(CurrentCall!);
+                        MessageBox.Show("Call added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        Mouse.OverrideCursor = null;
+                        this.Close();
+                    }
+                    else
+                    {
+                        s_bl.Call.UpdateCallDetails(CurrentCall!);
+                        MessageBox.Show("Call updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        Mouse.OverrideCursor = null;
+                        this.Close();
+                    }
                 }
-                else
+                catch (BO.BlDoesNotExistException ex)
                 {
-                    s_bl.Call.UpdateCallDetails(CurrentCall!);
-                    MessageBox.Show("Call updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     Mouse.OverrideCursor = null;
-                    this.Close();
+                    MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-            }
-            catch (BO.BlDoesNotExistException ex)
-            {
-                Mouse.OverrideCursor = null;
-                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            catch (BO.BlNotValidException ex)
-            {
-                Mouse.OverrideCursor = null;
-                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            catch (Exception ex)
-            {
-                Mouse.OverrideCursor = null;
-                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+                catch (BO.BlNotValidException ex)
+                {
+                    Mouse.OverrideCursor = null;
+                    MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (Exception ex)
+                {
+                    Mouse.OverrideCursor = null;
+                    MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
         }
+
+        private bool chackFormet()
+        {
+            if (CurrentCall!.Address == null || CurrentCall!.Address == "" || CurrentCall!.Address.Length < 5 || CurrentCall!.Address.Length > 100)
+            {
+                MessageBox.Show("Address not valid! \nThe address must be between 5 and 100 characters long.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+           
+            if (CurrentCall!.Description != "" && double.TryParse(CurrentCall.Description, out double e))
+            {
+                MessageBox.Show("Description cannot be a number!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+           
+
+            return true;
+
+        }
+
+
     }
 }

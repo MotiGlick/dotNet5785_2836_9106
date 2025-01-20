@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Net;
+using System.Text.RegularExpressions;
 
 
 /// <summary>
@@ -33,25 +34,28 @@ internal class CallImplementation : BlApi.ICall
     public void AddCall(BO.Call boCall)//#
     {
 
-            if (!CallManager.LogicalCheck(boCall))
-                throw new BO.BlNotValidException("Call is not valid");
+
         try
         {
 
-
-            _dal.Call.Create(
-                new(
-                boCall.Id,
-                (DO.CallType)boCall.CallType,
-                boCall.Description!,
-                boCall.Address,
-                Tools.GetLatitude(boCall.Address),
-                Tools.GetLongitude(boCall.Address),
-                boCall.OpeningTime,
-                boCall.MaxTime
-                ));
+            if (CallManager.LogicalCheck(boCall))
+                _dal.Call.Create(
+                    new(
+                    boCall.Id,
+                    (DO.CallType)boCall.CallType,
+                    boCall.Address,
+                    boCall.Description,
+                    Tools.GetLatitude(boCall.Address),
+                    Tools.GetLongitude(boCall.Address),
+                    boCall.OpeningTime,
+                    boCall.MaxTime
+                    ));
             CallManager.Observers.NotifyListUpdated(); //stage 5
 
+        }
+        catch (BO.BlNotValidException ex)
+        {
+            throw ex;
         }
         catch (Exception ex)
         {
@@ -108,7 +112,7 @@ internal class CallImplementation : BlApi.ICall
                 else
                     _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.ManagerCancellation));
 
-                //CallManager.Observers.NotifyItemUpdated(boCall.Id);  //stage 5
+                CallManager.Observers.NotifyItemUpdated(doAssignment.CallId);  //stage 5
                 CallManager.Observers.NotifyListUpdated();  //stage 5
             }
             catch (Exception ex)
@@ -195,6 +199,7 @@ internal class CallImplementation : BlApi.ICall
                 _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.HandledOnTime));
 
             }
+
             catch (Exception ex)
             {
                 throw new BO.BlDoesNotExistException($"Assignment with ID={assignmentId} does Not exist", ex);
@@ -277,7 +282,7 @@ internal class CallImplementation : BlApi.ICall
             })
           .OrderBy<BO.CallInList, object?>(call => sortField switch
            {
-               CallInListField.Id => call.Id,
+               CallInListField.AssignmentId => call.Id,
                CallInListField.CallId => call.CallId,
                CallInListField.CallType => (int)call.CallType,
                CallInListField.OpeningTime => call.OpeningTime,
@@ -382,28 +387,34 @@ internal class CallImplementation : BlApi.ICall
         {
             // Validate the call using the LogicalCheck method from CallManager
             if (CallManager.LogicalCheck(boCall))
-                throw new BO.BlNotValidException("Call is not valid");
+                //throw new BO.BlNotValidException("Call is not valid");
 
-            // Update the call in the data layer
-            _dal.Call.Update(
-                new
-                (
-                   boCall.Id,
-                   (DO.CallType)boCall.CallType,
-                   boCall.Description!,
-                   boCall.Address,
-                   Tools.GetLatitude(boCall.Address),
-                   Tools.GetLongitude(boCall.Address),
-                   boCall.OpeningTime, boCall.MaxTime
-                ));
+                // Update the call in the data layer
+                _dal.Call.Update(
+                    new
+                    (
+                       boCall.Id,
+                       (DO.CallType)boCall.CallType,
+                       boCall.Address,
+                       boCall.Description,
+                       Tools.GetLatitude(boCall.Address),
+                       Tools.GetLongitude(boCall.Address),
+                       boCall.OpeningTime,
+                       boCall.MaxTime
+                    ));
             CallManager.Observers.NotifyItemUpdated(boCall.Id);  //stage 5
             CallManager.Observers.NotifyListUpdated();  //stage 5
 
+        }
+        catch (BO.BlNotValidException ex)
+        {
+            throw ex;
         }
         catch (Exception ex)
         {
             throw new BO.BlAlreadyExistsException($"Volunteer with ID={boCall.Id} already exists", ex);
         }
+
 
     }
 
@@ -431,6 +442,11 @@ internal class CallImplementation : BlApi.ICall
 
         return false;
     }
+
+
+
+
+   
     #endregion Stage 6
 
 
