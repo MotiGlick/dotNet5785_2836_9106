@@ -240,7 +240,7 @@ public class ChusingCallEnableConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         BO.Volunteer volunteer = (BO.Volunteer)value;
-        
+
 
         if (volunteer!=null&&volunteer.IsActive )//&& (volunteer.CallInProgress!= null))
         {

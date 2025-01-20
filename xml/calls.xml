@@ -2,33 +2,33 @@
 <ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Call>
     <Id>0</Id>
-    <type>HospitalVisit</type>
+    <type>EmotionalSupport</type>
     <CallAddress>Jaffa 23, Jerusalem</CallAddress>
-    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
     <Latitude>31.7833</Latitude>
     <Longitude>35.2196</Longitude>
-    <CallTime>2025-01-18T12:41:08</CallTime>
-    <TotalTime>2025-02-04T12:41:08</TotalTime>
+    <CallTime>2025-01-07T18:26:42</CallTime>
+    <TotalTime>2025-02-05T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>1</Id>
-    <type>ProvideTransportation</type>
+    <type>MedicalAssistance</type>
     <CallAddress>King George 15, Jerusalem</CallAddress>
-    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.7798</Latitude>
     <Longitude>35.2193</Longitude>
-    <CallTime>2025-01-12T12:41:08</CallTime>
-    <TotalTime>2025-02-16T12:41:08</TotalTime>
+    <CallTime>2025-01-08T18:26:42</CallTime>
+    <TotalTime>2025-02-03T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>2</Id>
-    <type>HospitalVisit</type>
+    <type>MedicalAssistance</type>
     <CallAddress>HaNeviim 37, Jerusalem</CallAddress>
-    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.7832</Latitude>
     <Longitude>35.2174</Longitude>
-    <CallTime>2025-01-18T12:41:08</CallTime>
-    <TotalTime>2025-02-13T12:41:08</TotalTime>
+    <CallTime>2025-01-15T18:26:42</CallTime>
+    <TotalTime>2025-02-13T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>3</Id>
@@ -37,18 +37,18 @@
     <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7487</Latitude>
     <Longitude>35.2127</Longitude>
-    <CallTime>2025-01-19T12:41:08</CallTime>
-    <TotalTime>2025-02-11T12:41:08</TotalTime>
+    <CallTime>2025-01-19T18:26:42</CallTime>
+    <TotalTime>2025-02-08T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>4</Id>
-    <type>MedicalAssistance</type>
+    <type>DeliverMedicine</type>
     <CallAddress>Herzl Boulevard 14, Jerusalem</CallAddress>
-    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7903</Latitude>
     <Longitude>35.206</Longitude>
-    <CallTime>2025-01-10T12:41:08</CallTime>
-    <TotalTime>2025-02-05T12:41:08</TotalTime>
+    <CallTime>2025-01-07T18:26:42</CallTime>
+    <TotalTime>2025-02-15T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>5</Id>
@@ -57,18 +57,18 @@
     <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
     <Latitude>31.7835</Latitude>
     <Longitude>35.215</Longitude>
-    <CallTime>2025-01-16T12:41:08</CallTime>
-    <TotalTime>2025-02-15T12:41:08</TotalTime>
+    <CallTime>2025-01-19T18:26:42</CallTime>
+    <TotalTime>2025-02-13T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>6</Id>
-    <type>HomeCare</type>
+    <type>DeliverMedicine</type>
     <CallAddress>29 Gaza Street, Jerusalem</CallAddress>
-    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7839</Latitude>
     <Longitude>35.2117</Longitude>
-    <CallTime>2025-01-19T12:41:08</CallTime>
-    <TotalTime>2025-02-06T12:41:08</TotalTime>
+    <CallTime>2025-01-18T18:26:42</CallTime>
+    <TotalTime>2025-02-11T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>7</Id>
@@ -77,18 +77,18 @@
     <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7612</Latitude>
     <Longitude>35.2178</Longitude>
-    <CallTime>2025-01-11T12:41:08</CallTime>
-    <TotalTime>2025-02-15T12:41:08</TotalTime>
+    <CallTime>2025-01-09T18:26:42</CallTime>
+    <TotalTime>2025-02-06T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>8</Id>
-    <type>MedicalAssistance</type>
+    <type>HospitalVisit</type>
     <CallAddress>Keren Hayesod 18, Jerusalem</CallAddress>
-    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7743</Latitude>
     <Longitude>35.2167</Longitude>
-    <CallTime>2025-01-15T12:41:08</CallTime>
-    <TotalTime>2025-02-12T12:41:08</TotalTime>
+    <CallTime>2025-01-17T18:26:42</CallTime>
+    <TotalTime>2025-02-15T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>9</Id>
@@ -97,8 +97,8 @@
     <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
     <Latitude>31.7806</Latitude>
     <Longitude>35.2222</Longitude>
-    <CallTime>2025-01-17T12:41:08</CallTime>
-    <TotalTime>2025-02-13T12:41:08</TotalTime>
+    <CallTime>2025-01-14T18:26:42</CallTime>
+    <TotalTime>2025-02-10T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>10</Id>
@@ -107,48 +107,48 @@
     <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7783</Latitude>
     <Longitude>35.2248</Longitude>
-    <CallTime>2025-01-06T12:41:08</CallTime>
-    <TotalTime>2025-02-15T12:41:08</TotalTime>
+    <CallTime>2025-01-12T18:26:42</CallTime>
+    <TotalTime>2025-02-05T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>11</Id>
-    <type>HomeCare</type>
+    <type>HospitalVisit</type>
     <CallAddress>33 Ben Yehuda Street, Jerusalem</CallAddress>
-    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7834</Latitude>
     <Longitude>35.2201</Longitude>
-    <CallTime>2025-01-10T12:41:08</CallTime>
-    <TotalTime>2025-02-04T12:41:08</TotalTime>
+    <CallTime>2025-01-17T18:26:42</CallTime>
+    <TotalTime>2025-02-04T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>12</Id>
-    <type>EmotionalSupport</type>
+    <type>DeliverMedicine</type>
     <CallAddress>HaPalmach 25, Jerusalem</CallAddress>
-    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7647</Latitude>
     <Longitude>35.2156</Longitude>
-    <CallTime>2025-01-16T12:41:08</CallTime>
-    <TotalTime>2025-02-08T12:41:08</TotalTime>
+    <CallTime>2025-01-10T18:26:42</CallTime>
+    <TotalTime>2025-02-15T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>13</Id>
-    <type>EmotionalSupport</type>
+    <type>HospitalVisit</type>
     <CallAddress>Derech Beit Lechem 12, Jerusalem</CallAddress>
-    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7641</Latitude>
     <Longitude>35.2234</Longitude>
-    <CallTime>2025-01-06T12:41:08</CallTime>
-    <TotalTime>2025-02-05T12:41:08</TotalTime>
+    <CallTime>2025-01-09T18:26:42</CallTime>
+    <TotalTime>2025-02-12T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>14</Id>
-    <type>MedicalAssistance</type>
+    <type>ProvideTransportation</type>
     <CallAddress>Sderot Ben Gurion 50, Jerusalem</CallAddress>
-    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
     <Latitude>31.7785</Latitude>
     <Longitude>35.2104</Longitude>
-    <CallTime>2025-01-18T12:41:08</CallTime>
-    <TotalTime>2025-02-15T12:41:08</TotalTime>
+    <CallTime>2025-01-08T18:26:42</CallTime>
+    <TotalTime>2025-02-08T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>15</Id>
@@ -157,58 +157,58 @@
     <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7765</Latitude>
     <Longitude>35.2215</Longitude>
-    <CallTime>2025-01-09T12:41:08</CallTime>
-    <TotalTime>2025-02-07T12:41:08</TotalTime>
+    <CallTime>2025-01-16T18:26:42</CallTime>
+    <TotalTime>2025-02-06T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>16</Id>
-    <type>MedicalAssistance</type>
+    <type>HomeCare</type>
     <CallAddress>Rachel Imeinu 16, Jerusalem</CallAddress>
-    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7566</Latitude>
     <Longitude>35.2103</Longitude>
-    <CallTime>2025-01-08T12:41:08</CallTime>
-    <TotalTime>2025-02-12T12:41:08</TotalTime>
+    <CallTime>2025-01-18T18:26:42</CallTime>
+    <TotalTime>2025-02-08T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>17</Id>
-    <type>DeliverMedicine</type>
+    <type>HospitalVisit</type>
     <CallAddress>Derech HaAtsmaut 7, Jerusalem</CallAddress>
-    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7717</Latitude>
     <Longitude>35.2238</Longitude>
-    <CallTime>2025-01-14T12:41:08</CallTime>
-    <TotalTime>2025-02-04T12:41:08</TotalTime>
+    <CallTime>2025-01-13T18:26:42</CallTime>
+    <TotalTime>2025-02-11T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>18</Id>
-    <type>HomeCare</type>
+    <type>HospitalVisit</type>
     <CallAddress>Yitzhak Rabin Boulevard 60, Jerusalem</CallAddress>
-    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7782</Latitude>
     <Longitude>35.2046</Longitude>
-    <CallTime>2025-01-13T12:41:08</CallTime>
-    <TotalTime>2025-02-10T12:41:08</TotalTime>
+    <CallTime>2025-01-16T18:26:42</CallTime>
+    <TotalTime>2025-02-06T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>19</Id>
-    <type>EmotionalSupport</type>
+    <type>MedicalAssistance</type>
     <CallAddress>HaTzanchanim 3, Jerusalem</CallAddress>
-    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.7821</Latitude>
     <Longitude>35.2149</Longitude>
-    <CallTime>2025-01-10T12:41:08</CallTime>
-    <TotalTime>2025-02-14T12:41:08</TotalTime>
+    <CallTime>2025-01-11T18:26:42</CallTime>
+    <TotalTime>2025-02-06T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>20</Id>
-    <type>HospitalVisit</type>
+    <type>ProvideTransportation</type>
     <CallAddress>Mount Scopus 25, Jerusalem</CallAddress>
-    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
     <Latitude>31.7943</Latitude>
     <Longitude>35.2431</Longitude>
-    <CallTime>2025-01-12T12:41:08</CallTime>
-    <TotalTime>2025-02-14T12:41:08</TotalTime>
+    <CallTime>2025-01-06T18:26:42</CallTime>
+    <TotalTime>2025-02-16T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>21</Id>
@@ -217,8 +217,8 @@
     <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
     <Latitude>31.7986</Latitude>
     <Longitude>35.2227</Longitude>
-    <CallTime>2025-01-16T12:41:08</CallTime>
-    <TotalTime>2025-02-16T12:41:08</TotalTime>
+    <CallTime>2025-01-06T18:26:42</CallTime>
+    <TotalTime>2025-02-03T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>22</Id>
@@ -227,178 +227,178 @@
     <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.7826</Latitude>
     <Longitude>35.2145</Longitude>
-    <CallTime>2025-01-08T12:41:08</CallTime>
-    <TotalTime>2025-02-12T12:41:08</TotalTime>
+    <CallTime>2025-01-17T18:26:42</CallTime>
+    <TotalTime>2025-02-16T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>23</Id>
-    <type>DeliverMedicine</type>
+    <type>HomeCare</type>
     <CallAddress>Rehov Hillel 28, Jerusalem</CallAddress>
-    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7792</Latitude>
     <Longitude>35.2123</Longitude>
-    <CallTime>2025-01-11T12:41:08</CallTime>
-    <TotalTime>2025-02-08T12:41:08</TotalTime>
+    <CallTime>2025-01-12T18:26:42</CallTime>
+    <TotalTime>2025-02-04T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>24</Id>
-    <type>EmotionalSupport</type>
+    <type>DeliverMedicine</type>
     <CallAddress>Ben Maimon 4, Jerusalem</CallAddress>
-    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7819</Latitude>
     <Longitude>35.2233</Longitude>
-    <CallTime>2025-01-14T12:41:08</CallTime>
-    <TotalTime>2025-02-12T12:41:08</TotalTime>
+    <CallTime>2025-01-16T18:26:42</CallTime>
+    <TotalTime>2025-02-15T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>25</Id>
-    <type>MedicalAssistance</type>
+    <type>EmotionalSupport</type>
     <CallAddress>Ussishkin 17, Jerusalem</CallAddress>
-    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
     <Latitude>31.7687</Latitude>
     <Longitude>35.2137</Longitude>
-    <CallTime>2025-01-15T12:41:08</CallTime>
-    <TotalTime>2025-02-03T12:41:08</TotalTime>
+    <CallTime>2025-01-10T18:26:42</CallTime>
+    <TotalTime>2025-02-05T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>26</Id>
-    <type>ProvideTransportation</type>
+    <type>HospitalVisit</type>
     <CallAddress>HaPisga 2, Jerusalem</CallAddress>
-    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.778</Latitude>
     <Longitude>35.2172</Longitude>
-    <CallTime>2025-01-19T12:41:08</CallTime>
-    <TotalTime>2025-02-15T12:41:08</TotalTime>
+    <CallTime>2025-01-15T18:26:42</CallTime>
+    <TotalTime>2025-02-07T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>27</Id>
-    <type>HomeCare</type>
+    <type>HospitalVisit</type>
     <CallAddress>Beit HaKerem 32, Jerusalem</CallAddress>
-    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7754</Latitude>
     <Longitude>35.2205</Longitude>
-    <CallTime>2025-01-06T12:41:08</CallTime>
-    <TotalTime>2025-02-11T12:41:08</TotalTime>
+    <CallTime>2025-01-12T18:26:42</CallTime>
+    <TotalTime>2025-02-06T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>28</Id>
-    <type>MedicalAssistance</type>
+    <type>EmotionalSupport</type>
     <CallAddress>Sderot Eshkol 6, Jerusalem</CallAddress>
-    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
     <Latitude>31.7972</Latitude>
     <Longitude>35.2308</Longitude>
-    <CallTime>2025-01-19T12:41:08</CallTime>
-    <TotalTime>2025-02-04T12:41:08</TotalTime>
+    <CallTime>2025-01-19T18:26:42</CallTime>
+    <TotalTime>2025-02-16T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>29</Id>
-    <type>HospitalVisit</type>
+    <type>ProvideTransportation</type>
     <CallAddress>Jabotinsky 14, Jerusalem</CallAddress>
-    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
     <Latitude>31.7665</Latitude>
     <Longitude>35.218</Longitude>
-    <CallTime>2025-01-17T12:41:08</CallTime>
-    <TotalTime>2025-02-07T12:41:08</TotalTime>
+    <CallTime>2025-01-16T18:26:42</CallTime>
+    <TotalTime>2025-02-10T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>30</Id>
-    <type>HomeCare</type>
+    <type>DeliverMedicine</type>
     <CallAddress>HaAri 19, Jerusalem</CallAddress>
-    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7789</Latitude>
     <Longitude>35.2178</Longitude>
-    <CallTime>2025-01-18T12:41:08</CallTime>
-    <TotalTime>2025-02-04T12:41:08</TotalTime>
+    <CallTime>2025-01-09T18:26:42</CallTime>
+    <TotalTime>2025-02-04T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>31</Id>
-    <type>HomeCare</type>
+    <type>MedicalAssistance</type>
     <CallAddress>Betzalel 36, Jerusalem</CallAddress>
-    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.7798</Latitude>
     <Longitude>35.2225</Longitude>
-    <CallTime>2025-01-19T12:41:08</CallTime>
-    <TotalTime>2025-02-14T12:41:08</TotalTime>
+    <CallTime>2025-01-09T18:26:42</CallTime>
+    <TotalTime>2025-02-05T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>32</Id>
-    <type>DeliverMedicine</type>
+    <type>ProvideTransportation</type>
     <CallAddress>Rehov Mevo HaGalil 24, Jerusalem</CallAddress>
-    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
     <Latitude>31.7693</Latitude>
     <Longitude>35.2098</Longitude>
-    <CallTime>2025-01-10T12:41:08</CallTime>
-    <TotalTime>2025-02-08T12:41:08</TotalTime>
+    <CallTime>2025-01-14T18:26:42</CallTime>
+    <TotalTime>2025-02-08T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>33</Id>
-    <type>HomeCare</type>
+    <type>MedicalAssistance</type>
     <CallAddress>Ma'alot 9, Jerusalem</CallAddress>
-    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.77</Latitude>
     <Longitude>35.2089</Longitude>
-    <CallTime>2025-01-06T12:41:08</CallTime>
-    <TotalTime>2025-02-04T12:41:08</TotalTime>
+    <CallTime>2025-01-14T18:26:42</CallTime>
+    <TotalTime>2025-02-14T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>34</Id>
-    <type>HospitalVisit</type>
+    <type>HomeCare</type>
     <CallAddress>Sderot Shazar 21, Jerusalem</CallAddress>
-    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7726</Latitude>
     <Longitude>35.2147</Longitude>
-    <CallTime>2025-01-14T12:41:08</CallTime>
-    <TotalTime>2025-02-06T12:41:08</TotalTime>
+    <CallTime>2025-01-06T18:26:42</CallTime>
+    <TotalTime>2025-02-06T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>35</Id>
-    <type>MedicalAssistance</type>
+    <type>HospitalVisit</type>
     <CallAddress>Shai Agnon 13, Jerusalem</CallAddress>
-    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7856</Latitude>
     <Longitude>35.2165</Longitude>
-    <CallTime>2025-01-08T12:41:08</CallTime>
-    <TotalTime>2025-02-13T12:41:08</TotalTime>
+    <CallTime>2025-01-19T18:26:42</CallTime>
+    <TotalTime>2025-02-05T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>36</Id>
-    <type>EmotionalSupport</type>
+    <type>ProvideTransportation</type>
     <CallAddress>Haganah 27, Jerusalem</CallAddress>
-    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
     <Latitude>31.7714</Latitude>
     <Longitude>35.2148</Longitude>
-    <CallTime>2025-01-08T12:41:08</CallTime>
-    <TotalTime>2025-02-16T12:41:08</TotalTime>
+    <CallTime>2025-01-12T18:26:42</CallTime>
+    <TotalTime>2025-02-15T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>37</Id>
-    <type>MedicalAssistance</type>
+    <type>ProvideTransportation</type>
     <CallAddress>Hamelech Shlomo 53, Jerusalem</CallAddress>
-    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
     <Latitude>31.7737</Latitude>
     <Longitude>35.2192</Longitude>
-    <CallTime>2025-01-17T12:41:08</CallTime>
-    <TotalTime>2025-02-13T12:41:08</TotalTime>
+    <CallTime>2025-01-12T18:26:42</CallTime>
+    <TotalTime>2025-02-04T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>38</Id>
-    <type>DeliverMedicine</type>
+    <type>MedicalAssistance</type>
     <CallAddress>Hanassi 39, Jerusalem</CallAddress>
-    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.7822</Latitude>
     <Longitude>35.2103</Longitude>
-    <CallTime>2025-01-06T12:41:08</CallTime>
-    <TotalTime>2025-02-11T12:41:08</TotalTime>
+    <CallTime>2025-01-10T18:26:42</CallTime>
+    <TotalTime>2025-02-16T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>39</Id>
-    <type>MedicalAssistance</type>
+    <type>HomeCare</type>
     <CallAddress>Kiryat Moshe 18, Jerusalem</CallAddress>
-    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7881</Latitude>
     <Longitude>35.2156</Longitude>
-    <CallTime>2025-01-10T12:41:08</CallTime>
-    <TotalTime>2025-02-16T12:41:08</TotalTime>
+    <CallTime>2025-01-15T18:26:42</CallTime>
+    <TotalTime>2025-02-07T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>40</Id>
@@ -407,8 +407,8 @@
     <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
     <Latitude>31.7698</Latitude>
     <Longitude>35.2222</Longitude>
-    <CallTime>2025-01-09T12:41:08</CallTime>
-    <TotalTime>2025-02-13T12:41:08</TotalTime>
+    <CallTime>2025-01-08T18:26:42</CallTime>
+    <TotalTime>2025-02-06T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>41</Id>
@@ -417,87 +417,87 @@
     <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
     <Latitude>31.7519</Latitude>
     <Longitude>35.2084</Longitude>
-    <CallTime>2025-01-06T12:41:08</CallTime>
-    <TotalTime>2025-02-10T12:41:08</TotalTime>
+    <CallTime>2025-01-15T18:26:42</CallTime>
+    <TotalTime>2025-02-10T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>42</Id>
-    <type>DeliverMedicine</type>
+    <type>MedicalAssistance</type>
     <CallAddress>French Hill 29, Jerusalem</CallAddress>
-    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
+    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
     <Latitude>31.7997</Latitude>
     <Longitude>35.2221</Longitude>
-    <CallTime>2025-01-11T12:41:08</CallTime>
-    <TotalTime>2025-02-10T12:41:08</TotalTime>
+    <CallTime>2025-01-12T18:26:42</CallTime>
+    <TotalTime>2025-02-15T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>43</Id>
-    <type>MedicalAssistance</type>
+    <type>ProvideTransportation</type>
     <CallAddress>Shlomo HaMelech 6, Jerusalem</CallAddress>
-    <Description>MedicalAssistance: Help with medical needs or emergencies.</Description>
+    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
     <Latitude>31.7767</Latitude>
     <Longitude>35.2157</Longitude>
-    <CallTime>2025-01-09T12:41:08</CallTime>
-    <TotalTime>2025-02-06T12:41:08</TotalTime>
+    <CallTime>2025-01-15T18:26:42</CallTime>
+    <TotalTime>2025-02-08T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>44</Id>
-    <type>ProvideTransportation</type>
+    <type>EmotionalSupport</type>
     <CallAddress>Ein Kerem 37, Jerusalem</CallAddress>
-    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
     <Latitude>31.7673</Latitude>
     <Longitude>35.217</Longitude>
-    <CallTime>2025-01-11T12:41:08</CallTime>
-    <TotalTime>2025-02-16T12:41:08</TotalTime>
+    <CallTime>2025-01-07T18:26:42</CallTime>
+    <TotalTime>2025-02-14T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>45</Id>
-    <type>ProvideTransportation</type>
+    <type>DeliverMedicine</type>
     <CallAddress>Herzog 49, Jerusalem</CallAddress>
-    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.772</Latitude>
     <Longitude>35.2187</Longitude>
-    <CallTime>2025-01-08T12:41:08</CallTime>
-    <TotalTime>2025-01-19T12:41:08</TotalTime>
+    <CallTime>2025-01-08T18:26:42</CallTime>
+    <TotalTime>2025-01-19T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>46</Id>
-    <type>ProvideTransportation</type>
+    <type>HospitalVisit</type>
     <CallAddress>Strauss 20, Jerusalem</CallAddress>
-    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7784</Latitude>
     <Longitude>35.2149</Longitude>
-    <CallTime>2025-01-13T12:41:08</CallTime>
-    <TotalTime>2025-01-19T12:41:08</TotalTime>
+    <CallTime>2025-01-13T18:26:42</CallTime>
+    <TotalTime>2025-01-19T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>47</Id>
-    <type>ProvideTransportation</type>
+    <type>EmotionalSupport</type>
     <CallAddress>Lincoln 34, Jerusalem</CallAddress>
-    <Description>ProvideTransportation: Assistance with transportation for those who need it.</Description>
+    <Description>EmotionalSupport: Providing emotional support and companionship.</Description>
     <Latitude>31.7761</Latitude>
     <Longitude>35.2234</Longitude>
-    <CallTime>2025-01-09T12:41:08</CallTime>
-    <TotalTime>2025-01-19T12:41:08</TotalTime>
+    <CallTime>2025-01-15T18:26:42</CallTime>
+    <TotalTime>2025-01-19T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>48</Id>
-    <type>HospitalVisit</type>
+    <type>HomeCare</type>
     <CallAddress>Haneviim 11, Jerusalem</CallAddress>
-    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Description>HomeCare: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7689</Latitude>
     <Longitude>35.2116</Longitude>
-    <CallTime>2025-01-07T12:41:08</CallTime>
-    <TotalTime>2025-01-19T12:41:08</TotalTime>
+    <CallTime>2025-01-17T18:26:42</CallTime>
+    <TotalTime>2025-01-19T18:26:42</TotalTime>
   </Call>
   <Call>
     <Id>49</Id>
-    <type>HospitalVisit</type>
+    <type>DeliverMedicine</type>
     <CallAddress>Malha Road 56, Jerusalem</CallAddress>
-    <Description>HospitalVisit: Visiting individuals in the hospital for support or check-in.</Description>
+    <Description>DeliverMedicine: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7512</Latitude>
     <Longitude>35.2049</Longitude>
-    <CallTime>2025-01-10T12:41:08</CallTime>
-    <TotalTime>2025-01-19T12:41:08</TotalTime>
+    <CallTime>2025-01-09T18:26:42</CallTime>
+    <TotalTime>2025-01-19T18:26:42</TotalTime>
   </Call>
 </ArrayOfCall>
