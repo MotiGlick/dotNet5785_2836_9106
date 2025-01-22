@@ -125,11 +125,11 @@ namespace PL.Volunteer
         /// </summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (CurrentVolunteer != null && CurrentVolunteer.CallInProgress != null)
-            {
-                s_bl.Volunteer.AddObserver(CurrentVolunteer!.Id, VolunteerObserver);
+
+            s_bl.Volunteer.AddObserver(CurrentVolunteer!.Id, VolunteerObserver);
+            if (CurrentCall != null)
                 s_bl.Call.AddObserver(CurrentCall!.Id, CallObserver);
-            }
+
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace PL.Volunteer
         {
 
             s_bl.Call.RemoveObserver(CurrentVolunteer!.Id, VolunteerObserver);
-            if (CurrentVolunteer.CallInProgress != null)
+            if (CurrentCall != null)
                 s_bl.Call.RemoveObserver(CurrentCall!.Id, CallObserver);
         }
 
@@ -182,33 +182,44 @@ namespace PL.Volunteer
 
         }
 
-       
+
         private void CallCancel_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                s_bl.Call.CancelHandling(CurrentVolunteer.Id, CurrentVolunteer.CallInProgress.Id);
-                MessageBox.Show("Call cenceled successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            var result = MessageBox.Show("Are you sure you want to cancel the call?", "Confirm Cancel", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-            }
-            catch (Exception ex)
+            if (result == MessageBoxResult.Yes)
             {
-                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                try
+                {
+                   
+                    s_bl.Call.CancelHandling(CurrentVolunteer.Id, CurrentVolunteer.CallInProgress.Id);
+                    MessageBox.Show("Call cenceled successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
         private void btnEndCall_Click(object sender, RoutedEventArgs e)
         {
-            try
+            var result=MessageBox.Show("Are you sure you want to end the call?", "Confirm End", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
             {
-                s_bl.Call.EndHandling(CurrentVolunteer.Id, CurrentVolunteer.CallInProgress.Id);
-                MessageBox.Show("Call ended successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                try
+                {
+                    s_bl.Call.EndHandling(CurrentVolunteer.Id, CurrentVolunteer.CallInProgress.Id);
+                    MessageBox.Show("Call ended successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+
         }
         private void BtnHistoryWindows_Click(object sender, RoutedEventArgs e)
         {

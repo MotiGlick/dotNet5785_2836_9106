@@ -112,8 +112,8 @@ internal class CallImplementation : BlApi.ICall
                 else
                     _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.ManagerCancellation));
 
-               // CallManager.Observers.NotifyItemUpdated(boCall.Id);  //stage 5
-                CallManager.Observers.NotifyListUpdated();  //stage 5
+                CallManager.Observers.NotifyItemUpdated(doAssignment.CallId);  //stage 5
+                VolunteerManager.Observers.NotifyItemUpdated(volunteerId);  //stage 5
             }
             catch (Exception ex)
             {
@@ -150,7 +150,8 @@ internal class CallImplementation : BlApi.ICall
         { 
             _dal.Assignment.Create(new(0, callId, volunteerId, AdminManager.Now, null, null));
             CallManager.Observers.NotifyListUpdated(); //stage 5
-            CallManager.Observers.NotifyItemUpdated(callId); //stage 5
+            //CallManager.Observers.NotifyItemUpdated(callId); //stage 5
+            VolunteerManager.Observers.NotifyItemUpdated(volunteerId); //stage 5
         }
 
     }
@@ -202,6 +203,9 @@ internal class CallImplementation : BlApi.ICall
                 // Update assignment status to "HandledOnTime"
                 _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.HandledOnTime));
 
+                CallManager.Observers.NotifyListUpdated(); //stage 5
+                CallManager.Observers.NotifyItemUpdated(doAssignment.CallId); //stage 5
+                VolunteerManager.Observers.NotifyItemUpdated(volunteerId); //stage 5
             }
 
             catch (Exception ex)
