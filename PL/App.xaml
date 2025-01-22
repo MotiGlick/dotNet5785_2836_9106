@@ -22,10 +22,11 @@
         <local:PasswordConverter x:Key="PasswordConverterKey" />
         <local:IsChacedConverter x:Key="IsChacedConverterKey" />
         <local:ChusingCallEnableConverter x:Key="ChusingCallEnableConverterKey" />
+        <local:ClosedCallInLisCollection x:Key="ClosedCallInLisCollectionKey" />
 
-        
 
 
+  
 
     </Application.Resources>
     

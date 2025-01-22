@@ -51,7 +51,7 @@ internal class AssignmentManager
             Observers.NotifyItemUpdated((int)CallId!);//stage 5
             Observers.NotifyListUpdated();//stage 5
         }
-
+        
         return callAssignList;
     }
 

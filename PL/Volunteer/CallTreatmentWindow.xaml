@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="CallTreatmentWindow" Height="450" Width="800"
-        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
+        Title="CallTreatmentWindow" Height="550" Width="850"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded" >
     <Window.Resources>
         <!-- Button Style -->
         <Style TargetType="Button">
@@ -38,7 +38,7 @@
 
 
     <!--External Grid-->
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="500*"/>
@@ -50,20 +50,40 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Filter by call type" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
+            <Label Grid.Column="0" Content="Filter by call type" HorizontalAlignment="Left" Margin="64,10,0,0"   VerticalAlignment="Stretch" FontStyle="Italic" FontWeight="Medium"/>
             <ComboBox Grid.Column="1"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
                   ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=typeOfCall, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged"  />
         </Grid>
 
+        <Border Grid.Row="2" CornerRadius="30" Background="#803A5F5F" Padding="50" Margin="5,8,5,5" BorderBrush="SeaGreen" BorderThickness="15">
+            <TextBlock Text="{Binding SelectedCall.Description}" 
+               FontSize="20" 
+               FontWeight="Light" 
+               FontStyle="Oblique" 
+               TextAlignment="Center" 
+               Foreground="White" 
+               Background="Transparent" 
+               TextWrapping="Wrap" 
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center" />
+           </Border>
 
-        <TextBlock Text= "{Binding SelectedCall.Description}" Grid.Row="2" HorizontalAlignment="Center" Height="100" Width="300"  />
-        <ListView Grid.Row="1" ItemsSource="{Binding Path=OpenCallsList}" SelectedItem="{Binding SelectedCall}"  Height="531" VerticalAlignment="Top">
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=OpenCallsList}" SelectedItem="{Binding SelectedCall, Mode=TwoWay}"  Height="531" VerticalAlignment="Top" Background="#803A5F5F" BorderBrush="DarkSlateGray" BorderThickness="15" >
             <ListView.ItemContainerStyle>
                 <!-- Height of each line -->
                 <Style TargetType="ListViewItem">
                     <Setter Property="Height" Value="30" />
                 </Style>
             </ListView.ItemContainerStyle>
+
+            <ListView.Resources>
+                <Style TargetType="GridViewColumnHeader">
+                    <Setter Property="Background" Value="DarkSlateGray"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="FontStyle" Value="Italic"/>
+                </Style>
+            </ListView.Resources>
             <ListView.View>
                 <GridView>
 

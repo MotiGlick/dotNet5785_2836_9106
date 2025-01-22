@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="CallHistoryWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        Title="CallHistoryWindow" Height="450" Width="900" WindowStartupLocation="CenterScreen"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
     
     <!--External Grid-->
@@ -23,27 +23,43 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-       
-        
-           <Label Grid.Column="0" Content="Filter by call type" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
-            <ComboBox Grid.Column="1"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
-                ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=callTypeFilter, Mode=TwoWay}" SelectionChanged="callTypeFilter_SelectionChanged" />
 
-            <Label Grid.Column="2" Content="Order by:" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
+
+            <Label Grid.Column="0" Content="Filter by call type" HorizontalAlignment="Left" Margin="64,10,0,0"    VerticalAlignment="Stretch" FontStyle="Italic" FontWeight="Medium"/>
+            <ComboBox Grid.Column="1"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
+                ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=callTypeFilter, Mode=TwoWay}" SelectionChanged="cbFilter_SelectionChanged" />
+
+            <Label Grid.Column="2" Content="Order by:" HorizontalAlignment="Left" Margin="64,10,0,0"  VerticalAlignment="Stretch" FontStyle="Italic" FontWeight="Medium"/>
             <ComboBox Grid.Column="3"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" 
-               ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" SelectedValue="{Binding Path=orderCallsList, Mode=TwoWay}" SelectionChanged="statusFilter_SelectionChanged" />
+               ItemsSource="{Binding Source={StaticResource ClosedCallInLisCollectionKey}}" SelectedValue="{Binding Path=orderCallsList, Mode=TwoWay}" SelectionChanged="cbFilter_SelectionChanged" />
         </Grid>
 
-        <ListView Grid.Row="1" ItemsSource="{Binding Path=ClosedCallsInList}"   SelectedItem="{Binding SelectedCall}"  >
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=ClosedCallsInList}"  Background="#803A5F5F" BorderBrush="DarkSlateGray" BorderThickness="15">
+            <ListView.Resources>
+                <Style TargetType="GridViewColumnHeader">
+                    <Setter Property="Background" Value="DarkSlateGray"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="FontStyle" Value="Italic"/>
+                </Style>
+            </ListView.Resources>
+            <ListView.ItemContainerStyle>
+                <!-- Height of each line -->
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Height" Value="30" />
+                
+ 
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Call id" DisplayMemberBinding="{Binding Id}"  Width="Auto" />
                     <GridViewColumn Header="CallType" DisplayMemberBinding="{Binding  CallType}" Width="Auto"/>
                     <GridViewColumn Header="Address" DisplayMemberBinding="{Binding  Address}" Width="Auto"/>
                     <GridViewColumn Header="Opening time" DisplayMemberBinding="{Binding OpeningTime}" Width="Auto"/>
-                    <GridViewColumn Header="HndalStartTime" DisplayMemberBinding="{Binding HndalStartTime}" Width="Auto"/>
-                    <GridViewColumn Header="EndTime" DisplayMemberBinding="{Binding EndTime}" Width="Auto"/>
-                    <GridViewColumn Header="ClosureType" DisplayMemberBinding="{Binding ClosureType}" Width="Auto"/>
+                    <GridViewColumn Header="Hndal Start Time" DisplayMemberBinding="{Binding HndalStartTime}" Width="110"/>
+                    <GridViewColumn Header="End Time" DisplayMemberBinding="{Binding EndTime}" Width="Auto"/>
+                    <GridViewColumn Header="Closure type" DisplayMemberBinding="{Binding ClosureType}" Width="Auto"/>
 
                 </GridView>
             </ListView.View>

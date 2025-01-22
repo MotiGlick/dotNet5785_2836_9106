@@ -36,16 +36,28 @@ namespace PL.Volunteer
 
         public static readonly DependencyProperty OpenCallsListProperty =
             DependencyProperty.Register("OpenCallsList", typeof(IEnumerable<BO.OpenCallInList>), typeof(CallTreatmentWindow), new PropertyMetadata(null));
+
+
+        public BO.OpenCallInList SelectedCall
+        {
+            get { return (BO.OpenCallInList)GetValue(SelectedCallProperty); }
+            set { SetValue(SelectedCallProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedCallProperty =
+            DependencyProperty.Register("SelectedCall", typeof(BO.OpenCallInList), typeof(CallTreatmentWindow), new PropertyMetadata(null));
+
+
+        //public BO.OpenCallInList SelectedCall { get; set; }
         
-        
-        public BO.OpenCallInList? SelectedCall { get; set; }
-        
-        public BO.CallType? typeOfCall { get; set; }
-        
+        public BO.CallType? typeOfCall { get; set; }= BO.CallType.No_Filter;
+
         private void BtCooseCall_Click(object sender, RoutedEventArgs e)
         {
-            try {
+            try 
+            {
                 s_bl.Call.ChoosingCallForHandling(UserId, SelectedCall.Id);
+                MessageBox.Show("Call was chosen successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -72,7 +84,7 @@ namespace PL.Volunteer
         /// Registers the observer for call list updates when the window loads.
         /// </summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
-            => s_bl.Volunteer.AddObserver(CallListObserver);
+            => s_bl.Call.AddObserver(CallListObserver);
 
 
         /// <summary>
@@ -85,5 +97,7 @@ namespace PL.Volunteer
         {
             queryOpenCallsList();
         }
+
+     
     }
 }

@@ -9,6 +9,7 @@
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
 
     <Window.Resources>
+        
         <!-- Button Style -->
         <Style TargetType="Button">
             <Setter Property="BorderThickness" Value="1.5" />
@@ -74,10 +75,12 @@
         </Grid>
 
         <!--ListView-->
-        <ListView Grid.Row="1" ItemsSource="{Binding Path=CallsList}" 
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=CallsList}"  Background="#803A5F5F" BorderBrush="DarkSlateGray" BorderThickness="15"
                   SelectedItem="{Binding SelectedCall}" 
                   MouseDoubleClick="lsvCallList_MouseDoubleClick" 
                   Height="Auto" VerticalAlignment="Top">
+            
+            
             <ListView.ItemContainerStyle>
                 <!-- Height of each line -->
                 <Style TargetType="ListViewItem">
@@ -85,8 +88,15 @@
                 </Style>
             </ListView.ItemContainerStyle>
            
-        
-            <ListView.View>
+           <ListView.Resources>
+        <Style TargetType="GridViewColumnHeader">
+            <Setter Property="Background" Value="DarkSlateGray"/> 
+            <Setter Property="Foreground" Value="White"/> 
+            <Setter Property="FontWeight" Value="Bold"/> 
+            <Setter Property="FontStyle" Value="Italic"/>
+                </Style>
+    </ListView.Resources>
+            <ListView.View >
                 <GridView>
                     <GridViewColumn Header="Call id" DisplayMemberBinding="{Binding CallId}" Width="Auto"/>
                     <GridViewColumn Header="CallType" DisplayMemberBinding="{Binding CallType}" Width="Auto"/>

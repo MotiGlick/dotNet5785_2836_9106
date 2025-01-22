@@ -45,11 +45,18 @@ internal class CallInListFieldCollection : IEnumerable
 }
 
 
-internal class CallClosureTypeCollection : IEnumerable
+//internal class CallClosureTypeCollection : IEnumerable
+//{
+//    static readonly IEnumerable<BO.ClosedCallInListField> s_enums =
+//    (Enum.GetValues(typeof(BO.ClosedCallInListField)) as IEnumerable<BO.ClosedCallInListField>)!;
+
+//    public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+//}
+
+internal class ClosedCallInLisCollection : IEnumerable
 {
     static readonly IEnumerable<BO.ClosedCallInListField> s_enums =
     (Enum.GetValues(typeof(BO.ClosedCallInListField)) as IEnumerable<BO.ClosedCallInListField>)!;
 
     public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
 }
-

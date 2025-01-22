@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Background="Gainsboro"
+        Background="LightGray"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         Title="MainVolunteerWindow" Height="700" Width="900">
 
@@ -16,7 +16,6 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Background" Value="Gainsboro"/>
             <Setter Property="Foreground" Value="DarkSlateGray"/>
         </Style>
 
@@ -42,7 +41,40 @@
         <Style TargetType="CheckBox">
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Margin" Value="5"/>
-            <Setter Property="Background" Value="LightBlue"/>
+        </Style>
+
+        <!-- Style for Buttons -->
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Background" Value="SlateBlue"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="BorderBrush" Value="#FF6C757D" />
+            <Setter Property="Background" Value="#FF343A40" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                              BorderBrush="{TemplateBinding BorderBrush}" 
+                              BorderThickness="{TemplateBinding BorderThickness}" 
+                              Name="PART_Border">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- טריגר לעכבר נכנס -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_Border" Property="Background" Value="#FF495057"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
@@ -59,7 +91,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Volunteer Section -->
-        <GroupBox Header="Volunteer Details" Grid.Row="0" Grid.Column="0" Margin="10" Background="WhiteSmoke">
+        <GroupBox Grid.Row="0" Grid.Column="0" Margin="7" Header="Volunteer Details" BorderBrush="DarkSlateGray" BorderThickness="2" Background="White">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -103,26 +135,25 @@
                 <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding CurrentVolunteer.MaximumDistance, Mode=TwoWay}"/>
 
                 <Label Grid.Row="7" Grid.Column="0" Content="Handled Calls:"/>
-                <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding CurrentVolunteer.HandeledCalls, Mode=TwoWay}"/>
+                <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding CurrentVolunteer.HandeledCalls, Mode=TwoWay}" IsEnabled="False"/>
 
                 <Label Grid.Row="8" Grid.Column="0" Content="Canceled Calls:"/>
-                <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding CurrentVolunteer.CanceledCalls, Mode=TwoWay}"/>
+                <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding CurrentVolunteer.CanceledCalls, Mode=TwoWay}" IsEnabled="False"/>
 
                 <Label Grid.Row="9" Grid.Column="0" Content="Expired Calls:"/>
-                <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding CurrentVolunteer.ExpiredCalls, Mode=TwoWay}"/>
+                <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding CurrentVolunteer.ExpiredCalls, Mode=TwoWay}" IsEnabled="False"/>
 
                 <Label Grid.Row="10" Grid.Column="0" Content="Distance Type:"/>
                 <ComboBox Grid.Row="10" Grid.Column="1" SelectedValue="{Binding CurrentVolunteer.Distance, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource DistanceTypeCollectionKey}}"/>
 
                 <Label Grid.Row="11" Grid.Column="0" Content="Is Active:"/>
-                <CheckBox Grid.Row="11" Grid.Column="1" IsChecked="{Binding CurrentVolunteer.IsActive, Mode=TwoWay}"/>
+                <CheckBox Grid.Row="11" Grid.Column="1" IsChecked="{Binding CurrentVolunteer.IsActive, Mode=TwoWay}"  IsEnabled="{Binding CurrentCall, Converter={StaticResource IsChacedConverterKey}}" />
             </Grid>
         </GroupBox>
 
         <!-- Call Section -->
-        <GroupBox Header="Call Details" Grid.Row="0" Grid.Column="1" Margin="10" Background="WhiteSmoke" Visibility="{Binding CurrentVolunteer.CallInProgress, Converter={StaticResource BoolToVisibilityConverterKey}}">
+        <GroupBox Grid.Row="0" Grid.Column="1" Margin="7" Header="Current Call Details" BorderBrush="DarkSlateGray" BorderThickness="2" Background="White" Visibility="{Binding CurrentVolunteer.CallInProgress, Converter={StaticResource BoolToVisibilityConverterKey}}">
             <StackPanel>
-                <Label Content="Current Call Details:"/>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -156,7 +187,7 @@
                     <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CurrentCall.MaxTime}" IsReadOnly="True"/>
                 </Grid>
 
-                <ListView ItemsSource="{Binding CurrentCall.CallAssignsList}" Margin="5" >
+                <ListView ItemsSource="{Binding CurrentCall.CallAssignsList}" Margin="5,12" >
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Volunteer Id" DisplayMemberBinding="{Binding VolunteerId}"/>
@@ -168,16 +199,18 @@
                     </ListView.View>
                 </ListView>
 
-                <Button Content="Cancel Handling" Click="CallCancel_Click" Margin="5"/>
-                <Button Content="End Handling" Click="btnEndCall_Click" Margin="5"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="65">
+                    <Button Content="Cancel Handling" Click="CallCancel_Click"/>
+                    <Button Content="End Handling" Click="btnEndCall_Click"/>
+                </StackPanel>
             </StackPanel>
         </GroupBox>
 
         <!-- Action Buttons -->
-        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Update" Click="BtnUpdate_Click" Width="100" Height="40" Margin="5"/>
-            <Button Content="Call History" Click="BtnHistoryWindows_Click" Width="100" Height="40" Margin="5"/>
-            <Button Content="Choosing Call" Click="BtnTreatmentWindow_Click" Width="100" Height="40" Margin="5"/>
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,17,0,17" Width="450">
+            <Button Content="Update" Click="BtnUpdate_Click" Margin="15"/>
+            <Button Content="Call History" Click="BtnHistoryWindows_Click" Margin="15"/>
+            <Button Content="Choose call" Visibility="{Binding CurrentVolunteer, Converter={StaticResource ChusingCallEnableConverterKey}}"  Click="BtnTreatmentWindow_Click" Margin="15"/>
         </StackPanel>
     </Grid>
 </Window>
