@@ -147,7 +147,11 @@ internal class CallImplementation : BlApi.ICall
 
         // Create an assignment for the volunteer and call
         else
+        { 
             _dal.Assignment.Create(new(0, callId, volunteerId, AdminManager.Now, null, null));
+            CallManager.Observers.NotifyListUpdated(); //stage 5
+            CallManager.Observers.NotifyItemUpdated(callId); //stage 5
+        }
 
     }
 

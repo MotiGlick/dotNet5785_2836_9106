@@ -182,21 +182,8 @@ namespace PL.Volunteer
 
         }
 
-        private void btnEndCall_Click(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                s_bl.Call.EndHandling(CurrentVolunteer.Id, CurrentVolunteer.CallInProgress.Id);
-                MessageBox.Show("Call ended successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void CallCancel_Click(object sender, MouseButtonEventArgs e)
+       
+        private void CallCancel_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -210,24 +197,18 @@ namespace PL.Volunteer
             }
         }
 
-        //private void BtnHistoryWindows_Click(object sender, MouseButtonEventArgs e)
-        //{
-        //    new CallHistoryWindow(CurrentVolunteer.Id).Show();
-        //}
-
-        //private void BtnTreatmentWindow_Click(object sender, MouseButtonEventArgs e)
-        //{
-        //    new CallTreatmentWindow(CurrentVolunteer.Id).Show();
-        //}
-
-        private void CallCancel_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void btnEndCall_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                s_bl.Call.EndHandling(CurrentVolunteer.Id, CurrentVolunteer.CallInProgress.Id);
+                MessageBox.Show("Call ended successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private void BtnHistoryWindows_Click(object sender, RoutedEventArgs e)
         {
