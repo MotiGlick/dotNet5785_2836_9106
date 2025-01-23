@@ -192,18 +192,21 @@ internal class AssignmentManager
     /// <returns>The last assignment, or null if no assignment exists.</returns>
     public static DO.Assignment? GetLastAssingment(int doCallId)//#
     {
+        return _dal.Assignment.ReadAll()
+      .Where(a => a.CallId == doCallId)
+      .OrderByDescending(a => a.AssignmentTime)
+      .FirstOrDefault();
+        //int? VolunteerId = GetLastVolunteerId(doCallId);
+        //if (VolunteerId == null)
+        //    return null;
+        //else
+        //{
+        //    var lastAssignment = _dal.Assignment.ReadAll()//GetCallAssignList(doCallId)
+        //    //.OrderByDescending(assin => assin.AssignmentTime)
+        //    .FirstOrDefault(assin => assin.VolunteerId == VolunteerId);
 
-        int? VolunteerId = GetLastVolunteerId(doCallId);
-        if (VolunteerId == null)
-            return null;
-        else
-        {
-            var lastAssignment = _dal.Assignment.ReadAll()//GetCallAssignList(doCallId)
-            //.OrderByDescending(assin => assin.AssignmentTime)
-            .FirstOrDefault(assin => assin.VolunteerId == VolunteerId);
-
-            return lastAssignment;
-        }
+        //    return lastAssignment;
+        //}
 
     }
 

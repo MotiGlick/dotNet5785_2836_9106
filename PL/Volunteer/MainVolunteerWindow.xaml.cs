@@ -109,7 +109,6 @@ namespace PL.Volunteer
             CurrentVolunteer = s_bl.Volunteer.Read(id);
 
         }
-
         private void CallObserver()
         {
 
