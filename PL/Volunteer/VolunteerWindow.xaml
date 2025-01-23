@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Background="Gainsboro"
          DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
-        Title="VolunteerWindow" Height="670" Width="{Binding CurrentVolunteer.CallInProgress, Converter={StaticResource BooleanToWidthConverterKey}}">
+        Title="VolunteerWindow" Height="670" >
 
 
     <Window.Resources>

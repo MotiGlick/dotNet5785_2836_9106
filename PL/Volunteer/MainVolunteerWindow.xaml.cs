@@ -118,7 +118,7 @@ namespace PL.Volunteer
             CurrentCall = s_bl.Call.GetCallDetails(id);
 
         }
-
+        
         /// <summary>
         /// Event handler for when the window is loaded.
         /// Adds an observer to the volunteer's updates.
@@ -159,7 +159,6 @@ namespace PL.Volunteer
                 s_bl.Volunteer.Update(CurrentVolunteer!, CurrentVolunteer!.Id);
                 MessageBox.Show("Volunteer updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 Mouse.OverrideCursor = null;
-                this.Close();
 
             }
             catch (BO.BlDoesNotExistException ex)

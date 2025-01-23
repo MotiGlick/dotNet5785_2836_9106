@@ -61,7 +61,7 @@
                FontWeight="Light" 
                FontStyle="Oblique" 
                TextAlignment="Center" 
-               Foreground="White" 
+               Foreground="black" 
                Background="Transparent" 
                TextWrapping="Wrap" 
                VerticalAlignment="Center"
