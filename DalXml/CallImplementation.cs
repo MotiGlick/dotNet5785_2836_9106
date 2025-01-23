@@ -5,6 +5,7 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 
 /// <summary>
@@ -17,6 +18,7 @@ internal class CallImplementation : ICall
     /// Creates a new call and adds it to the XML data store.
     /// </summary>
     /// <param name="item">The call to be created.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Create(Call item)
     {
         List<Call> Calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -32,6 +34,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="id">The ID of the call to be deleted.</param>
     /// <exception cref="DalDoesNotExistException">Thrown if the call does not exist in the data store.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Delete(int id)
     {
         List<Call> Calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -44,6 +47,7 @@ internal class CallImplementation : ICall
     /// <summary>
     /// Deletes all calls from the XML data store.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void DeleteAll()
     {
         XMLTools.SaveListToXMLSerializer(new List<Call>(), Config.s_calls_xml);
@@ -55,6 +59,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="id">The ID of the call to be read.</param>
     /// <returns>The call with the specified ID, or null if not found.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public Call? Read(int id)
     {
         List<Call> Calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -67,6 +72,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="filter">A filter function to apply to the calls.</param>
     /// <returns>The first call that matches the filter, or null if no call matches.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public Call? Read(Func<Call, bool> filter)
     {
         List<Call> Calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -79,6 +85,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="filter">An optional filter function to apply to the calls.</param>
     /// <returns>An enumerable collection of calls that match the filter, or all calls if no filter is provided.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null)
     {
         List<Call> Calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -91,6 +98,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="item">The call to be updated.</param>
     /// <exception cref="DalDoesNotExistException">Thrown if the call does not exist in the data store.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Update(Call item)
     {
         List<Call> Calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);

@@ -2,6 +2,7 @@
 using Dal;
 using DalApi;
 using DO;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
 
@@ -15,6 +16,7 @@ internal class AssignmentImplementation : IAssignment
     /// Creates a new assignment and adds it to the XML data store.
     /// </summary>
     /// <param name="item">The assignment to be created.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Create(Assignment item)
     {      
         XElement assignmentsXml = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
@@ -35,6 +37,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="id">The ID of the assignment to be deleted.</param>
     /// <exception cref="DalDoesNotExistException">Thrown if the assignment does not exist in the data store.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Delete(int id)
     {
         XElement assignmentsXml = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
@@ -54,6 +57,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Deletes all assignments from the XML data store.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void DeleteAll()
     {
         XMLTools.SaveListToXMLElement(new XElement("Assignments"), Config.s_assignments_xml);
@@ -67,6 +71,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="id">The ID of the assignment to be read.</param>
     /// <returns>The assignment with the specified ID, or null if not found.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public Assignment? Read(int id)
     {
         XElement assignmentsXml = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
@@ -79,6 +84,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="filter">A filter function to apply to the assignments.</param>
     /// <returns>The first assignment that matches the filter, or null if no assignment matches.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public Assignment? Read(Func<Assignment, bool> filter)
     {
         XElement assignmentsXml = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
@@ -91,6 +97,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="filter">An optional filter function to apply to the assignments.</param>
     /// <returns>An enumerable collection of assignments that match the filter, or all assignments if no filter is provided.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
     {
         XElement assignmentsXml = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
@@ -106,6 +113,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="item">The assignment to be updated.</param>
     /// <exception cref="DalDoesNotExistException">Thrown if the assignment does not exist in the data store.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Update(Assignment item)
     {
         XElement assignmentsXml = XMLTools.LoadListFromXMLElement(Config.s_assignments_xml);
@@ -132,6 +140,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="element">The XElement to be converted.</param>
     /// <returns>The corresponding Assignment object.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     private Assignment GetAssignmentFromXElement(XElement element)
     {
         return new Assignment
