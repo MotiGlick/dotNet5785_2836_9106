@@ -92,7 +92,7 @@
                     <GridViewColumn Header="Address" DisplayMemberBinding="{Binding Address}" Width="Auto"/>
                     <GridViewColumn Header="Opening Time" DisplayMemberBinding="{Binding OpeningTime}" Width="Auto"/>
                     <GridViewColumn Header="Max Time" DisplayMemberBinding="{Binding MaxTime}" Width="Auto"/>
-                    <GridViewColumn Header="Distance From volanteer" DisplayMemberBinding="{Binding DistanceFromvolanteer}" Width="Auto"/>
+                    <GridViewColumn Header="Distance From volanteer" DisplayMemberBinding="{Binding DistanceFromVolunteer}" Width="Auto"/>
                     <GridViewColumn Header="Call Type" DisplayMemberBinding="{Binding CallType}" Width="Auto"  />
 
                     <GridViewColumn Header="Hendel" Width="Auto">
