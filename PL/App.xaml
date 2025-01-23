@@ -24,9 +24,9 @@
         <local:ChusingCallEnableConverter x:Key="ChusingCallEnableConverterKey" />
         <local:ClosedCallInLisCollection x:Key="ClosedCallInLisCollectionKey" />
 
+        <local:BooleanToWidthSecondeConverter x:Key="BooleanToWidthSecondeConverterKey" />
 
-
-  
+       
 
     </Application.Resources>
     

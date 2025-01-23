@@ -114,6 +114,26 @@ public class BooleanToWidthConverter : IValueConverter
     }
 }
 
+public class BooleanToWidthSecondeConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+
+        if (value is BO.CallInProgress call)
+        {
+
+            return call != null ? 980 : 600;
+        }
+
+
+        return 600;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
 internal class ConvertStatusOfCallToBoolForMaxTime : IValueConverter
 {
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
@@ -220,7 +240,7 @@ public class IsChacedConverter : IValueConverter
     {
         BO.Call CalL = (BO.Call)value;
         
-        if (CalL != null )
+        if (CalL == null )
         {
             return true;
         }

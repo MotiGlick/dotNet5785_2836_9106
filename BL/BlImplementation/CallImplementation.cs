@@ -113,6 +113,7 @@ internal class CallImplementation : BlApi.ICall
                     _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.ManagerCancellation));
 
                 CallManager.Observers.NotifyItemUpdated(doAssignment.CallId);  //stage 5
+                CallManager.Observers.NotifyListUpdated();  //stage 5
                 VolunteerManager.Observers.NotifyItemUpdated(volunteerId);  //stage 5
             }
             catch (Exception ex)
@@ -149,9 +150,11 @@ internal class CallImplementation : BlApi.ICall
         else
         { 
             _dal.Assignment.Create(new(0, callId, volunteerId, AdminManager.Now, null, null));
-            CallManager.Observers.NotifyListUpdated(); //stage 5
-            //CallManager.Observers.NotifyItemUpdated(callId); //stage 5
-            VolunteerManager.Observers.NotifyItemUpdated(volunteerId); //stage 5
+
+            CallManager.Observers.NotifyItemUpdated(callId); //stage 5
+            BO.Call doCaljl = GetCallDetails(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId}  does not exists");
+             VolunteerManager.Observers.NotifyItemUpdated(volunteerId); //stage 6
+             CallManager.Observers.NotifyListUpdated(); //stage 6
         }
 
     }
@@ -372,16 +375,17 @@ internal class CallImplementation : BlApi.ICall
                MaxTime = _dal.Call.Read(call.CallId)!.TotalTime,
                DistanceFromVolunteer = Tools.CalculateDistance(_dal.Volunteer.Read(volunteerId), _dal.Call.Read(call.CallId))
            })
-           .OrderBy<BO.OpenCallInList, object?>(call => sortField switch
-           {
-               OpenCallInListField.Id => call.Id,
-               OpenCallInListField.CallType => (int)call.CallType,
-               OpenCallInListField.Address => call.Address,
-               OpenCallInListField.OpeningTime => call.OpeningTime,
-               OpenCallInListField.MaxTime => call.MaxTime,
-               OpenCallInListField.DistanceFromVolunteer => call.DistanceFromVolunteer,
-               _ => call.Id
-           });
+        .OrderBy<BO.OpenCallInList, object?>(call => sortField switch
+        {
+            OpenCallInListField.Id => call.Id,
+            OpenCallInListField.CallType => (int)call.CallType,
+            OpenCallInListField.Address => call.Address,
+            OpenCallInListField.OpeningTime => call.OpeningTime,
+            OpenCallInListField.MaxTime => call.MaxTime,
+            OpenCallInListField.DistanceFromVolunteer => call.DistanceFromVolunteer,
+            _ => call.Id
+        });
+    
     }
 
     /// <summary>

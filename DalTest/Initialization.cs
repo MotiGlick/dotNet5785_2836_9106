@@ -39,12 +39,12 @@ public static class Initialization
 
         string[] VolunteerAddresses ={ "King David 10, Jerusalem", " Jaffa Rd 15, Jerusalem", "Agron 8, Jerusalem", "Shlomzion HaMalka 3, Jerusalem",
               "Yitzhak Kariv 20, Jerusalem", "Emek Refaim 5, Jerusalem", "HaPalmach St 2, Jerusalem", "Ben Yehuda 11, Jerusalem",
-              "Hillel 7, Jerusalem", "Keren HaYesod St 18, Jerusalem", "HaNevi'im 25, Jerusalem", "Rachel Imenu 4, Jerusalem",
-               "Hebron Rd 30, Jerusalem", "Haneviim St 14, Jerusalem", "Gaza St 6, Jerusalem"};
+              "Hillel 7, Jerusalem", "Keren HaYesod 18, Jerusalem", "HaNevi'im 25, Jerusalem", "Rachel Imenu 4, Jerusalem",
+               "Hebron 30, Jerusalem", "Haneviim St 14, Jerusalem", "Gaza St 6, Jerusalem"};
 
-        string[] VolunteerPasswords ={ "83749205", "39482715", "52987412", "74859302", "10293847",
-              "37482910", "95847120", "28374619", "49582037", "17649582",
-              "82937465", "38475620", "62039487", "57102839", "91028475"};
+        string[] VolunteerPasswords ={ "83749205iN", "39482715kP", "52987412tR", "74859302sS", "10293847lY",
+            "37482910eF", "95847120aR", "28374619qZ", "49582037gQ", "17649582dL",
+            "82937465dP", "38475620nZ", "62039487oF", "57102839dB", "91028475lY"};
 
         double[] VolunteerLatitudes ={ 31.7767, 31.7834, 31.7795, 31.7784, 31.7740,
                     31.7648, 31.7612, 31.7801, 31.7806, 31.7715,
@@ -203,20 +203,20 @@ public static class Initialization
 
         string[] callDescriptions =
         {
-        "ProvideTransportation: Assistance with transportation for those who need it.",
-        "MedicalAssistance: Help with medical needs or emergencies.",
-        "EmotionalSupport: Providing emotional support and companionship.",
-        "HomeCare: Assistance with tasks around the home for daily living.",
-        "HospitalVisit: Visiting individuals in the hospital for support or check-in.",
-        "DeliverMedicine: Delivery of prescribed medications to individuals.",
-        "CleaningAssistance: Help with cleaning tasks in the home."
-    };
+        "Descriptions: Assistance with transportation for those who need it.",
+        "Descriptions: Help with medical needs or emergencies.",
+        "Descriptions: Providing emotional support and companionship.",
+        "Descriptions: Assistance with tasks around the home for daily living.",
+        "Descriptions: Visiting individuals in the hospital for support or check-in.",
+        "Descriptions: Delivery of prescribed medications to individuals.",
+        "Descriptions: Help with cleaning tasks in the home."
+        };
 
         // Set the start and end dates for the call range.
-        DateTime start = s_dal.Config.Clock.AddDays(-14);
+        DateTime start = s_dal.Config.Clock.AddDays(-24);//-14
         int range = (s_dal.Config.Clock - start).Days;
 
-        DateTime end = s_dal.Config.Clock.AddDays(+14);
+        DateTime end = s_dal.Config.Clock;//.AddDays(+14);
         int limit = (end - s_dal.Config.Clock).Days;
 
         // Set the expiration date

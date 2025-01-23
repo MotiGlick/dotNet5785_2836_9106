@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Background="LightGray"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
-        Title="MainVolunteerWindow" Height="700" Width="900">
+        Title="MainVolunteerWindow" Height="700"  Width="{Binding CurrentVolunteer.CallInProgress, Converter={StaticResource BooleanToWidthSecondeConverterKey}}">
 
     <Window.Resources>
         <!-- Style for Label -->
@@ -87,11 +87,12 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <!-- Volunteer Section -->
-        <GroupBox Grid.Row="0" Grid.Column="0" Margin="7" Header="Volunteer Details" BorderBrush="DarkSlateGray" BorderThickness="2" Background="White">
+        <GroupBox Grid.Row="0" Grid.Column="0" Margin="7" 
+                  Header="Volunteer Details" BorderBrush="DarkSlateGray" BorderThickness="2" Background="White">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -152,7 +153,7 @@
         </GroupBox>
 
         <!-- Call Section -->
-        <GroupBox Grid.Row="0" Grid.Column="1" Margin="7" Header="Current Call Details" BorderBrush="DarkSlateGray" BorderThickness="2" Background="White" Visibility="{Binding CurrentVolunteer.CallInProgress, Converter={StaticResource BoolToVisibilityConverterKey}}">
+        <GroupBox Grid.Row="0"  Grid.Column="1" Margin="7" Header="Current Call Details" BorderBrush="DarkSlateGray" BorderThickness="2" Background="White" Visibility="{Binding CurrentVolunteer.CallInProgress, Converter={StaticResource BoolToVisibilityConverterKey}}">
             <StackPanel>
                 <Grid>
                     <Grid.RowDefinitions>
