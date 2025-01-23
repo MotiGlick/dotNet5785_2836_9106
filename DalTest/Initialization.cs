@@ -110,7 +110,7 @@ public static class Initialization
             DateTime? CallEndTime = CList[i].TotalTime;
 
             // Generate random assignment start and end times between call start and end
-            DateTime AssignmentTime = GetRandomDate(CallStartTime, CallEndTime);
+            DateTime AssignmentTime = GetRandomDate(CallStartTime, CallEndTime > DateTime.Now ? DateTime.Now : CallEndTime);
             DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
 
             // Create an assignment and add it to the data access layer
