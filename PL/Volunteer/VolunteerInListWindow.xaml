@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="VolunteerInListWindow" Height="640" Width="850" WindowStartupLocation="CenterScreen"
+        Title="VolunteerInListWindow" Height="640" Width="900" WindowStartupLocation="CenterScreen"
          DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded">
 
 
@@ -59,13 +59,22 @@
 
 
         <Button Content="Add New Volunteer" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="120" Click="btnAdd_Click"   Background="#0078D7" Foreground="White" BorderBrush="Transparent" />
-        <ListView Grid.Row="1" ItemsSource="{Binding Path=VolunteersList}" SelectedItem="{Binding SelectedVolunteer}" MouseDoubleClick="lsvVolunteerList_MouseDoubleClick" Height="531" VerticalAlignment="Top">
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=VolunteersList}" SelectedItem="{Binding SelectedVolunteer}" MouseDoubleClick="lsvVolunteerList_MouseDoubleClick"
+                  Background="#803A5F5F" BorderBrush="DarkSlateGray" BorderThickness="15" Height="531" VerticalAlignment="Top">
             <ListView.ItemContainerStyle>
                     <!-- Height of each line -->
                 <Style TargetType="ListViewItem">
                     <Setter Property="Height" Value="30" />
                 </Style>
             </ListView.ItemContainerStyle>
+            <ListView.Resources>
+                <Style TargetType="GridViewColumnHeader">
+                    <Setter Property="Background" Value="DarkSlateGray"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="FontStyle" Value="Italic"/>
+                </Style>
+            </ListView.Resources>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Is Active" Width="Auto">

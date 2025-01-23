@@ -7,14 +7,15 @@
         mc:Ignorable="d"
         Background="Gainsboro"
          DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
-        Title="VolunteerWindow" Height="670" >
+        Title="VolunteerWindow"
+        Height="670"   Width="{Binding CurrentVolunteer.CallInProgress, Converter={StaticResource BooleanToWidthConverterKey}}">
 
 
     <Window.Resources>
         <!-- Style for Label -->
         <Style TargetType="Label">
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontWeight" Value="Bold"/> 
             <Setter Property="Margin" Value="5"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Background" Value="Gainsboro"/>
@@ -30,26 +31,7 @@
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
-    <!--</Window.Resources>
-    <Window.Resources>
-        --><!-- Style for Label --><!--
-        <Style TargetType="Label">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Background" Value="Gray"/>
-            <Setter Property="Foreground" Value="DarkSlateGray"/>
-        </Style>
-
-        --><!-- Style for TextBox --><!--
-        <Style TargetType="TextBox">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="BorderThickness" Value="1"/>
-        </Style>-->
+ 
 
         <!-- Style for ComboBox -->
         <Style TargetType="ComboBox">
@@ -174,33 +156,33 @@
                             </Grid.ColumnDefinitions>
 
                             <Label Grid.Row="0" Grid.Column="0" Content="Assignment ID:" />
-                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.Id}" IsReadOnly="True" />
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.Id}" IsEnabled="False" />
 
                             <Label Grid.Row="1" Grid.Column="0" Content="Call ID:" />
-                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.CallId}" IsReadOnly="True" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.CallId}" IsEnabled="False" />
 
                             <Label Grid.Row="2" Grid.Column="0" Content="Call Type:" />
-                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.CallType}" IsReadOnly="True" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.CallType}" IsEnabled="False" />
 
                             <Label Grid.Row="3" Grid.Column="0" Content="Description:" />
-                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.Description}" IsReadOnly="True" />
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.Description}" IsEnabled="False" />
 
                             <Label Grid.Row="4" Grid.Column="0" Content="Address:" />
-                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.Address}"  IsReadOnly="True"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.Address}"  IsEnabled="False"/>
 
                             <Label Grid.Row="5" Grid.Column="0" Content="Opening Time:" />
-                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.OpeningTime}" IsReadOnly="True"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.OpeningTime}" IsEnabled="False"/>
 
                             <Label Grid.Row="6" Grid.Column="0" Content="Max Time to Finish:" />
-                            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.MaxTime}" IsReadOnly="True"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.MaxTime}" IsEnabled="False"/>
 
                             <Label Grid.Row="7" Grid.Column="0" Content="Handle Start Time:" />
-                            <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.HndalStartTime}" IsReadOnly="True"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding CurrentVolunteer.CallInProgress.HndalStartTime}" IsEnabled="False"/>
                         </Grid>
                     </StackPanel>
                 </Grid>
 
-                <!-- Submit Button (Bottom) -->
+                <!-- Submit Button  -->
                 <Button Grid.Row="2" Grid.Column="2" Width="70" Height="40" Background="LightGray" Content="{Binding Path= ButtonText}" Click="btnAddUpdate_Click" HorizontalAlignment="Center" Margin="10"/>
             </Grid>
         </ScrollViewer>

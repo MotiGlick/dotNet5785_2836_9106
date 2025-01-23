@@ -134,6 +134,8 @@ internal class VolunteerManager
 
         return true; // מספר הטלפון תקין
     }
+
+
     /// <summary>
     /// A function that receives an id and checks whether there is a call in the care of that volunteer. Otherwise - null.
     /// </summary>
@@ -141,38 +143,46 @@ internal class VolunteerManager
     /// <returns>BO.CallInProgress or null</returns>
     public static BO.CallInProgress? CreateCallInProgress(int id)
     {
+        
         IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
 
-        // מציאת ה-Assignment וה-Call התואמים באמצעות LINQ
-        var result = (
-            from assignment in assignments
-            let relatedCall = calls.FirstOrDefault(c => c.Id == assignment.CallId)
-            where relatedCall != null &&
-                  (CallManager.GetCallStatus(relatedCall.Id) == BO.StatusOfCall.InProgress ||
-                   CallManager.GetCallStatus(relatedCall.Id) == BO.StatusOfCall.InProgressAtRisk)
-            select new BO.CallInProgress
-            {
-                Id = assignment.Id,
-                CallId = assignment.CallId,
-                CallType = (BO.CallType)relatedCall.type,
-                Description = relatedCall.Description,
-                Address = relatedCall.CallAddress,
-                OpeningTime = relatedCall.CallTime,
-                MaxTime = relatedCall.TotalTime,
-                HndalStartTime = assignment.AssignmentTime,
-                DistanceFromVolunteer = Tools.CalculateDistance(_dal.Volunteer.Read(assignment.Id), relatedCall),
-                status = CallManager.GetCallStatus(relatedCall.Id)
-            }).FirstOrDefault(); // לוקח את התוצאה הראשונה או null אם אין תוצאה
 
-        //if (result != null)
-        //{
-        //    // Observers.NotifyItemUpdated(id); //stage 5
-        //    // Observers.NotifyListUpdated(); //stage 5
-        //}
+        if (!assignments.Any())
+            return null;
 
-        return result;
+ 
+        var latestAssignment = assignments.OrderByDescending(a => a.AssignmentTime).FirstOrDefault();
+
+        if (latestAssignment == null)
+            return null;
+
+        var relatedCall = calls.FirstOrDefault(c => c.Id == latestAssignment.CallId);
+        if (relatedCall == null ||
+            (CallManager.GetCallStatus(relatedCall.Id) != BO.StatusOfCall.InProgress &&
+             CallManager.GetCallStatus(relatedCall.Id) != BO.StatusOfCall.InProgressAtRisk))
+        {
+            return null;
+        }
+
+        return new BO.CallInProgress
+        {
+            Id = latestAssignment.Id,
+            CallId = latestAssignment.CallId,
+            CallType = (BO.CallType)relatedCall.type,
+            Description = relatedCall.Description,
+            Address = relatedCall.CallAddress,
+            OpeningTime = relatedCall.CallTime,
+            MaxTime = relatedCall.TotalTime,
+            HndalStartTime = latestAssignment.AssignmentTime,
+            DistanceFromVolunteer = Tools.CalculateDistance(
+                _dal.Volunteer.Read(latestAssignment.VolunteerId),
+                relatedCall
+            ),
+            status = CallManager.GetCallStatus(relatedCall.Id)
+        };
     }
+
     /// <summary>
     /// Retrieves the total number of calls handled on time by a specific volunteer.
     /// </summary>

@@ -93,7 +93,7 @@ public static class Initialization
     /// </summary>
     private static void creatAssignment()
     {
-        List<Call> CList = s_dal.Call.ReadAll().ToList();
+        List<Call> CList = s_dal!.Call.ReadAll().ToList();
         List<Volunteer> VList = s_dal.Volunteer.ReadAll().ToList();
 
         //// Retrieve lists of all calls and volunteers
@@ -101,7 +101,7 @@ public static class Initialization
         //List<Volunteer> VList = (List<Volunteer>) s_dal.Volunteer.ReadAll();
 
         // Loop for creating assignments for volunteers who handled many calls
-        for (int i = 5; i < 25; i++)//(0-20)
+        for (int i = 5; i < 15; i++)//(0-20)
         {
             int randNum1 = s_rand.Next(0, 5); // Random index to select a volunteer from the first 5 volunteers
             int randNum2 = s_rand.Next(0, 4);//Random number for CallStatus
@@ -114,8 +114,27 @@ public static class Initialization
             DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
 
             // Create an assignment and add it to the data access layer
-            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime,null,null));//AssignmentTotalTime,(CallClosureType)randNum2)
+            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[i].Id, AssignmentTime, null, null));
         }
+
+
+        // Loop for creating assignments for volunteers who handleding rghit now  calls
+        for (int i = 15; i < 25; i++)//(0-20)
+        {
+            int randNum1 = s_rand.Next(0, 5); // Random index to select a volunteer from the first 5 volunteers
+            int randNum2 = s_rand.Next(0, 4);//Random number for CallStatus
+            // Get start and end times for the call
+            DateTime CallStartTime = CList[i].CallTime;
+            DateTime? CallEndTime = CList[i].TotalTime;
+
+            // Generate random assignment start and end times between call start and end
+            DateTime AssignmentTime = GetRandomDate(CallStartTime, CallEndTime > DateTime.Now ? DateTime.Now : CallEndTime);
+            DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
+
+            // Create an assignment and add it to the data access layer
+            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime, AssignmentTotalTime, (CallClosureType)randNum2));//(CallClosureType)randNum2)
+        }
+
 
         // Loop for creating assignments for volunteers who handled fewer calls
         for (int i = 25; i < 50; i++)//(20-45)
@@ -132,7 +151,7 @@ public static class Initialization
             DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
 
             // Create an assignment and add it to the data access layer
-            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime, null, null));//AssignmentTotalTime, (CallClosureType)randNum2)
+            s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime, AssignmentTotalTime, null));// (CallClosureType)randNum2)
         }
     }
 
@@ -213,34 +232,54 @@ public static class Initialization
         };
 
         // Set the start and end dates for the call range.
-        DateTime start = s_dal.Config.Clock.AddDays(-24);//-14
-        int range = (s_dal.Config.Clock - start).Days;
+        //DateTime start = s_dal.Config.Clock.AddDays(-14);//-14
+        //int range = (s_dal.Config.Clock - start).Days;
 
-        DateTime end = s_dal.Config.Clock;//.AddDays(+14);
-        int limit = (end - s_dal.Config.Clock).Days;
+        //DateTime end = s_dal.Config.Clock.AddDays(+14);
+        //int limit = (end - s_dal.Config.Clock).Days;
 
         // Set the expiration date
-        DateTime expired = s_dal.Config.Clock.AddDays(0);
-        int expiredLimit = -5;
+       // DateTime expired = s_dal.Config.Clock.AddDays(0);
+       //int expiredLimit = -5;
 
         // Loop to create 45 active calls
+        //for (int i = 0; i < 45; i++)
+        //{
+        //    int t = s_rand.Next(0, 6); // Random type of call
+
+        //    // Create a call with random address, description, coordinates, and dates
+        //    s_dal.Call!.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start.AddDays(s_rand.Next(range)), end.AddDays(s_rand.Next(limit))));
+        //}
+
+        //// Loop to create 5 expired calls
+        //for (int i = 45; i < 50; i++)
+        //{
+        //    int t = s_rand.Next(0, 6); // Random type of call
+
+        //    // Create an expired call with random address, description, coordinates, and dates
+        //    s_dal!.Call.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start.AddDays(s_rand.Next(range)), s_dal.Config.Clock.AddDays(-1)));
+        //}
+        DateTime currentDate = s_dal.Config.Clock; // התאריך הנוכחי
+
+        // קריאות פעילות
         for (int i = 0; i < 45; i++)
         {
-            int t = s_rand.Next(0, 6); // Random type of call
+            int t = s_rand.Next(0, 6); // סוג קריאה אקראי
+            DateTime start = currentDate.AddDays(-s_rand.Next(1, 15)); // התחלה בין 1 ל-14 ימים אחורה
+            DateTime end = currentDate.AddDays(s_rand.Next(1, 15));   // סיום בין 1 ל-14 ימים קדימה
 
-            // Create a call with random address, description, coordinates, and dates
-            s_dal.Call!.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start.AddDays(s_rand.Next(range)), end.AddDays(s_rand.Next(limit))));
+            s_dal.Call!.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start, end));
         }
 
-        // Loop to create 5 expired calls
+        // קריאות שפגו תוקף
         for (int i = 45; i < 50; i++)
         {
-            int t = s_rand.Next(0, 6); // Random type of call
+            int t = s_rand.Next(0, 6); // סוג קריאה אקראי
+            DateTime start = currentDate.AddDays(-s_rand.Next(15, 30)); // התחלה בין 15 ל-30 ימים אחורה
+            DateTime end = currentDate.AddDays(-s_rand.Next(1, 15));   // סיום בין 1 ל-14 ימים אחורה
 
-            // Create an expired call with random address, description, coordinates, and dates
-            s_dal!.Call.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start.AddDays(s_rand.Next(range)), s_dal.Config.Clock.AddDays(-1)));
+            s_dal.Call!.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start, end));
         }
-
 
     }
 
