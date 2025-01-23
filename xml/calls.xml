@@ -132,7 +132,7 @@
   </Call>
   <Call>
     <Id>13</Id>
-    <type>ProvideTransportation</type>
+    <type>MedicalAssistance</type>
     <CallAddress>Derech Beit Lechem 12, Jerusalem</CallAddress>
     <Description>Descriptions: Assistance with transportation for those who need it.</Description>
     <Latitude>31.7641</Latitude>
@@ -212,7 +212,7 @@
   </Call>
   <Call>
     <Id>21</Id>
-    <type>HospitalVisit</type>
+    <type>ProvideTransportation</type>
     <CallAddress>Shmuel HaNavi 8, Jerusalem</CallAddress>
     <Description>Descriptions: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7986</Latitude>
@@ -252,7 +252,7 @@
   </Call>
   <Call>
     <Id>25</Id>
-    <type>HomeCare</type>
+    <type>ProvideTransportation</type>
     <CallAddress>Ussishkin 17, Jerusalem</CallAddress>
     <Description>Descriptions: Assistance with tasks around the home for daily living.</Description>
     <Latitude>31.7687</Latitude>
@@ -272,7 +272,7 @@
   </Call>
   <Call>
     <Id>27</Id>
-    <type>HospitalVisit</type>
+    <type>HomeCare</type>
     <CallAddress>Beit HaKerem 32, Jerusalem</CallAddress>
     <Description>Descriptions: Visiting individuals in the hospital for support or check-in.</Description>
     <Latitude>31.7754</Latitude>
@@ -292,7 +292,7 @@
   </Call>
   <Call>
     <Id>29</Id>
-    <type>DeliverMedicine</type>
+    <type>HospitalVisit</type>
     <CallAddress>Jabotinsky 14, Jerusalem</CallAddress>
     <Description>Descriptions: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7665</Latitude>
@@ -312,7 +312,7 @@
   </Call>
   <Call>
     <Id>31</Id>
-    <type>DeliverMedicine</type>
+    <type>HospitalVisit</type>
     <CallAddress>Betzalel 36, Jerusalem</CallAddress>
     <Description>Descriptions: Delivery of prescribed medications to individuals.</Description>
     <Latitude>31.7798</Latitude>
@@ -372,7 +372,7 @@
   </Call>
   <Call>
     <Id>37</Id>
-    <type>EmotionalSupport</type>
+    <type>HospitalVisit</type>
     <CallAddress>Hamelech Shlomo 53, Jerusalem</CallAddress>
     <Description>Descriptions: Providing emotional support and companionship.</Description>
     <Latitude>31.7737</Latitude>
@@ -402,7 +402,7 @@
   </Call>
   <Call>
     <Id>40</Id>
-    <type>EmotionalSupport</type>
+    <type>MedicalAssistance</type>
     <CallAddress>Agron 41, Jerusalem</CallAddress>
     <Description>Descriptions: Providing emotional support and companionship.</Description>
     <Latitude>31.7698</Latitude>
