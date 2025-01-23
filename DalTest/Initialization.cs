@@ -113,7 +113,7 @@ public static class Initialization
             DateTime AssignmentTime = GetRandomDate(CallStartTime, CallEndTime > DateTime.Now ? DateTime.Now : CallEndTime);
             DateTime AssignmentTotalTime = GetRandomDate(AssignmentTime, CallEndTime);
 
-            // Create an assignment and add it to the data access layer
+            // Create an assignment and add it to the data access layer 
             s_dal.Assignment!.Create(new(0, CList[i].Id, VList[randNum1].Id, AssignmentTime,null,null));//AssignmentTotalTime,(CallClosureType)randNum2)
         }
 
