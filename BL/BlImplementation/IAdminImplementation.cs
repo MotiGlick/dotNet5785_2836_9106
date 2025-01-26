@@ -26,6 +26,8 @@ internal class IAdminImplementation : IAdmin
     /// <param name="unit">The time unit by which to advance the clock (Minute, Hour, Day, Month, Year).</param>
     public void ForwardClock(BO.TimeUnit unit)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+
         switch (unit)
         {
             case BO.TimeUnit.Minute:                
@@ -78,10 +80,14 @@ internal class IAdminImplementation : IAdmin
     /// </summary>
     public void InitializeDB()
     {
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+
         ResetDB();
         DalTest.Initialization.Do();
         AdminManager.UpdateClock(AdminManager.Now);
-        
+        //AdminManager.MaxRange = AdminManager.MaxRange;
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.InitializeDB(); //stage 7
     }
 
     /// <summary>
@@ -89,9 +95,14 @@ internal class IAdminImplementation : IAdmin
     /// </summary>
     public void ResetDB()
     {
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+
         _dal.ResetDB();
         AdminManager.UpdateClock(AdminManager.Now);
-       
+        //AdminManager.MaxRange = AdminManager.MaxRange;
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.ResetDB(); //stage 7
+
     }
 
 #endregion Stage 4
@@ -107,5 +118,15 @@ internal class IAdminImplementation : IAdmin
     AdminManager.ConfigUpdatedObservers -= configObserver;
     #endregion Stage 5
 
+    #region Stage 7
+    public void StartSimulator(int interval)  //stage 7
+    {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.Start(interval); //stage 7
+    }
+
+    public void StopSimulator()
+    => AdminManager.Stop(); //stage 7
+    #endregion Stage 7
 }
 
