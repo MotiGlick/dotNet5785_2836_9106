@@ -59,6 +59,7 @@ namespace PL.Volunteer
             {
                 s_bl.Call.ChoosingCallForHandling(UserId, SelectedCall.Id);
                 MessageBox.Show("Call was chosen successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.Close();
             }
             catch (Exception ex)
             {

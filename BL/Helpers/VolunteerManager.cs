@@ -39,7 +39,7 @@ internal class VolunteerManager
 
 
         //בדיקת מרחק מרבי(אם קיים)
-        if (volunteer.MaximumDistance != 0 && (!double.TryParse(volunteer.MaximumDistance.ToString(), out double maxDistance) || maxDistance <= 0)) throw new BO.BlNotValidException("Invalid maximum distance.\nThe value must be a positive number."); 
+        if (volunteer.MaximumDistance != 0 && (!double.TryParse(volunteer.MaximumDistance.ToString(), out double maxDistance) || maxDistance <= 0)) throw new BO.BlNotValidException("Invalid maximum distance.\nThe value must be a positive number.");
 
         if (string.IsNullOrWhiteSpace(volunteer.Email))
             throw new BO.BlNotValidException("Incorrect email");
@@ -63,7 +63,7 @@ internal class VolunteerManager
     public static bool logicCheckToVolunteer(BO.Volunteer volunteer)
     {
 
-        if(!Tools.IsPasswordGood(volunteer.Password))
+        if (!Tools.IsPasswordGood(volunteer.Password))
             throw new BO.BlNotValidException("Password too weak \nThe password must contain an uppercase letter, a lowercase letter and 6 digits ");
 
         //if (!IsValidId(volunteer.Id))
@@ -143,7 +143,7 @@ internal class VolunteerManager
     /// <returns>BO.CallInProgress or null</returns>
     public static BO.CallInProgress? CreateCallInProgress(int id)
     {
-        
+
         IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
 
@@ -151,16 +151,15 @@ internal class VolunteerManager
         if (!assignments.Any())
             return null;
 
- 
-        var latestAssignment = assignments.OrderByDescending(a => a.AssignmentTime).FirstOrDefault();
+
+        var latestAssignment = assignments.OrderByDescending(a => a.Id).FirstOrDefault(a => a.AssignmentTotalTime == null);
 
         if (latestAssignment == null)
             return null;
 
         var relatedCall = calls.FirstOrDefault(c => c.Id == latestAssignment.CallId);
-        if (relatedCall == null ||
-            (CallManager.GetCallStatus(relatedCall.Id) != BO.StatusOfCall.InProgress &&
-             CallManager.GetCallStatus(relatedCall.Id) != BO.StatusOfCall.InProgressAtRisk))
+        if (CallManager.GetCallStatus(relatedCall!.Id) != BO.StatusOfCall.InProgress &&
+    CallManager.GetCallStatus(relatedCall.Id) != BO.StatusOfCall.InProgressAtRisk)
         {
             return null;
         }

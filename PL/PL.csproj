@@ -20,7 +20,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MaterialDesignThemes.Wpf">
+      <HintPath>..\MatirialDisinLib\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
