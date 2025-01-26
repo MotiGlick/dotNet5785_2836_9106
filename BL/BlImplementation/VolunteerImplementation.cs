@@ -32,7 +32,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// </exception>
     public void Create(BO.Volunteer boVolunteer)
     {
-
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
         try
         {
             if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(boVolunteer))
@@ -77,6 +77,8 @@ internal class VolunteerImplementation : BlApi.IVolunteer
 
     public void Delete(int id)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+
         try
         {
             if (VolunteerManager.CanDeleted(id))
@@ -102,6 +104,8 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// <exception cref="BO.BlInvalidCredentialsException"></exception>
     public BO.job EnterToTheSystem(string? name = null, string? pasward = null, int? id = null)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+
         DO.Volunteer? doVolunteer = null;
 
         if (id != null)
@@ -137,6 +141,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// </exception>
     public BO.Volunteer Read(int id)
     {
+        
         DO.Volunteer? doVolunteer = _dal.Volunteer.Read(id);
         if (doVolunteer != null)
         {
@@ -243,6 +248,8 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// </exception>
     public void Update(BO.Volunteer boVolunteer, int id)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+
         try
         {
             if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(boVolunteer))//בדיקה לוגית ותקינות
