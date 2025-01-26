@@ -31,19 +31,22 @@ internal class CallManager
     /// </returns>
     public static bool LogicalCheck(BO.Call boCall)//#
     {
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            if (boCall.Address.Length < 5 || boCall.Address.Length > 100)
+                throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
 
-        if (boCall.Address.Length < 5 || boCall.Address.Length > 100)
-            throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
+            if (!Tools.AddressExists(boCall.Address))
+                throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
 
-        if (!Tools.AddressExists(boCall.Address))
-            throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
-
-        if (boCall.MaxTime != null)
-            if (boCall.MaxTime <= boCall.OpeningTime)
-                throw new BO.BlNotValidException("Invalid date");
+            if (boCall.MaxTime != null)
+                if (boCall.MaxTime <= boCall.OpeningTime)
+                    throw new BO.BlNotValidException("Invalid date");
 
 
-        return true;
+            return true;
+        }
+         
     }
 
 
@@ -56,38 +59,41 @@ internal class CallManager
     /// <exception cref="Exception">Thrown if the call does not exist.</exception>
     public static BO.StatusOfCall GetCallStatus(int doCallId)
     {
-
-        DO.Call doCall = _dal.Call.Read(doCallId) ?? throw new Exception($"Call with ID={doCallId} does not exist");
-
-
-        var now = AdminManager.Now;
-        var callAssignments = AssignmentManager.GetCallAssignList(doCallId);
-        var riskRangeEnd = doCall.CallTime + _dal.Config.RiskRange;
-        var lastAssignment = AssignmentManager.GetLastAssingment(doCallId);
-        var lastAssignmentClosureType = lastAssignment != null ? AssignmentManager.GetCallClosureType(lastAssignment.Id):null;
-
-        // If there is no assignment or all assignments are canceled
-        if (lastAssignment == null || ((lastAssignment != null) && lastAssignmentClosureType == BO.CallClosureType.ManagerCancellation ||
-          lastAssignmentClosureType == BO.CallClosureType.SelfCancellation))
+        lock (AdminManager.BlMutex) //stage 7
         {
-            if (now > riskRangeEnd && now < doCall.TotalTime)
-                return BO.StatusOfCall.OpenAtRisk;
-            else if (now > doCall.TotalTime)
+            DO.Call doCall = _dal.Call.Read(doCallId) ?? throw new Exception($"Call with ID={doCallId} does not exist");
+
+
+            var now = AdminManager.Now;
+            var callAssignments = AssignmentManager.GetCallAssignList(doCallId);
+            var riskRangeEnd = doCall.CallTime + _dal.Config.RiskRange;
+            var lastAssignment = AssignmentManager.GetLastAssingment(doCallId);
+            var lastAssignmentClosureType = lastAssignment != null ? AssignmentManager.GetCallClosureType(lastAssignment.Id) : null;
+
+            // If there is no assignment or all assignments are canceled
+            if (lastAssignment == null || ((lastAssignment != null) && lastAssignmentClosureType == BO.CallClosureType.ManagerCancellation ||
+              lastAssignmentClosureType == BO.CallClosureType.SelfCancellation))
+            {
+                if (now > riskRangeEnd && now < doCall.TotalTime)
+                    return BO.StatusOfCall.OpenAtRisk;
+                else if (now > doCall.TotalTime)
+                    return BO.StatusOfCall.Expired;
+                else
+                    return BO.StatusOfCall.Open;
+            }
+            else if (lastAssignment != null && lastAssignmentClosureType == BO.CallClosureType.HandledOnTime)
+            {
+                return BO.StatusOfCall.Closed;
+            }
+            else if (lastAssignment != null && now > riskRangeEnd && now < doCall.TotalTime)
+                return BO.StatusOfCall.InProgressAtRisk;
+            else if (now > doCall.TotalTime || lastAssignmentClosureType == BO.CallClosureType.ExpiredCancellation)/////
                 return BO.StatusOfCall.Expired;
-            else
-                return BO.StatusOfCall.Open;
-        }
-        else if (lastAssignment != null && lastAssignmentClosureType == BO.CallClosureType.HandledOnTime)
-        {
-            return BO.StatusOfCall.Closed;
-        }
-        else if (lastAssignment != null && now > riskRangeEnd && now < doCall.TotalTime)
-            return BO.StatusOfCall.InProgressAtRisk;
-        else if (now > doCall.TotalTime || lastAssignmentClosureType == BO.CallClosureType.ExpiredCancellation)/////
-            return BO.StatusOfCall.Expired;
 
 
-        return BO.StatusOfCall.InProgress;
+            return BO.StatusOfCall.InProgress;
+        }
+           
     }
 
 
@@ -98,7 +104,8 @@ internal class CallManager
     /// <returns>The total handling time as a <see cref="TimeSpan"/>, or null if no assignment exists.</returns>
     public static TimeSpan? GetHandlingTime(int callId)
     {
-        return AssignmentManager.GetLastAssingment(callId)?.AssignmentTotalTime - AssignmentManager.GetLastAssingment(callId)?.AssignmentTime;
+        lock (AdminManager.BlMutex) //stage 7
+            return AssignmentManager.GetLastAssingment(callId)?.AssignmentTotalTime - AssignmentManager.GetLastAssingment(callId)?.AssignmentTime;
         // return _dal.Call.Read(callId)?.TotalTime - _dal.Call.Read(callId)?.CallTime;
 
     }
@@ -113,10 +120,14 @@ internal class CallManager
     /// </returns>
     public static TimeSpan? GetTimeLeft(int callId)
     {
-        if ((_dal.Call.Read(callId)!.TotalTime > AdminManager.Now))
-            return _dal.Call.Read(callId)!.TotalTime - AdminManager.Now;
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            if ((_dal.Call.Read(callId)!.TotalTime > AdminManager.Now))
+                return _dal.Call.Read(callId)!.TotalTime - AdminManager.Now;
 
-        return null;
+            return null;
+        }
+            
     }
 
 }

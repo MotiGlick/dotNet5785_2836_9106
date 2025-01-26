@@ -31,7 +31,10 @@ internal class AssignmentManager
     /// <returns>A list of <see cref="BO.CallAssignInList"/> containing assignment details.</returns>
     public static List<BO.CallAssignInList> GetCallAssignList(int? CallId)
     {
-        var callAssignList = (from assignment in _dal.Assignment.ReadAll()
+        List<BO.CallAssignInList> callAssignList;
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            callAssignList = (from assignment in _dal.Assignment.ReadAll()
                               where assignment.CallId == CallId
                               let VolunteerName = _dal.Volunteer.Read(assignment.VolunteerId)!.Name
                               let HndalEndTime = assignment.AssignmentTotalTime ?? null
@@ -45,6 +48,8 @@ internal class AssignmentManager
                                   ClosureType = ClosureType,
 
                               }).ToList();
+        }
+            
 
         if (callAssignList != null)
         {
@@ -59,16 +64,19 @@ internal class AssignmentManager
     public static BO.CallClosureType? GetCallClosureType(int assignmentId)
     {
 
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            DO.Assignment assignment = _dal.Assignment.Read(assignmentId)!;
+            DO.Call call = _dal.Call.Read(assignment.CallId)!;
+            if (assignment!.type != null)
+                return (BO.CallClosureType?)assignment.type;
 
-        DO.Assignment assignment = _dal.Assignment.Read(assignmentId)!;
-        DO.Call call = _dal.Call.Read(assignment.CallId)!;
-        if (assignment!.type != null )
-            return (BO.CallClosureType?)assignment.type;
+            if (call.TotalTime < AdminManager.Now)
+                return BO.CallClosureType.ExpiredCancellation;
 
-        if (call.TotalTime < AdminManager.Now)
-            return BO.CallClosureType.ExpiredCancellation;
-
-        return null;
+            return null;
+        }
+        
     }
 
     /// <summary>
@@ -192,10 +200,13 @@ internal class AssignmentManager
     /// <returns>The last assignment, or null if no assignment exists.</returns>
     public static DO.Assignment? GetLastAssingment(int doCallId)//#
     {
-        return _dal.Assignment.ReadAll()
-      .Where(a => a.CallId == doCallId)
-      .OrderByDescending(a => a.AssignmentTime)
-      .FirstOrDefault();
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            return _dal.Assignment.ReadAll()
+             .Where(a => a.CallId == doCallId)
+             .OrderByDescending(a => a.AssignmentTime)
+             .FirstOrDefault();
+        }
         //int? VolunteerId = GetLastVolunteerId(doCallId);
         //if (VolunteerId == null)
         //    return null;

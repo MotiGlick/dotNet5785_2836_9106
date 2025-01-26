@@ -27,28 +27,31 @@ internal class IAdminImplementation : IAdmin
     public void ForwardClock(BO.TimeUnit unit)
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
-
-        switch (unit)
+        lock (AdminManager.BlMutex) //stage 7
         {
-            case BO.TimeUnit.Minute:                
-                AdminManager.UpdateClock(AdminManager.Now.AddMinutes(1));
-                break;
-            case BO.TimeUnit.Hour:
-                AdminManager.UpdateClock(AdminManager.Now.AddHours(1));
-                break;
-            case BO.TimeUnit.Day:
-                AdminManager.UpdateClock(AdminManager.Now.AddDays(1));
-                break;
-            case BO.TimeUnit.Month:
-                AdminManager.UpdateClock(AdminManager.Now.AddMonths(1));
-                break;
-            case BO.TimeUnit.Year:
-                AdminManager.UpdateClock(AdminManager.Now.AddYears(1));
+            switch (unit)
+            {
+                case BO.TimeUnit.Minute:
+                    AdminManager.UpdateClock(AdminManager.Now.AddMinutes(1));
+                    break;
+                case BO.TimeUnit.Hour:
+                    AdminManager.UpdateClock(AdminManager.Now.AddHours(1));
+                    break;
+                case BO.TimeUnit.Day:
+                    AdminManager.UpdateClock(AdminManager.Now.AddDays(1));
+                    break;
+                case BO.TimeUnit.Month:
+                    AdminManager.UpdateClock(AdminManager.Now.AddMonths(1));
+                    break;
+                case BO.TimeUnit.Year:
+                    AdminManager.UpdateClock(AdminManager.Now.AddYears(1));
 
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
         }
+        
     }
 
 
@@ -56,7 +59,11 @@ internal class IAdminImplementation : IAdmin
     /// Retrieves the current system clock time from the database.
     /// </summary>
     /// <returns>The current system clock time.</returns>
-    public DateTime GetClock() => AdminManager.Now;
+    public DateTime GetClock()
+    {
+        lock (AdminManager.BlMutex) //stage 7
+            return AdminManager.Now;
+    }  
 
 
 
@@ -64,15 +71,23 @@ internal class IAdminImplementation : IAdmin
     /// Sets the maximum risk range (TimeSpan) in the database.
     /// </summary>
     /// <param name="maxRange">The new maximum risk range.</param>
-    public void SetMaxRange(TimeSpan maxRange) => AdminManager.MaxRange = maxRange;
-   
+    public void SetMaxRange(TimeSpan maxRange)
+    {
+        lock (AdminManager.BlMutex)//stage 7
+            AdminManager.MaxRange = maxRange;
+    }
+
 
     /// <summary>
     /// Retrieves the maximum risk range (TimeSpan) from the database.
     /// </summary>
     /// <returns>The maximum risk range.</returns>
-    public TimeSpan GetMaxRange() => AdminManager.MaxRange;
-    
+    public TimeSpan GetMaxRange()
+    {
+        lock (AdminManager.BlMutex)//stage 7
+            return AdminManager.MaxRange;
+    }
+
 
     /// <summary>
     /// Initializes the database by resetting it and running the initialization process.
@@ -81,13 +96,16 @@ internal class IAdminImplementation : IAdmin
     public void InitializeDB()
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
-
-        ResetDB();
-        DalTest.Initialization.Do();
-        AdminManager.UpdateClock(AdminManager.Now);
-        //AdminManager.MaxRange = AdminManager.MaxRange;
-        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
-        AdminManager.InitializeDB(); //stage 7
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            ResetDB();
+            DalTest.Initialization.Do();
+            AdminManager.UpdateClock(AdminManager.Now);
+            //AdminManager.MaxRange = AdminManager.MaxRange;
+            AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+            AdminManager.InitializeDB(); //stage 7
+        }
+         
     }
 
     /// <summary>
@@ -96,13 +114,14 @@ internal class IAdminImplementation : IAdmin
     public void ResetDB()
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
-
-        _dal.ResetDB();
-        AdminManager.UpdateClock(AdminManager.Now);
-        //AdminManager.MaxRange = AdminManager.MaxRange;
-        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
-        AdminManager.ResetDB(); //stage 7
-
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            _dal.ResetDB();
+            AdminManager.UpdateClock(AdminManager.Now);
+            //AdminManager.MaxRange = AdminManager.MaxRange;
+            AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+            AdminManager.ResetDB(); //stage 7
+        }
     }
 
 #endregion Stage 4
