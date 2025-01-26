@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
+         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Background="Gainsboro"
          DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Closed="Window_Closed" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
-        Title="VolunteerWindow"
+        Title="VolunteerWindow" Icon="pack://application:,,,/sticker.ico"
         Height="670"   Width="{Binding CurrentVolunteer.CallInProgress, Converter={StaticResource BooleanToWidthConverterKey}}">
 
 
@@ -31,7 +32,14 @@
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
- 
+        <!-- Style for TextBox -->
+        <Style TargetType="xctk:WatermarkTextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
 
         <!-- Style for ComboBox -->
         <Style TargetType="ComboBox">
@@ -102,16 +110,19 @@
                     <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CurrentVolunteer.Name, Mode=TwoWay}" />
 
                     <Label Grid.Row="3" Grid.Column="0" Content="Phone:" />
-                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CurrentVolunteer.PhoneNumber, Mode=TwoWay}" />
+                <xctk:WatermarkTextBox Grid.Row="3" Grid.Column="1" 
+Text="{Binding CurrentVolunteer.PhoneNumber, Mode=TwoWay}" 
+MaxLength="10" Watermark="10 numbers starting whit 0"
+ToolTip="Enter a phone number in the format 0xxxxxxxxx" />
 
-                    <Label Grid.Row="4" Grid.Column="0" Content="Email:" />
-                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentVolunteer.Email, Mode=TwoWay}" />
+                <Label Grid.Row="4" Grid.Column="0" Content="Email:" />
+                <xctk:WatermarkTextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentVolunteer.Email, Mode=TwoWay}" Watermark="For exemple: user@gmail.com" />
 
                     <Label Grid.Row="5" Grid.Column="0" Content="Password:" />
-                    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CurrentVolunteer.Password, Mode=TwoWay}" />
+                <xctk:WatermarkTextBox Grid.Row="5" Grid.Column="1" Text="{Binding CurrentVolunteer.Password, Mode=TwoWay}" Watermark="6 numbers, a capital letter and a small letter"/>
 
                     <Label Grid.Row="6" Grid.Column="0" Content="Address:" />
-                    <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding CurrentVolunteer.Address, Mode=TwoWay}" />
+                <xctk:WatermarkTextBox Grid.Row="6" Grid.Column="1" Text="{Binding CurrentVolunteer.Address, Mode=TwoWay}" />
 
                     <Label Grid.Row="7" Grid.Column="0" Content="Maximum Distance:" />
                     <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding CurrentVolunteer.MaximumDistance, Mode=TwoWay}" />
