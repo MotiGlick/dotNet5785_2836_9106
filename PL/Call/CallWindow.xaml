@@ -2,9 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+          xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Call"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Icon="pack://application:,,,/sticker.ico"
         Title="CallWindow" Height="650" Width="800" WindowStartupLocation="CenterScreen"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Background="Gainsboro" Closed="Window_Closed" Loaded="Window_Loaded">
 
@@ -116,10 +117,22 @@
 
                         <Label Grid.Row="4" Grid.Column="0" Content="Opening Time:"  Margin="0,10,0,0"/>
                         <DatePicker Grid.Row="4" Grid.Column="1" SelectedDate="{Binding CurrentCall.OpeningTime}"  Margin="0,10,0,0" IsEnabled="False"/>
+                        <xctk:DateTimePicker Grid.Row="4" Grid.Column="4" 
+                            Value="{Binding CurrentCall.OpeningTime}"
+                            Margin="0,10,0,0" IsEnabled="False"
+                            Format="Custom"  HorizontalContentAlignment="Center" TextAlignment="Left"
+                             FormatString="dd/MM/yyyy HH:mm" />
+
 
                         <Label Grid.Row="5" Grid.Column="0" Content="Max Time to Handle:"  Margin="0,10,0,0"/>
-                        <DatePicker Grid.Row="5" Grid.Column="1"  SelectedDate="{Binding CurrentCall.MaxTime ,Mode=TwoWay}"  Margin="0,10,0,0" IsEnabled="{Binding CurrentCall.status, Converter={StaticResource ConvertStatusOfCallToBoolForMaxTimeKey}}" />
-                    
+                        <!--<DatePicker Grid.Row="5" Grid.Column="1"  SelectedDate="{Binding CurrentCall.MaxTime ,Mode=TwoWay}"  Margin="0,10,0,0" IsEnabled="{Binding CurrentCall.status, Converter={StaticResource ConvertStatusOfCallToBoolForMaxTimeKey}}" />-->
+                        <xctk:DateTimePicker Grid.Row="5" Grid.Column="1" 
+                          Value="{Binding CurrentCall.MaxTime, Mode=TwoWay}" 
+                          Margin="0,10,0,0" 
+                           HorizontalContentAlignment="Left" TextAlignment="Left"
+                           IsEnabled="{Binding CurrentCall.status, Converter={StaticResource ConvertStatusOfCallToBoolForMaxTimeKey}}" 
+                           Format="Custom" 
+                          FormatString="dd/MM/yyyy HH:mm" />
 
 
                         <Label Grid.Row="6" Grid.Column="0" Content="Status:"  Margin="0,10,0,0"/>

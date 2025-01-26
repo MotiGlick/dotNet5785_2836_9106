@@ -35,9 +35,10 @@ namespace PL
            
         }
 
-        public BO.Volunteer CurrentVolunteer { get; set; } = new BO.Volunteer();
+        public BO.Volunteer CurrentVolunteer { get; set; } = new BO.Volunteer() ;
 
   
+        
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -68,6 +69,6 @@ namespace PL
            
         }
 
-        
+       
     }
 }

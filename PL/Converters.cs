@@ -101,11 +101,11 @@ public class BooleanToWidthConverter : IValueConverter
         if (value is BO.CallInProgress call)
         {
             
-            return call != null ? 980 : 470;
+            return call != null ? 980 : 600;
         }
 
        
-        return 470; 
+        return 600; 
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -233,6 +233,7 @@ public class PasswordConverter : IValueConverter
 
 }
 
+
 public class IsChacedConverter : IValueConverter
 {
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
@@ -276,3 +277,18 @@ public class ChusingCallEnableConverter : IValueConverter
 
 }
 
+
+
+
+public class IdToEmptyStringConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value is int id && id == 0 ? string.Empty : value.ToString();
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value;
+    }
+}

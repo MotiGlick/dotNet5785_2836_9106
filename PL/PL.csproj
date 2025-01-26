@@ -28,6 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="MaterialDesignThemes.Wpf">
+      <HintPath>..\MatirialDisinLib\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Logo.png" />
     <Resource Include="sticker.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

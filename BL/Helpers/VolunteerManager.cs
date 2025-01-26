@@ -159,7 +159,7 @@ internal class VolunteerManager
                 return null;
 
 
-            var latestAssignment = assignments.OrderByDescending(a => a.AssignmentTime).FirstOrDefault();
+            var latestAssignment = assignments.OrderByDescending(a => a.Id).FirstOrDefault();
 
             if (latestAssignment == null)
                 return null;
