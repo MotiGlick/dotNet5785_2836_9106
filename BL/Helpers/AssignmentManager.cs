@@ -204,7 +204,7 @@ internal class AssignmentManager
         {
             return _dal.Assignment.ReadAll()
              .Where(a => a.CallId == doCallId)
-             .OrderByDescending(a => a.AssignmentTime)
+             .OrderByDescending(a => a.Id)
              .FirstOrDefault();
         }
         //int? VolunteerId = GetLastVolunteerId(doCallId);

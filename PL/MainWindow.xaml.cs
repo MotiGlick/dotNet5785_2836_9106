@@ -1,5 +1,6 @@
 ﻿using PL.Call;
 using PL.Volunteer;
+using System.Media;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -104,6 +105,8 @@ namespace PL
             MaxYearRange = s_bl.Admin.GetMaxRange();
             s_bl.Admin.AddClockObserver(ClockObserver);
             s_bl.Admin.AddConfigObserver(ConfigObserver);
+            
+
         }
 
         private void MainWindow_Closed(object sender, EventArgs e)

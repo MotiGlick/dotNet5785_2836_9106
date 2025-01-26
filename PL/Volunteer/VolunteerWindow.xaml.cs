@@ -37,8 +37,8 @@ namespace PL.Volunteer
                     {
                         Id = 0,
                         Name = "",
-                        PhoneNumber = "10 digits, starting with 0",
-                        Email = "For example: user@gmail.com",
+                        PhoneNumber ="",
+                        Email = "",
                         Password = "",
                         Address = "",
                         Duty = 0,
