@@ -32,7 +32,10 @@ internal class AssignmentManager
     /// <returns>A list of <see cref="BO.CallAssignInList"/> containing assignment details.</returns>
     public static List<BO.CallAssignInList> GetCallAssignList(int? CallId)
     {
-        var callAssignList = (from assignment in _dal.Assignment.ReadAll()
+        List<BO.CallAssignInList> callAssignList;
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            callAssignList = (from assignment in _dal.Assignment.ReadAll()
                               where assignment.CallId == CallId
                               let VolunteerName = _dal.Volunteer.Read(assignment.VolunteerId)!.Name
                               let HndalEndTime = assignment.AssignmentTotalTime ?? null
@@ -46,30 +49,38 @@ internal class AssignmentManager
                                   ClosureType = ClosureType,
 
                               }).ToList();
+        }
+
 
         if (callAssignList != null)
         {
             Observers.NotifyItemUpdated((int)CallId!);//stage 5
             Observers.NotifyListUpdated();//stage 5
         }
-        
+
         return callAssignList;
     }
 
-    
+
     public static BO.CallClosureType? GetCallClosureType(int assignmentId)
     {
 
 
-        DO.Assignment assignment = _dal.Assignment.Read(assignmentId)!;
-        DO.Call call = _dal.Call.Read(assignment.CallId)!;
-        if (assignment!.type != null )
+        DO.Assignment assignment;
+        lock (AdminManager.BlMutex) //stage 7
+            assignment = _dal.Assignment.Read(assignmentId)!;
+        DO.Call call;
+        lock (AdminManager.BlMutex) //stage 7
+            call = _dal.Call.Read(assignment.CallId)!;
+        if (assignment!.type != null)
             return (BO.CallClosureType?)assignment.type;
 
         if (call.TotalTime < AdminManager.Now)
             return BO.CallClosureType.ExpiredCancellation;
 
         return null;
+
+
     }
 
     /// <summary>
@@ -81,19 +92,23 @@ internal class AssignmentManager
     /// <exception cref="Exception">Thrown if the assignment does not exist or start time is not set.</exception>
     public static DateTime GetAssignmentStartTime(int boCallId, int VolunteerId)
     {
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            var assignList = GetCallAssignList(boCallId);
+            assignList = GetCallAssignList(boCallId);
+            var assignment = assignList.FirstOrDefault(v => v.VolunteerId == VolunteerId);
 
-        var assignList = GetCallAssignList(boCallId);
-        var assignment = assignList.FirstOrDefault(v => v.VolunteerId == VolunteerId);
 
+            if (assignment == null)
+                throw new BlDoesNotExistException($"No assignment found for VolunteerId={VolunteerId} in CallId={boCallId}");
 
-        if (assignment == null)
-            throw new BlDoesNotExistException($"No assignment found for VolunteerId={VolunteerId} in CallId={boCallId}");
+            // בדיקה אם זמן ההתחלה מוגדר והחזרתו
+            if (assignment.HndalStartTime == null)
+                throw new BlDoesNotExistException($"Start time is not set for the assignment of VolunteerId={VolunteerId} in CallId={boCallId}");
 
-        // בדיקה אם זמן ההתחלה מוגדר והחזרתו
-        if (assignment.HndalStartTime == null)
-            throw new BlDoesNotExistException($"Start time is not set for the assignment of VolunteerId={VolunteerId} in CallId={boCallId}");
-
-        return assignment.HndalStartTime;
+            return assignment.HndalStartTime;
+        }
+        
     }
 
 
@@ -107,14 +122,17 @@ internal class AssignmentManager
     /// <exception cref="Exception">Thrown if the end time is explicitly null.</exception>
     public static DateTime? GetAssignmentEndTime(int boCallId, int VolunteerId)
     {
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            var assignList = GetCallAssignList(boCallId);
+            var assignment = assignList.FirstOrDefault(v => v.VolunteerId == VolunteerId);
 
-        var assignList = GetCallAssignList(boCallId);
-        var assignment = assignList.FirstOrDefault(v => v.VolunteerId == VolunteerId);
+            if (assignment == null)
+                return null;
 
-        if (assignment == null)
-            return null;
-
-        return assignment.HndalEndTime;
+            return assignment.HndalEndTime;
+        }
+           
     }
 
 
@@ -128,12 +146,15 @@ internal class AssignmentManager
     /// <exception cref="Exception">Thrown if the closure type cannot be found.</exception>
     public static BO.CallClosureType? GetAssignmentClosureType(int boCallId, int VolunteerId)
     {
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            var assignment = GetCallAssignList(boCallId)?.FirstOrDefault(v => v.VolunteerId == VolunteerId);
+            if (assignment == null)
+                return null;
+            else
+                return assignment.ClosureType;
 
-        var assignment = GetCallAssignList(boCallId)?.FirstOrDefault(v => v.VolunteerId == VolunteerId);
-        if (assignment == null)
-            return null;
-        else
-            return assignment.ClosureType;
+        }
 
 
     }
@@ -145,11 +166,14 @@ internal class AssignmentManager
     /// <returns>The ID of the last assignment, or null if no assignment exists.</returns>
     public static int? GetLastAssingmentId(int doCallId)//#
     {
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            if (GetLastAssingment(doCallId) == null)
+                return null;
+            else
+                return GetLastAssingment(doCallId)!.Id;
 
-        if (GetLastAssingment(doCallId) == null)
-            return null;
-        else
-            return GetLastAssingment(doCallId)!.Id;
+        }
 
     }
 
@@ -160,11 +184,15 @@ internal class AssignmentManager
     /// <returns>The name of the last volunteer.</returns>
     public static string? GetLastVolunteerName(int doCallId)//#
     {
-        int? VolunteerId = GetLastVolunteerId(doCallId);
-        if (VolunteerId == null)
-            return null;
-        else
-            return GetCallAssignList(doCallId).OrderByDescending(Assin => Assin.HndalStartTime).First().VolunteerName;
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            int? VolunteerId = GetLastVolunteerId(doCallId);
+            if (VolunteerId == null)
+                return null;
+            else
+                return GetCallAssignList(doCallId).OrderByDescending(Assin => Assin.HndalStartTime).First().VolunteerName;
+
+        }
 
     }
 
@@ -175,14 +203,17 @@ internal class AssignmentManager
     /// <returns>The ID of the last volunteer.</returns>
     public static int? GetLastVolunteerId(int doCallId)//#
     {
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            var assignments = GetCallAssignList(doCallId);
+            if (assignments == null || !assignments.Any())
+                return null;
 
-        var assignments = GetCallAssignList(doCallId);
-        if (assignments == null || !assignments.Any())
-            return null;
-
-        return assignments
-            .OrderByDescending(assin => assin.HndalStartTime)
-            .FirstOrDefault()?.VolunteerId;
+            return assignments
+                .OrderByDescending(assin => assin.HndalStartTime)
+                .FirstOrDefault()?.VolunteerId;
+        }
+         
 
     }
 
@@ -193,10 +224,12 @@ internal class AssignmentManager
     /// <returns>The last assignment, or null if no assignment exists.</returns>
     public static DO.Assignment? GetLastAssingment(int doCallId)//#
     {
-        return _dal.Assignment.ReadAll()
-      .Where(a => a.CallId == doCallId)
-      .OrderByDescending(a => a.Id)
-      .FirstOrDefault();
+        lock (AdminManager.BlMutex) //stage 7
+            return _dal.Assignment.ReadAll()
+             .Where(a => a.CallId == doCallId)
+             .OrderByDescending(a => a.Id)
+             .FirstOrDefault();
+
         //int? VolunteerId = GetLastVolunteerId(doCallId);
         //if (VolunteerId == null)
         //    return null;
