@@ -32,27 +32,31 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// </exception>
     public void Create(BO.Volunteer boVolunteer)
     {
-
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
         try
         {
             if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(boVolunteer))
             {
-                DO.Volunteer doVolunteer = new DO.Volunteer()
-                {
-                    Id = boVolunteer.Id,
-                    Name = boVolunteer.Name,
-                    PhoneNumber = boVolunteer.PhoneNumber,
-                    Email = boVolunteer.Email,
-                    pasword = boVolunteer.Password,
-                    AddressVolunteer = boVolunteer.Address,
-                    Latitude = boVolunteer.Address == "" ? null : Tools.GetLatitude(boVolunteer.Address),
-                    Longitude = boVolunteer.Address == "" ? null : Tools.GetLongitude(boVolunteer.Address),
-                    maximumDistace = boVolunteer.MaximumDistance,
-                    duty = (DO.job)boVolunteer.Duty,
-                    IsActive = boVolunteer.IsActive,
-                    distance = (DO.DistanceType)boVolunteer.Distance
-                };
-                _dal.Volunteer.Create(doVolunteer);
+                DO.Volunteer doVolunteer;
+                lock (AdminManager.BlMutex) //stage 7
+                    doVolunteer = new DO.Volunteer()
+                    {
+                        Id = boVolunteer.Id,
+                        Name = boVolunteer.Name,
+                        PhoneNumber = boVolunteer.PhoneNumber,
+                        Email = boVolunteer.Email,
+                        pasword = boVolunteer.Password,
+                        AddressVolunteer = boVolunteer.Address,
+                        Latitude = boVolunteer.Address == "" ? null : Tools.GetLatitude(boVolunteer.Address),
+                        Longitude = boVolunteer.Address == "" ? null : Tools.GetLongitude(boVolunteer.Address),
+                        maximumDistace = boVolunteer.MaximumDistance,
+                        duty = (DO.job)boVolunteer.Duty,
+                        IsActive = boVolunteer.IsActive,
+                        distance = (DO.DistanceType)boVolunteer.Distance
+                    };
+                lock (AdminManager.BlMutex) //stage 7
+                    _dal.Volunteer.Create(doVolunteer);
+
                 VolunteerManager.Observers.NotifyListUpdated(); //stage 5 
 
             }
@@ -77,11 +81,15 @@ internal class VolunteerImplementation : BlApi.IVolunteer
 
     public void Delete(int id)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+
         try
         {
             if (VolunteerManager.CanDeleted(id))
             {
-                _dal.Volunteer.Delete(id);
+                lock (AdminManager.BlMutex) //stage 7
+                    _dal.Volunteer.Delete(id);
+
                 VolunteerManager.Observers.NotifyListUpdated(); //stage 5 
             }
             else throw new BO.BlDeletionImpossible($"Volunteer with ID={id} can not be deleted because he/she handles call");
@@ -102,20 +110,24 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// <exception cref="BO.BlInvalidCredentialsException"></exception>
     public BO.job EnterToTheSystem(string? name = null, string? pasward = null, int? id = null)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+
         DO.Volunteer? doVolunteer = null;
-
-        if (id != null)
-            doVolunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == id && v.pasword == pasward);
-        else if (name != null)
+        lock (AdminManager.BlMutex) //stage 7
         {
-            doVolunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Name == name && v.pasword == pasward);
-        }
-        else
-        {
-            throw new BlNotValidException("Must provide either ID or Name and Password.");
+            if (id != null)
+                doVolunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Id == id && v.pasword == pasward);
+            else if (name != null)
+            {
+                doVolunteer = _dal.Volunteer.ReadAll().FirstOrDefault(v => v.Name == name && v.pasword == pasward);
+            }
+            else
+            {
+                throw new BlNotValidException("Must provide either ID or Name and Password.");
+            }
         }
 
-     
+
         if (doVolunteer != null)
         {
             return (BO.job)doVolunteer.duty;
@@ -137,7 +149,9 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// </exception>
     public BO.Volunteer Read(int id)
     {
-        DO.Volunteer? doVolunteer = _dal.Volunteer.Read(id);
+        DO.Volunteer? doVolunteer;
+        lock (AdminManager.BlMutex) //stage 7
+            doVolunteer = _dal.Volunteer.Read(id);
         if (doVolunteer != null)
         {
             BO.Volunteer volunteer = new BO.Volunteer()
@@ -173,10 +187,10 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// <returns>A sorted list of volunteers (BO.VolunteerInList) based on the provided filters and sorting criteria.</returns>
     public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive = null, BO.VolunteerInListField? sortField = null, BO.CallType? filterValue = null)
     {
-
-
-        // שליפת כל המתנדבים עם או בלי פילטר לפי הפעילות
-        IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll(v => isActive == null ? true : v.IsActive == isActive);//||isActive == null 
+        IEnumerable<DO.Volunteer> volunteers;
+        lock (AdminManager.BlMutex) //stage 7
+            // שליפת כל המתנדבים עם או בלי פילטר לפי הפעילות
+            volunteers = _dal.Volunteer.ReadAll(v => isActive == null ? true : v.IsActive == isActive);//||isActive == null 
 
         // המרת הישויות הלוגיות (DO.Volunteer) ל-BO.VolunteerInList
         IEnumerable<BO.VolunteerInList> volunteersList = volunteers.Select(v => new BO.VolunteerInList
@@ -243,31 +257,40 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// </exception>
     public void Update(BO.Volunteer boVolunteer, int id)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+
         try
         {
             if (VolunteerManager.formatCheckToVolunteer(boVolunteer) && VolunteerManager.logicCheckToVolunteer(boVolunteer))//בדיקה לוגית ותקינות
             {
+
+
                 bool isManager = _dal.Volunteer.Read(id).duty == DO.job.manager;
-                DO.Volunteer oldDoVolunteer = _dal.Volunteer.Read(boVolunteer.Id);
-                DO.Volunteer newDoVolunteer = new DO.Volunteer()
-                {
-                    Id = boVolunteer.Id,
-                    Name = boVolunteer.Name,
-                    PhoneNumber = boVolunteer.PhoneNumber,
-                    Email = boVolunteer.Email,
-                    pasword = boVolunteer.Password,
-                    AddressVolunteer = boVolunteer.Address,
-                    Latitude = boVolunteer.Address == "" ? null : Tools.GetLatitude(boVolunteer.Address),
-                    Longitude = boVolunteer.Address == "" ? null : Tools.GetLongitude(boVolunteer.Address),
-                    maximumDistace = boVolunteer.MaximumDistance,
-                    duty = (DO.job)boVolunteer.Duty,
-                    IsActive = boVolunteer.IsActive,
-                    distance = (DO.DistanceType)boVolunteer.Distance
-                };
+                DO.Volunteer oldDoVolunteer;
+                lock (AdminManager.BlMutex) // stage 7
+                    oldDoVolunteer = _dal.Volunteer.Read(boVolunteer.Id);
+                DO.Volunteer newDoVolunteer;
+                lock (AdminManager.BlMutex) // stage 7
+                    newDoVolunteer = new DO.Volunteer()
+                    {
+                        Id = boVolunteer.Id,
+                        Name = boVolunteer.Name,
+                        PhoneNumber = boVolunteer.PhoneNumber,
+                        Email = boVolunteer.Email,
+                        pasword = boVolunteer.Password,
+                        AddressVolunteer = boVolunteer.Address,
+                        Latitude = boVolunteer.Address == "" ? null : Tools.GetLatitude(boVolunteer.Address),
+                        Longitude = boVolunteer.Address == "" ? null : Tools.GetLongitude(boVolunteer.Address),
+                        maximumDistace = boVolunteer.MaximumDistance,
+                        duty = (DO.job)boVolunteer.Duty,
+                        IsActive = boVolunteer.IsActive,
+                        distance = (DO.DistanceType)boVolunteer.Distance
+                    };
 
                 if (isManager)
                 {// אם הוא מנהל 
-                    _dal.Volunteer.Update(newDoVolunteer);
+                    lock (AdminManager.BlMutex) // stage 7
+                        _dal.Volunteer.Update(newDoVolunteer);
                     VolunteerManager.Observers.NotifyItemUpdated(newDoVolunteer.Id);  //stage 5
                     VolunteerManager.Observers.NotifyListUpdated();  //stage 5
                 }
@@ -275,18 +298,19 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                 {
                     if (oldDoVolunteer.duty != newDoVolunteer.duty && oldDoVolunteer.duty == DO.job.manager)//אם מעדכנים את התפקיד אז זה רק אם הוא מנהל
                     {
-                        _dal.Volunteer.Update(newDoVolunteer);
+                        lock (AdminManager.BlMutex) // stage 7
+                            _dal.Volunteer.Update(newDoVolunteer);
                         VolunteerManager.Observers.NotifyItemUpdated(newDoVolunteer.Id);  //stage 5
                         VolunteerManager.Observers.NotifyListUpdated();  //stage 5
                     }
                     else if (oldDoVolunteer.duty == newDoVolunteer.duty)
                     {
-                        _dal.Volunteer.Update(newDoVolunteer);// אם הוא לא מנסה לעדכן את תפקיד 
+                        lock (AdminManager.BlMutex) // stage 7
+                            _dal.Volunteer.Update(newDoVolunteer);// אם הוא לא מנסה לעדכן את תפקיד 
                         VolunteerManager.Observers.NotifyItemUpdated(newDoVolunteer.Id);  //stage 5
                         VolunteerManager.Observers.NotifyListUpdated();  //stage 5
                     }
                 }
-
 
             }
         }
@@ -316,7 +340,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
 
 
     #region Stage 6
-    public  bool CanDeleted(int id) => VolunteerManager.CanDeleted(id);
+    public bool CanDeleted(int id) => VolunteerManager.CanDeleted(id);
 
     #endregion Stage 6
 

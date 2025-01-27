@@ -24,36 +24,39 @@ internal class VolunteerManager
     /// <returns></returns>
     public static bool formatCheckToVolunteer(BO.Volunteer volunteer)
     {
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            // בדיקת ת.ז (האם מספרי)
+            if (!int.TryParse(volunteer.Id.ToString(), out int id) || id <= 0) throw new BO.BlNotValidException("Incorrect ID");
 
-        // בדיקת ת.ז (האם מספרי)
-        if (!int.TryParse(volunteer.Id.ToString(), out int id) || id <= 0) throw new BO.BlNotValidException("Incorrect ID");
+            // בדיקת שם מלא (אורך נדרש)
+            if (string.IsNullOrWhiteSpace(volunteer.Name) || volunteer.Name.Length < 2 || volunteer.Name.Length > 50)
+                throw new BO.BlNotValidException("Incorrect name\n name must have at least 2 letters");
 
-        // בדיקת שם מלא (אורך נדרש)
-        if (string.IsNullOrWhiteSpace(volunteer.Name) || volunteer.Name.Length < 2 || volunteer.Name.Length > 50)
-            throw new BO.BlNotValidException("Incorrect name\n name must have at least 2 letters");
-
-        // בדיקת טלפון סלולרי (אורך ומבנה תקין)
-        if (string.IsNullOrWhiteSpace(volunteer.PhoneNumber) ||
-          !Regex.IsMatch(volunteer.PhoneNumber, @"^\d{10}$"))
-            throw new BO.BlNotValidException("Incorrect phone number\n phone number must have 10 letters and start with 0");
-
-
-        //בדיקת מרחק מרבי(אם קיים)
-        if (volunteer.MaximumDistance != 0 && (!double.TryParse(volunteer.MaximumDistance.ToString(), out double maxDistance) || maxDistance <= 0)) throw new BO.BlNotValidException("Invalid maximum distance.\nThe value must be a positive number.");
-
-        if (string.IsNullOrWhiteSpace(volunteer.Email))
-            throw new BO.BlNotValidException("Incorrect email");
-
-        string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-        if (!Regex.IsMatch(volunteer.Email, emailPattern))
-            throw new BO.BlNotValidException("Incorrect email");
-
-        // בדיקת כתובת מלאה (אורך נדרש אם קיים)
-        if (volunteer.Address != "" && (volunteer.Address.Length < 5 || volunteer.Address.Length > 100) && volunteer.Address != null)
-            throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
+            // בדיקת טלפון סלולרי (אורך ומבנה תקין)
+            if (string.IsNullOrWhiteSpace(volunteer.PhoneNumber) ||
+              !Regex.IsMatch(volunteer.PhoneNumber, @"^\d{10}$"))
+                throw new BO.BlNotValidException("Incorrect phone number\n phone number must have 10 letters and start with 0");
 
 
-        return true;
+            //בדיקת מרחק מרבי(אם קיים)
+            if (volunteer.MaximumDistance != 0 && (!double.TryParse(volunteer.MaximumDistance.ToString(), out double maxDistance) || maxDistance <= 0)) throw new BO.BlNotValidException("Invalid maximum distance.\nThe value must be a positive number.");
+
+            if (string.IsNullOrWhiteSpace(volunteer.Email))
+                throw new BO.BlNotValidException("Incorrect email");
+
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            if (!Regex.IsMatch(volunteer.Email, emailPattern))
+                throw new BO.BlNotValidException("Incorrect email");
+
+            // בדיקת כתובת מלאה (אורך נדרש אם קיים)
+            if (volunteer.Address != "" && (volunteer.Address.Length < 5 || volunteer.Address.Length > 100) && volunteer.Address != null)
+                throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
+
+
+            return true;
+        }
+         
     }
     /// <summary>
     /// A method that checks the logical correctness of all values.
@@ -62,23 +65,26 @@ internal class VolunteerManager
     /// <returns></returns>
     public static bool logicCheckToVolunteer(BO.Volunteer volunteer)
     {
-
-        if (!Tools.IsPasswordGood(volunteer.Password))
-            throw new BO.BlNotValidException("Password too weak \nThe password must contain an uppercase letter, a lowercase letter and 6 digits ");
-
-        //if (!IsValidId(volunteer.Id))
-        //    throw new BO.BlNotValidException("Incorrect ID");
-
-
-        if (!IsValidPhoneNumber(volunteer.PhoneNumber))
+        lock (AdminManager.BlMutex) //stage 7
         {
-            throw new BO.BlNotValidException("Incorrect phone number\n phone number must have 10 letters and start with 0"); // מספר טלפון לא תקין
-        }
-        if (volunteer.Address != "")
-            if (!Tools.AddressExists(volunteer.Address))
-                throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
+            if (!Tools.IsPasswordGood(volunteer.Password))
+                throw new BO.BlNotValidException("Password too weak \nThe password must contain an uppercase letter, a lowercase letter and 6 digits ");
 
-        return true;
+            //if (!IsValidId(volunteer.Id))
+            //    throw new BO.BlNotValidException("Incorrect ID");
+
+
+            if (!IsValidPhoneNumber(volunteer.PhoneNumber))
+            {
+                throw new BO.BlNotValidException("Incorrect phone number\n phone number must have 10 letters and start with 0"); // מספר טלפון לא תקין
+            }
+            if (volunteer.Address != "")
+                if (!Tools.AddressExists(volunteer.Address))
+                    throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
+
+            return true;
+        }
+         
     }
     /// <summary>
     /// A method that checks whether the ID card is valid
@@ -120,6 +126,7 @@ internal class VolunteerManager
     /// <returns></returns>
     private static bool IsValidPhoneNumber(string phoneNumber)
     {
+
         // בדיקה אם המספר ריק, אם הוא לא באורך 10, או אם אינו מתחיל ב-0
         if (string.IsNullOrWhiteSpace(phoneNumber) || phoneNumber.Length != 10 || !phoneNumber.StartsWith("0"))
         {
@@ -143,43 +150,47 @@ internal class VolunteerManager
     /// <returns>BO.CallInProgress or null</returns>
     public static BO.CallInProgress? CreateCallInProgress(int id)
     {
-
-        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
-        IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
-
-
-        if (!assignments.Any())
-            return null;
-
-
-        var latestAssignment = assignments.OrderByDescending(a => a.Id).FirstOrDefault(a => a.AssignmentTotalTime == null);
-
-        if (latestAssignment == null)
-            return null;
-
-        var relatedCall = calls.FirstOrDefault(c => c.Id == latestAssignment.CallId);
-        if (CallManager.GetCallStatus(relatedCall!.Id) != BO.StatusOfCall.InProgress &&
-    CallManager.GetCallStatus(relatedCall.Id) != BO.StatusOfCall.InProgressAtRisk)
+        lock (AdminManager.BlMutex) //stage 7
         {
-            return null;
+            IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+            IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
+
+
+            if (!assignments.Any())
+                return null;
+
+
+            var latestAssignment = assignments.OrderByDescending(a => a.Id).FirstOrDefault();
+
+            if (latestAssignment == null)
+                return null;
+
+            var relatedCall = calls.FirstOrDefault(c => c.Id == latestAssignment.CallId);
+            if (relatedCall == null ||
+                (CallManager.GetCallStatus(relatedCall.Id) != BO.StatusOfCall.InProgress &&
+                 CallManager.GetCallStatus(relatedCall.Id) != BO.StatusOfCall.InProgressAtRisk))
+            {
+                return null;
+            }
+
+            return new BO.CallInProgress
+            {
+                Id = latestAssignment.Id,
+                CallId = latestAssignment.CallId,
+                CallType = (BO.CallType)relatedCall.type,
+                Description = relatedCall.Description,
+                Address = relatedCall.CallAddress,
+                OpeningTime = relatedCall.CallTime,
+                MaxTime = relatedCall.TotalTime,
+                HndalStartTime = latestAssignment.AssignmentTime,
+                DistanceFromVolunteer = Tools.CalculateDistance(
+                    _dal.Volunteer.Read(latestAssignment.VolunteerId),
+                    relatedCall
+                ),
+                status = CallManager.GetCallStatus(relatedCall.Id)
+            };
         }
-
-        return new BO.CallInProgress
-        {
-            Id = latestAssignment.Id,
-            CallId = latestAssignment.CallId,
-            CallType = (BO.CallType)relatedCall.type,
-            Description = relatedCall.Description,
-            Address = relatedCall.CallAddress,
-            OpeningTime = relatedCall.CallTime,
-            MaxTime = relatedCall.TotalTime,
-            HndalStartTime = latestAssignment.AssignmentTime,
-            DistanceFromVolunteer = Tools.CalculateDistance(
-                _dal.Volunteer.Read(latestAssignment.VolunteerId),
-                relatedCall
-            ),
-            status = CallManager.GetCallStatus(relatedCall.Id)
-        };
+        
     }
 
     /// <summary>
@@ -189,9 +200,13 @@ internal class VolunteerManager
     /// <returns>The count of calls handled on time.</returns>
     public static int GetNumOfcheck(int id)
     {
-        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
-        int sum = assignments.Count(a => a.type == DO.CallClosureType.HandledOnTime);
-        return sum;
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+            int sum = assignments.Count(a => a.type == DO.CallClosureType.HandledOnTime);
+            return sum;
+        }
+   
     }
     /// <summary>
     /// Retrieves the total number of calls canceled by the volunteer themselves.
@@ -200,9 +215,13 @@ internal class VolunteerManager
     /// <returns>The count of self-canceled calls.</returns>
     public static int GetNumOfSellfCancellation(int id)
     {
-        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
-        int sum = assignments.Count(a => a.type == DO.CallClosureType.SelfCancellation);
-        return sum;
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+            int sum = assignments.Count(a => a.type == DO.CallClosureType.SelfCancellation);
+            return sum;
+        }
+           
     }
     /// <summary>
     /// Retrieves the total number of expired calls associated with a volunteer.
@@ -211,9 +230,13 @@ internal class VolunteerManager
     /// <returns>The count of expired calls.</returns>
     public static int GetNumOfExpired(int id)
     {
-        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
-        int sum = assignments.Count(a => a.type == DO.CallClosureType.ExpiredCancellation);
-        return sum;
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+            int sum = assignments.Count(a => a.type == DO.CallClosureType.ExpiredCancellation);
+            return sum;
+        }
+           
     }
     /// <summary>
     /// A function that receives an id if there is no call in its handling - will return a value of None, otherwise it will return the CallType
@@ -222,22 +245,26 @@ internal class VolunteerManager
     /// <returns></returns>
     public static BO.CallType GetCurrentCallType(int volunteerId)
     {
-        // שליפת כל המשימות של המתנדב
-        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == volunteerId);
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            // שליפת כל המשימות של המתנדב
+            IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == volunteerId);
 
-        // מציאת הקריאה הנוכחית (פעילה)
-        var currentAssignment = assignments
-            .Where(a => CallManager.GetCallStatus(a.CallId) is BO.StatusOfCall.InProgress or BO.StatusOfCall.Open or BO.StatusOfCall.OpenAtRisk)
-            .OrderByDescending(a => a.AssignmentTime) // הכי עדכנית
-            .FirstOrDefault();
+            // מציאת הקריאה הנוכחית (פעילה)
+            var currentAssignment = assignments
+                .Where(a => CallManager.GetCallStatus(a.CallId) is BO.StatusOfCall.InProgress or BO.StatusOfCall.Open or BO.StatusOfCall.OpenAtRisk)
+                .OrderByDescending(a => a.AssignmentTime) // הכי עדכנית
+                .FirstOrDefault();
 
-        // אם אין משימה פעילה
-        if (currentAssignment == null)
-            return BO.CallType.None;
+            // אם אין משימה פעילה
+            if (currentAssignment == null)
+                return BO.CallType.None;
 
-        // מציאת הקריאה התואמת
-        var call = _dal.Call.Read(currentAssignment.CallId);
-        return call != null ? (BO.CallType)call.type : BO.CallType.None;
+            // מציאת הקריאה התואמת
+            var call = _dal.Call.Read(currentAssignment.CallId);
+            return call != null ? (BO.CallType)call.type : BO.CallType.None;
+        }
+       
     }
     /// <summary>
     /// Returns the CallId of the most recent open or active call for a given volunteer.
@@ -247,21 +274,25 @@ internal class VolunteerManager
     /// <returns>The CallId of the most recent open or active call, or null if none exists.</returns>
     public static int? GetOpenCallId(int volunteerId)
     {
-        // Retrieve all assignments for the volunteer
-        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == volunteerId);
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            // Retrieve all assignments for the volunteer
+            IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == volunteerId);
 
-        // Find the most recent (active) call
-        var currentAssignment = assignments
-            .Where(a => CallManager.GetCallStatus(a.CallId) is BO.StatusOfCall.InProgress or BO.StatusOfCall.InProgressAtRisk)
-            .OrderByDescending(a => a.AssignmentTime) // Most recent assignment
-            .FirstOrDefault();
+            // Find the most recent (active) call
+            var currentAssignment = assignments
+                .Where(a => CallManager.GetCallStatus(a.CallId) is BO.StatusOfCall.InProgress or BO.StatusOfCall.InProgressAtRisk)
+                .OrderByDescending(a => a.AssignmentTime) // Most recent assignment
+                .FirstOrDefault();
 
-        // If no active assignment is found
-        if (currentAssignment == null)
-            return null;  // Alternatively, you could return another value, such as "" or a message like "No open call found"
+            // If no active assignment is found
+            if (currentAssignment == null)
+                return null;  // Alternatively, you could return another value, such as "" or a message like "No open call found"
 
-        // If an active assignment exists, return its CallId
-        return currentAssignment.CallId;
+            // If an active assignment exists, return its CallId
+            return currentAssignment.CallId;
+        }
+             
     }
     /// <summary>
     /// Determines whether a volunteer can be deleted based on their current and past assignments.
@@ -272,22 +303,81 @@ internal class VolunteerManager
     /// </returns>
     public static bool CanDeleted(int id)
     {
+        lock (AdminManager.BlMutex) //stage 7
+        {
+            // שליפת כל המשימות של המתנדב
+            IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
 
-        // שליפת כל המשימות של המתנדב
-        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == id);
+            // בדיקה אם המתנדב מטפל כרגע או טיפל בעבר בכל קריאה
+            bool hasActiveOrPastAssignments = assignments.Any(a =>
+                CallManager.GetCallStatus(a.CallId) == BO.StatusOfCall.InProgress ||
+                 CallManager.GetCallStatus(a.CallId) == BO.StatusOfCall.InProgressAtRisk ||
+                CallManager.GetCallStatus(a.CallId) == BO.StatusOfCall.Open);
 
-        // בדיקה אם המתנדב מטפל כרגע או טיפל בעבר בכל קריאה
-        bool hasActiveOrPastAssignments = assignments.Any(a =>
-            CallManager.GetCallStatus(a.CallId) == BO.StatusOfCall.InProgress ||
-             CallManager.GetCallStatus(a.CallId) == BO.StatusOfCall.InProgressAtRisk ||
-            CallManager.GetCallStatus(a.CallId) == BO.StatusOfCall.Open);
+            // אם יש משימה פעילה או קריאה שטופלה בעבר, לא ניתן למחוק
+            if (hasActiveOrPastAssignments)
+                return false;
 
-        // אם יש משימה פעילה או קריאה שטופלה בעבר, לא ניתן למחוק
-        if (hasActiveOrPastAssignments)
-            return false;
-
-        // אם לא נמצאו משימות פעילה, אפשר למחוק
-        return true;
+            // אם לא נמצאו משימות פעילה, אפשר למחוק
+            return true;
+        }
+             
     }
+
+
+    private static readonly Random s_rand = new();
+    private static int s_simulatorCounter = 0;
+
+    internal static void SimulateVolunteers() //stage 7
+    {
+        Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
+
+        LinkedList<int> volunteersToUpdate = new(); //stage 7
+        List<DO.Volunteer> doVolunteersList;
+
+        lock (AdminManager.BlMutex) //stage 7
+            doVolunteersList = _dal.Volunteer.ReadAll(st => st.IsActive == true).ToList();
+
+        foreach (var doVolunteer in doVolunteersList)
+        {
+          
+            int studentId = 0;
+            lock (AdminManager.BlMutex) //stage 7
+            {
+                BO.CallInProgress? studentYear = CreateCallInProgress(doVolunteer.Id);
+
+                //the above method, includes network requests to compute the distances
+                //between courses address and current student address
+                //these network requests are done synchronically
+                var coursesNotRegistered = CallManager.GetUnRegisteredCoursesForStudent(doVolunteer.Id, studentYear);
+
+                int cntNotRegCourses = coursesNotRegistered.Count();
+                if (studentYear == null)
+                {
+                    int courseId = coursesNotRegistered.Skip(s_rand.Next(0, cntNotRegCourses)).First()!.Id;
+                    CallManager.chusing(doVolunteer.Id, courseId);
+                    studentId = doVolunteer.Id;
+                }
+
+                //simulate setting grade of course for selected student
+                var coursesRegistered =
+                    _dal.Call.ReadAll(course => LinkManager.IsStudentLinkedToCourse(doVolunteer.Id, course.Id) && course.InYear == (DO.Year)studentYear);
+                int cntRegCourses = coursesRegistered.Count();
+                if (cntRegCourses != 0)
+                {
+                    int courseId = coursesRegistered.Skip(s_rand.Next(0, cntRegCourses)).First()!.Id;
+                    LinkManager.UpdateCourseGradeForStudent(doVolunteer.Id, courseId, Math.Round(s_rand.NextDouble() * 100, 2));
+                    studentId = doVolunteer.Id;
+                }
+
+                if (studentId != 0)
+                    volunteersToUpdate.AddLast(doVolunteer.Id);
+            } //lock
+        }
+
+        foreach (int id in volunteersToUpdate)
+            Observers.NotifyItemUpdated(id);
+    }
+
 }
 
