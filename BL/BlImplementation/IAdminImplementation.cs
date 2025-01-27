@@ -59,13 +59,8 @@ internal class IAdminImplementation : IAdmin
     /// Retrieves the current system clock time from the database.
     /// </summary>
     /// <returns>The current system clock time.</returns>
-    public DateTime GetClock()
-    {
-        lock (AdminManager.BlMutex) //stage 7
-            return AdminManager.Now;
-    }  
-
-
+    public DateTime GetClock()=> AdminManager.Now;
+    
 
     /// <summary>
     /// Sets the maximum risk range (TimeSpan) in the database.
@@ -82,11 +77,8 @@ internal class IAdminImplementation : IAdmin
     /// Retrieves the maximum risk range (TimeSpan) from the database.
     /// </summary>
     /// <returns>The maximum risk range.</returns>
-    public TimeSpan GetMaxRange()
-    {
-        lock (AdminManager.BlMutex)//stage 7
-            return AdminManager.MaxRange;
-    }
+    public TimeSpan GetMaxRange()=> AdminManager.MaxRange;
+   
 
 
     /// <summary>
