@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Volunteer
 {
@@ -47,15 +48,15 @@ namespace PL.Volunteer
         public static readonly DependencyProperty SelectedCallProperty =
             DependencyProperty.Register("SelectedCall", typeof(BO.OpenCallInList), typeof(CallTreatmentWindow), new PropertyMetadata(null));
 
-       
+
 
         //public BO.OpenCallInList SelectedCall { get; set; }
 
-        public BO.CallType? typeOfCall { get; set; }= BO.CallType.No_Filter;
+        public BO.CallType? typeOfCall { get; set; } = BO.CallType.No_Filter;
 
         private void BtCooseCall_Click(object sender, RoutedEventArgs e)
         {
-            try 
+            try
             {
                 s_bl.Call.ChoosingCallForHandling(UserId, SelectedCall.Id);
                 MessageBox.Show("Call was chosen successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -72,32 +73,28 @@ namespace PL.Volunteer
 
         private void queryOpenCallsList()
         => OpenCallsList = (typeOfCall == BO.CallType.No_Filter) ?
-          s_bl?.Call.GetOpenCallsForVolunteer(UserId, null, null)! : s_bl?.Call.GetOpenCallsForVolunteer(UserId,  typeOfCall,null)!;
+          s_bl?.Call.GetOpenCallsForVolunteer(UserId, null, null)! : s_bl?.Call.GetOpenCallsForVolunteer(UserId, typeOfCall, null)!;
 
 
+
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
         /// <summary>
         /// Observes changes to the call list and updates the screen.
         /// </summary>
         private void CallListObserver()
-            => queryOpenCallsList();
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() => queryOpenCallsList());
+        }
 
-        //private void SelectedCallObserver()
-        //{
 
-        //    int id = SelectedCall.Id;
-        //    SelectedCall = null;
-        //    SelectedCall = s_bl.Call.GetCallDetails(id);
-
-        //}
 
         /// <summary>
         /// Registers the observer for call list updates when the window loads.
         /// </summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
-           =>s_bl.Call.AddObserver(CallListObserver);
-          //s_bl.Call.AddObserver(SelectedCall.Id, SelectedCallObserver);
+           => s_bl.Call.AddObserver(CallListObserver);
 
-        
 
 
         /// <summary>
@@ -111,6 +108,6 @@ namespace PL.Volunteer
             queryOpenCallsList();
         }
 
-     
+
     }
 }

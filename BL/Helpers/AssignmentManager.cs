@@ -1,5 +1,6 @@
 ﻿
 
+using BlImplementation;
 using BO;
 using DalApi;
 using DO;
@@ -216,6 +217,12 @@ internal class AssignmentManager
     //    return GetCallAssignList(doCallId).OrderByDescending(Assin => Assin.HndalStartTime).First();
 
     //}
+
+
+
+
+
+
 
 
 

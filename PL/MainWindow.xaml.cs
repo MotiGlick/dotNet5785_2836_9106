@@ -1,4 +1,5 @@
-﻿using PL.Call;
+﻿using BlApi;
+using PL.Call;
 using PL.Volunteer;
 using System.Media;
 using System.Text;
@@ -20,6 +21,8 @@ namespace PL
     public partial class MainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+   
 
         int UserId { get; set; }
         public MainWindow(int userId)
@@ -105,8 +108,9 @@ namespace PL
             MaxYearRange = s_bl.Admin.GetMaxRange();
             s_bl.Admin.AddClockObserver(ClockObserver);
             s_bl.Admin.AddConfigObserver(ConfigObserver);
-            
 
+            Button fakeButton = new Button();
+            btnSimulator_Click(fakeButton, null);
         }
 
         private void MainWindow_Closed(object sender, EventArgs e)
@@ -206,5 +210,48 @@ namespace PL
         {
             new CallInListWindow(UserId).Show();
         }
+
+
+        #region Simulator
+
+        public int Interval { get; set; } = 20000;
+
+
+        public bool IsSimlatorRuning
+        {
+            get { return (bool)GetValue(IsSimlatorRuningProperty); }
+            set { SetValue(IsSimlatorRuningProperty, value); }
+        }
+        public static readonly DependencyProperty IsSimlatorRuningProperty =
+            DependencyProperty.Register("IsSimlatorRuning", typeof(bool), typeof(MainWindow), new FrameworkPropertyMetadata(false));
+
+        public string btSimlatorText
+        {
+            get { return (string)GetValue(btSimlatorTextProperty); }
+            set { SetValue(btSimlatorTextProperty, value); }
+        }
+        public static readonly DependencyProperty btSimlatorTextProperty =
+            DependencyProperty.Register("btSimlatorText", typeof(string), typeof(MainWindow));
+
+
+        private void btnSimulator_Click(object sender, RoutedEventArgs e)
+        {
+            if(!IsSimlatorRuning)
+            {
+                IsSimlatorRuning=true;
+             // s_bl.Admin.StartSimulator(Interval); //stage 7
+                btSimlatorText = "Start simlator";
+            }
+            else
+            {
+                IsSimlatorRuning = false;
+               // s_bl.Admin.StopSimulator(Interval); //stage 7
+                btSimlatorText = "Stop simlator";
+
+            }
+            
+        }
+
+        #endregion Simulator
     }
 } 
