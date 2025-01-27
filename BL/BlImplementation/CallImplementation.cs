@@ -34,37 +34,37 @@ internal class CallImplementation : BlApi.ICall
     public void AddCall(BO.Call boCall)//#
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
-        lock (AdminManager.BlMutex) //stage 7
+
+        try
         {
-            try
-            {
 
-                if (CallManager.LogicalCheck(boCall))
+            if (CallManager.LogicalCheck(boCall))
+                lock (AdminManager.BlMutex) //stage 7
                     _dal.Call.Create(
-                        new(
-                        boCall.Id,
-                        (DO.CallType)boCall.CallType,
-                        boCall.Address,
-                        boCall.Description,
-                        Tools.GetLatitude(boCall.Address),
-                        Tools.GetLongitude(boCall.Address),
-                        boCall.OpeningTime,
-                        boCall.MaxTime
-                        ));
-                CallManager.Observers.NotifyListUpdated(); //stage 5
+                    new(
+                    boCall.Id,
+                    (DO.CallType)boCall.CallType,
+                    boCall.Address,
+                    boCall.Description,
+                    Tools.GetLatitude(boCall.Address),
+                    Tools.GetLongitude(boCall.Address),
+                    boCall.OpeningTime,
+                    boCall.MaxTime
+                    ));
+            CallManager.Observers.NotifyListUpdated(); //stage 5
 
-            }
-            catch (BO.BlNotValidException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw new BO.BlAlreadyExistsException($"Call with ID={boCall.Id} already exists", ex);
-
-            }
         }
-        
+        catch (BO.BlNotValidException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new BO.BlAlreadyExistsException($"Call with ID={boCall.Id} already exists", ex);
+
+        }
+
+
     }
 
 
@@ -89,7 +89,7 @@ internal class CallImplementation : BlApi.ICall
 
             return result;
         }
-        
+
     }
 
     /// <summary>
@@ -102,40 +102,45 @@ internal class CallImplementation : BlApi.ICall
     public void CancelHandling(int volunteerId, int assignmentId)//#
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+
+        DO.Volunteer doVolunteer;
         lock (AdminManager.BlMutex) //stage 7
+            doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
+        DO.Assignment doAssignment;
+        lock (AdminManager.BlMutex) //stage 7
+            doAssignment = _dal.Assignment.Read(assignmentId) ?? throw new BO.BlDoesNotExistException($"Assignmen with ID={assignmentId}  does not exists");
+
+
+        if ((doAssignment.VolunteerId == volunteerId || doVolunteer.duty == DO.job.manager)
+            && (CallManager.GetCallStatus(doAssignment.CallId) == BO.StatusOfCall.InProgressAtRisk
+            || CallManager.GetCallStatus(doAssignment.CallId) == BO.StatusOfCall.InProgress))
         {
-            DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
-            DO.Assignment doAssignment = _dal.Assignment.Read(assignmentId) ?? throw new BO.BlDoesNotExistException($"Assignmen with ID={assignmentId}  does not exists");
-
-
-            if ((doAssignment.VolunteerId == volunteerId || doVolunteer.duty == DO.job.manager)
-                && (CallManager.GetCallStatus(doAssignment.CallId) == BO.StatusOfCall.InProgressAtRisk
-                || CallManager.GetCallStatus(doAssignment.CallId) == BO.StatusOfCall.InProgress))
+            try
             {
-                try
-                {
-                    // Update assignment with cancellation closure type based on who cancels
-                    if (doAssignment.VolunteerId == volunteerId)
+                // Update assignment with cancellation closure type based on who cancels
+                if (doAssignment.VolunteerId == volunteerId)
+                    lock (AdminManager.BlMutex) //stage 7
                         _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.SelfCancellation));
-                    else
+                else
+                    lock (AdminManager.BlMutex) //stage 7
                         _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.ManagerCancellation));
 
-                    CallManager.Observers.NotifyItemUpdated(doAssignment.CallId);  //stage 5
-                    CallManager.Observers.NotifyListUpdated();  //stage 5
-                    VolunteerManager.Observers.NotifyItemUpdated(volunteerId);  //stage 5
-                }
-                catch (Exception ex)
-                {
-                    throw new BO.BlDoesNotExistException($"Assignment with ID={assignmentId} does Not exist", ex);
-                }
-
+                CallManager.Observers.NotifyItemUpdated(doAssignment.CallId);  //stage 5
+                CallManager.Observers.NotifyListUpdated();  //stage 5
+                VolunteerManager.Observers.NotifyItemUpdated(volunteerId);  //stage 5
             }
-            else
+            catch (Exception ex)
             {
-                throw new BO.BlNotAlowedException($"Volunteer with ID={volunteerId} is not allow to cancel Assignment with ID={assignmentId}");
+                throw new BO.BlDoesNotExistException($"Assignment with ID={assignmentId} does Not exist", ex);
             }
+
         }
-        
+        else
+        {
+            throw new BO.BlNotAlowedException($"Volunteer with ID={volunteerId} is not allow to cancel Assignment with ID={assignmentId}");
+        }
+
+
     }
 
 
@@ -149,27 +154,31 @@ internal class CallImplementation : BlApi.ICall
     public void ChoosingCallForHandling(int volunteerId, int callId)//#
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+
+        DO.Volunteer doVolunteer;
         lock (AdminManager.BlMutex) //stage 7
+            doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
+        DO.Call doCall;
+        lock (AdminManager.BlMutex) //stage 7
+            doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId}  does not exists");
+
+        if (CallManager.GetCallStatus(callId) != BO.StatusOfCall.Open && CallManager.GetCallStatus(callId) != BO.StatusOfCall.OpenAtRisk)
+            throw new BlNotAlowedException($"Call with ID={callId} does not open for hanling");
+
+
+        // Create an assignment for the volunteer and call
+        else
         {
-            DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
-            DO.Call doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId}  does not exists");
-
-            if (CallManager.GetCallStatus(callId) != BO.StatusOfCall.Open && CallManager.GetCallStatus(callId) != BO.StatusOfCall.OpenAtRisk)
-                throw new BlNotAlowedException($"Call with ID={callId} does not open for hanling");
-
-
-            // Create an assignment for the volunteer and call
-            else
-            {
+            lock (AdminManager.BlMutex) //stage 7
                 _dal.Assignment.Create(new(0, callId, volunteerId, AdminManager.Now, null, null));
 
-                CallManager.Observers.NotifyItemUpdated(callId); //stage 5
-                BO.Call doCaljl = GetCallDetails(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId}  does not exists");
-                VolunteerManager.Observers.NotifyItemUpdated(volunteerId); //stage 6
-                CallManager.Observers.NotifyListUpdated(); //stage 6
-            }
+            CallManager.Observers.NotifyItemUpdated(callId); //stage 5
+            BO.Call doCaljl = GetCallDetails(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId}  does not exists");
+            VolunteerManager.Observers.NotifyItemUpdated(volunteerId); //stage 6
+            CallManager.Observers.NotifyListUpdated(); //stage 6
         }
-        
+
+
 
     }
 
@@ -183,22 +192,22 @@ internal class CallImplementation : BlApi.ICall
     public void DeleteCall(int callId)//#
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+
+        DO.Call doCall;//    
         lock (AdminManager.BlMutex) //stage 7
+            doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist");//Exception 
+                                                                                                                             // Check if there are no assignments and call is open or open-at-risk
+        if (AssignmentManager.GetCallAssignList(callId).Count == 0 &&
+           (CallManager.GetCallStatus(callId) == BO.StatusOfCall.Open ||
+            CallManager.GetCallStatus(callId) == BO.StatusOfCall.OpenAtRisk))
         {
-            DO.Call doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist");//Exception    
-                                                                                                                                     // Check if there are no assignments and call is open or open-at-risk
-            if (AssignmentManager.GetCallAssignList(callId).Count == 0 &&
-               (CallManager.GetCallStatus(callId) == BO.StatusOfCall.Open ||
-                CallManager.GetCallStatus(callId) == BO.StatusOfCall.OpenAtRisk))
-            {
+            lock (AdminManager.BlMutex) //stage 7
                 _dal.Call.Delete(callId);
-                CallManager.Observers.NotifyListUpdated(); //stage 5
-            }
-
-            else
-                throw new BO.BlNotAlowedException($"Call with ID={callId} is not allow to delete");
-
+            CallManager.Observers.NotifyListUpdated(); //stage 5
         }
+
+        else
+            throw new BO.BlNotAlowedException($"Call with ID={callId} is not allow to delete");
 
     }
 
@@ -214,8 +223,12 @@ internal class CallImplementation : BlApi.ICall
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7 
 
-        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
-        DO.Assignment doAssignment = _dal.Assignment.Read(assignmentId) ?? throw new BO.BlDoesNotExistException($"Call with ID={assignmentId}  does not exists");
+        DO.Volunteer doVolunteer;
+        lock (AdminManager.BlMutex) //stage 7
+            doVolunteer = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteerId} does not exists");
+        DO.Assignment doAssignment;
+        lock (AdminManager.BlMutex) //stage 7
+            doAssignment = _dal.Assignment.Read(assignmentId) ?? throw new BO.BlDoesNotExistException($"Call with ID={assignmentId}  does not exists");
 
         if (doAssignment.VolunteerId == volunteerId
            && (CallManager.GetCallStatus(doAssignment.CallId) != BO.StatusOfCall.InProgress
@@ -224,7 +237,8 @@ internal class CallImplementation : BlApi.ICall
             try
             {
                 // Update assignment status to "HandledOnTime"
-                _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.HandledOnTime));
+                lock (AdminManager.BlMutex) //stage 7
+                    _dal.Assignment.Update(new(assignmentId, doAssignment.CallId, doAssignment.VolunteerId, doAssignment.AssignmentTime, AdminManager.Now, DO.CallClosureType.HandledOnTime));
 
                 CallManager.Observers.NotifyListUpdated(); //stage 5
                 CallManager.Observers.NotifyItemUpdated(doAssignment.CallId); //stage 5
@@ -255,7 +269,9 @@ internal class CallImplementation : BlApi.ICall
     {
 
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7 
-        DO.Call doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist");//Exception
+        DO.Call doCall;
+        lock (AdminManager.BlMutex) //stage 7
+            doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist");//Exception
 
         return new BO.Call
         {
@@ -328,7 +344,7 @@ internal class CallImplementation : BlApi.ICall
           });
             return listOfCalls;
         }
-            
+
     }
 
 
@@ -370,7 +386,7 @@ internal class CallImplementation : BlApi.ICall
                 _ => call.Id
             }));
         }
-            
+
 
     }
 
@@ -427,41 +443,41 @@ internal class CallImplementation : BlApi.ICall
     public void UpdateCallDetails(BO.Call boCall)//#
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
-        lock (AdminManager.BlMutex) // stage 7
+
+
+        try
         {
+            // Validate the call using the LogicalCheck method from CallManager
+            if (CallManager.LogicalCheck(boCall))
+                //throw new BO.BlNotValidException("Call is not valid");
 
-            try
-            {
-                // Validate the call using the LogicalCheck method from CallManager
-                if (CallManager.LogicalCheck(boCall))
-                    //throw new BO.BlNotValidException("Call is not valid");
-
-                    // Update the call in the data layer
+                // Update the call in the data layer
+                lock (AdminManager.BlMutex) // stage 7
                     _dal.Call.Update(
-                        new
-                        (
-                           boCall.Id,
-                           (DO.CallType)boCall.CallType,
-                           boCall.Address,
-                           boCall.Description,
-                           Tools.GetLatitude(boCall.Address),
-                           Tools.GetLongitude(boCall.Address),
-                           boCall.OpeningTime,
-                           boCall.MaxTime
-                        ));
-                CallManager.Observers.NotifyItemUpdated(boCall.Id);  //stage 5
-                CallManager.Observers.NotifyListUpdated();  //stage 5
+                    new
+                    (
+                       boCall.Id,
+                       (DO.CallType)boCall.CallType,
+                       boCall.Address,
+                       boCall.Description,
+                       Tools.GetLatitude(boCall.Address),
+                       Tools.GetLongitude(boCall.Address),
+                       boCall.OpeningTime,
+                       boCall.MaxTime
+                    ));
+            CallManager.Observers.NotifyItemUpdated(boCall.Id);  //stage 5
+            CallManager.Observers.NotifyListUpdated();  //stage 5
 
-            }
-            catch (BO.BlNotValidException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw new BO.BlAlreadyExistsException($"Volunteer with ID={boCall.Id} already exists", ex);
-            }
         }
+        catch (BO.BlNotValidException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boCall.Id} already exists", ex);
+        }
+
     }
 
     #endregion Stage 4

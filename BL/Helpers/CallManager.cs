@@ -31,22 +31,21 @@ internal class CallManager
     /// </returns>
     public static bool LogicalCheck(BO.Call boCall)//#
     {
-        lock (AdminManager.BlMutex) //stage 7
-        {
-            if (boCall.Address.Length < 5 || boCall.Address.Length > 100)
-                throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
 
-            if (!Tools.AddressExists(boCall.Address))
-                throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
+        if (boCall.Address.Length < 5 || boCall.Address.Length > 100)
+            throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
 
-            if (boCall.MaxTime != null)
-                if (boCall.MaxTime <= boCall.OpeningTime)
-                    throw new BO.BlNotValidException("Invalid date");
+        if (!Tools.AddressExists(boCall.Address))
+            throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
+
+        if (boCall.MaxTime != null)
+            if (boCall.MaxTime <= boCall.OpeningTime)
+                throw new BO.BlNotValidException("Invalid date");
 
 
-            return true;
-        }
-         
+        return true;
+
+
     }
 
 
@@ -93,7 +92,7 @@ internal class CallManager
 
             return BO.StatusOfCall.InProgress;
         }
-           
+
     }
 
 
@@ -127,7 +126,7 @@ internal class CallManager
 
             return null;
         }
-            
+
     }
 
 }

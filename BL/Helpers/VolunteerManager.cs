@@ -126,6 +126,7 @@ internal class VolunteerManager
     /// <returns></returns>
     private static bool IsValidPhoneNumber(string phoneNumber)
     {
+
         // בדיקה אם המספר ריק, אם הוא לא באורך 10, או אם אינו מתחיל ב-0
         if (string.IsNullOrWhiteSpace(phoneNumber) || phoneNumber.Length != 10 || !phoneNumber.StartsWith("0"))
         {
@@ -322,5 +323,61 @@ internal class VolunteerManager
         }
              
     }
+
+
+    private static readonly Random s_rand = new();
+    private static int s_simulatorCounter = 0;
+
+    internal static void SimulateVolunteers() //stage 7
+    {
+        Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
+
+        LinkedList<int> volunteersToUpdate = new(); //stage 7
+        List<DO.Volunteer> doVolunteersList;
+
+        lock (AdminManager.BlMutex) //stage 7
+            doVolunteersList = _dal.Volunteer.ReadAll(st => st.IsActive == true).ToList();
+
+        foreach (var doVolunteer in doVolunteersList)
+        {
+          
+            int studentId = 0;
+            lock (AdminManager.BlMutex) //stage 7
+            {
+                BO.CallInProgress? studentYear = CreateCallInProgress(doVolunteer.Id);
+
+                //the above method, includes network requests to compute the distances
+                //between courses address and current student address
+                //these network requests are done synchronically
+                var coursesNotRegistered = CallManager.GetUnRegisteredCoursesForStudent(doVolunteer.Id, studentYear);
+
+                int cntNotRegCourses = coursesNotRegistered.Count();
+                if (studentYear == null)
+                {
+                    int courseId = coursesNotRegistered.Skip(s_rand.Next(0, cntNotRegCourses)).First()!.Id;
+                    CallManager.chusing(doVolunteer.Id, courseId);
+                    studentId = doVolunteer.Id;
+                }
+
+                //simulate setting grade of course for selected student
+                var coursesRegistered =
+                    _dal.Call.ReadAll(course => LinkManager.IsStudentLinkedToCourse(doVolunteer.Id, course.Id) && course.InYear == (DO.Year)studentYear);
+                int cntRegCourses = coursesRegistered.Count();
+                if (cntRegCourses != 0)
+                {
+                    int courseId = coursesRegistered.Skip(s_rand.Next(0, cntRegCourses)).First()!.Id;
+                    LinkManager.UpdateCourseGradeForStudent(doVolunteer.Id, courseId, Math.Round(s_rand.NextDouble() * 100, 2));
+                    studentId = doVolunteer.Id;
+                }
+
+                if (studentId != 0)
+                    volunteersToUpdate.AddLast(doVolunteer.Id);
+            } //lock
+        }
+
+        foreach (int id in volunteersToUpdate)
+            Observers.NotifyItemUpdated(id);
+    }
+
 }
 
