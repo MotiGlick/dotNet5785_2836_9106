@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Windows;
 using BO;
+using System.Windows.Threading;
 
 namespace PL.Volunteer
 {
@@ -10,6 +11,8 @@ namespace PL.Volunteer
     /// </summary>
     public partial class VolunteerWindow : Window
     {
+
+
 
         /// <summary>
         /// Button text indicating whether the action is "Add" or "Update".
@@ -75,15 +78,9 @@ namespace PL.Volunteer
         public static readonly DependencyProperty CurrentVolunteerProperty =
             DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindow), new PropertyMetadata(null));
 
-        /// <summary>
-        /// Represents the volunteer's  duty.
-        /// </summary>
-        //public BO.job duty { get; set; } = BO.job.volunteer;
 
-        ///// <summary>
-        ///// Represents the distance type for the volunteer.
-        ///// </summary>
-        //public BO.DistanceType distanceType { get; set; } = BO.DistanceType.car;
+
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
 
         /// <summary>
         /// Updates the CurrentVolunteer by getting the data from the business logic layer.
@@ -91,9 +88,14 @@ namespace PL.Volunteer
         private void VolunteerObserver()
         {
 
-            int id = CurrentVolunteer!.Id;
-            CurrentVolunteer = null;
-            CurrentVolunteer = s_bl.Volunteer.Read(id);
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    int id = CurrentVolunteer!.Id;
+                    CurrentVolunteer = null;
+                    CurrentVolunteer = s_bl.Volunteer.Read(id);
+                });
+           
 
         }
 
