@@ -103,7 +103,7 @@ internal class CallManager
     /// <returns>The total handling time as a <see cref="TimeSpan"/>, or null if no assignment exists.</returns>
     public static TimeSpan? GetHandlingTime(int callId)
     {
-        lock (AdminManager.BlMutex) //stage 7
+        //lock (AdminManager.BlMutex) //stage 7
             return AssignmentManager.GetLastAssingment(callId)?.AssignmentTotalTime - AssignmentManager.GetLastAssingment(callId)?.AssignmentTime;
         // return _dal.Call.Read(callId)?.TotalTime - _dal.Call.Read(callId)?.CallTime;
 

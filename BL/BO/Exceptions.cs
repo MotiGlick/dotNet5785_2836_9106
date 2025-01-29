@@ -48,3 +48,11 @@ public class BlNotAlowedException : Exception
 {
     public BlNotAlowedException(string? message) : base(message) { }
 }
+
+
+[Serializable]
+public class BLTemporaryNotAvailableException : Exception
+{
+    public BLTemporaryNotAvailableException(string? message) : base(message) { }
+}
+

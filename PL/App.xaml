@@ -27,9 +27,10 @@
 
         <local:BooleanToWidthSecondeConverter x:Key="BooleanToWidthSecondeConverterKey" />
         <local:IdToEmptyStringConverter x:Key="IdToEmptyStringConverterKey" />
+        <local:ArrayCountConverter x:Key="ArrayCountConverterKey" />
 
 
-
+       
 
     </Application.Resources>
     

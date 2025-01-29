@@ -1,4 +1,5 @@
 ﻿using BO;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.IO;
+
 
 namespace PL.Volunteer
 {
@@ -93,7 +96,12 @@ namespace PL.Volunteer
         /// Registers the observer for call list updates when the window loads.
         /// </summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
-           => s_bl.Call.AddObserver(CallListObserver);
+        {
+
+            UpdateMap();
+            s_bl.Call.AddObserver(CallListObserver);
+
+        }
 
 
 
@@ -108,6 +116,129 @@ namespace PL.Volunteer
             queryOpenCallsList();
         }
 
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateMap();
+        }
+
+
+        private async void UpdateMap()
+        {
+            string originAddress = s_bl.Volunteer.Read(UserId).Address;
+            string destinationAddress = SelectedCall?.Address;
+
+            if (!string.IsNullOrEmpty(originAddress) && !string.IsNullOrEmpty(destinationAddress))
+            {
+                // יצירת HTML מותאם אישית
+                string mapHtml = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Custom Google Map</title>
+    <script src='https://maps.googleapis.com/maps/api/js?key=***API_KEY_REMOVED***&libraries=places,directions'></script>
+    <style>
+        #map {{
+            height: 100%;
+            width: 100%;
+        }}
+        html, body {{
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }}
+    </style>
+</head>
+<body>
+    <div id='map'></div>
+    <script>
+        function initMap() {{
+            const map = new google.maps.Map(document.getElementById('map'), {{
+                zoom: 10,
+                center: {{ lat: 31.7683, lng: 35.2137 }} // נקודת התחלה זמנית
+            }});
+
+            const geocoder = new google.maps.Geocoder();
+            const directionsService = new google.maps.DirectionsService();
+            const directionsRenderer = new google.maps.DirectionsRenderer({{
+                suppressMarkers: true // מניעת סימונים כפולים
+            }});
+            directionsRenderer.setMap(map);
+
+            // אייקונים מותאמים אישית
+            const originIcon = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'; // כחול - מיקום נוכחי
+            const destinationIcon = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'; // אדום - יעד
+
+            geocoder.geocode({{ address: '{originAddress}' }}, function(results, status) {{
+                if (status === 'OK') {{
+                    const origin = results[0].geometry.location;
+                    new google.maps.Marker({{
+                        position: origin,
+                        map: map,
+                        title: 'Your Location',
+                        icon: originIcon
+                    }});
+
+                    geocoder.geocode({{ address: '{destinationAddress}' }}, function(results, status) {{
+                        if (status === 'OK') {{
+                            const destination = results[0].geometry.location;
+                            new google.maps.Marker({{
+                                position: destination,
+                                map: map,
+                                title: 'Destination',
+                                icon: destinationIcon
+                            }});
+
+                            // יצירת מסלול
+                            directionsService.route({{
+                                origin: origin,
+                                destination: destination,
+                                travelMode: google.maps.TravelMode.DRIVING
+                            }}, function(response, status) {{
+                                if (status === 'OK') {{
+                                    directionsRenderer.setDirections(response);
+                                }} else {{
+                                    alert('Path not found: ' + status);
+                                }}
+                            }});
+                        }} else {{
+                            alert('Address not found: ' + status);
+                        }}
+                    }});
+                }} else {{
+                    alert('Address not found: ' + status);
+                }}
+            }});
+        }}
+        window.onload = initMap;
+    </script>
+</body>
+</html>";
+
+                // כתיבת HTML לקובץ זמני
+                string filePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "map.html");
+                System.IO.File.WriteAllText(filePath, mapHtml);
+
+                // טעינת ה-HTML ב-WebView2
+                if (MapBrowser != null)
+                {
+                    await MapBrowser.EnsureCoreWebView2Async();
+                    MapBrowser.Source = new Uri("about:blank"); // מנקה קודם
+                    MapBrowser.Source = new Uri(filePath); // טוען מחדש
+                }
+            }
+            else
+            {
+                if (MapBrowser != null)
+                {
+                    await MapBrowser.EnsureCoreWebView2Async();
+                    MapBrowser.Source = new Uri("about:blank");
+                }
+            }
+        }
 
     }
+
+
+
 }
+

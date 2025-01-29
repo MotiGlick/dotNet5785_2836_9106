@@ -110,7 +110,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
     /// <exception cref="BO.BlInvalidCredentialsException"></exception>
     public BO.job EnterToTheSystem(string? name = null, string? pasward = null, int? id = null)
     {
-        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+        //AdminManager.ThrowOnSimulatorIsRunning();//stage 7
 
         DO.Volunteer? doVolunteer = null;
         lock (AdminManager.BlMutex) //stage 7
@@ -286,7 +286,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                         IsActive = boVolunteer.IsActive,
                         distance = (DO.DistanceType)boVolunteer.Distance
                     };
-
+         
                 if (isManager)
                 {// אם הוא מנהל 
                     lock (AdminManager.BlMutex) // stage 7
@@ -307,6 +307,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                     {
                         lock (AdminManager.BlMutex) // stage 7
                             _dal.Volunteer.Update(newDoVolunteer);// אם הוא לא מנסה לעדכן את תפקיד 
+
                         VolunteerManager.Observers.NotifyItemUpdated(newDoVolunteer.Id);  //stage 5
                         VolunteerManager.Observers.NotifyListUpdated();  //stage 5
                     }
