@@ -27,7 +27,7 @@ internal class IAdminImplementation : IAdmin
     public void ForwardClock(BO.TimeUnit unit)
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
-        lock (AdminManager.BlMutex) //stage 7
+       // lock (AdminManager.BlMutex) //stage 7
         {
             switch (unit)
             {
@@ -68,7 +68,8 @@ internal class IAdminImplementation : IAdmin
     /// <param name="maxRange">The new maximum risk range.</param>
     public void SetMaxRange(TimeSpan maxRange)
     {
-        lock (AdminManager.BlMutex)//stage 7
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+        //lock (AdminManager.BlMutex)//stage 7
             AdminManager.MaxRange = maxRange;
     }
 
@@ -87,12 +88,12 @@ internal class IAdminImplementation : IAdmin
     /// </summary>
     public void InitializeDB()
     {
-        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
-        lock (AdminManager.BlMutex) //stage 7
+        //AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+        //lock (AdminManager.BlMutex) //stage 7
         {
-            ResetDB();
-            DalTest.Initialization.Do();
-            AdminManager.UpdateClock(AdminManager.Now);
+            //ResetDB();
+            //DalTest.Initialization.Do();
+            //AdminManager.UpdateClock(AdminManager.Now);
             //AdminManager.MaxRange = AdminManager.MaxRange;
             AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
             AdminManager.InitializeDB(); //stage 7
@@ -105,11 +106,11 @@ internal class IAdminImplementation : IAdmin
     /// </summary>
     public void ResetDB()
     {
-        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
-        lock (AdminManager.BlMutex) //stage 7
+       // AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+       // lock (AdminManager.BlMutex) //stage 7
         {
-            _dal.ResetDB();
-            AdminManager.UpdateClock(AdminManager.Now);
+            //_dal.ResetDB();
+            //AdminManager.UpdateClock(AdminManager.Now);
             //AdminManager.MaxRange = AdminManager.MaxRange;
             AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
             AdminManager.ResetDB(); //stage 7

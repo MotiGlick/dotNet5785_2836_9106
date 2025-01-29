@@ -37,7 +37,7 @@ internal class ConfigImplementation : IConfig
     /// <summary>
     /// Resets the configuration to its default state.
     /// </summary>
-    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
+    //[MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Reset()
     {
         Config.Reset();

@@ -83,9 +83,12 @@ public static class Initialization
                 id = s_rand.Next(20000000, 40000000);
             while (s_dal.Volunteer!.Read(id) != null);
 
+            s_dal.Volunteer!.Create(new(242339900, "Yaakov Cohen", "0527550000", "yaakov_cohen@gmail.com",
+                "Xy123456", "10 King David, Tel Aviv", 32.0853, 34.7818, 120, job.volunteer, true, DistanceType.Air));
+
             // Add the manager to the data access layer
-            s_dal.Volunteer!.Create(new(212, "Moti glick", "0527540619", "moti_glick@gmail.com",
-                    "1", " 21 HaVaad HaLeumi St, Jerusalem", 31.7853, 35.2137, 100, job.manager, true, DistanceType.Air));//id
+            s_dal.Volunteer!.Create(new(212329100, "Moti glick", "0527540619", "moti_glick@gmail.com",
+                    "39482715kP", "Hillel 3, Jerusalem", 31.7853, 35.2137, 100, job.manager, true, DistanceType.Air));//id
         }
     }
     /// <summary>
@@ -266,7 +269,7 @@ public static class Initialization
         {
             int t = s_rand.Next(0, 6); // סוג קריאה אקראי
             DateTime start = currentDate.AddDays(-s_rand.Next(1, 15)); // התחלה בין 1 ל-14 ימים אחורה
-            DateTime end = currentDate.AddDays(s_rand.Next(1, 15));   // סיום בין 1 ל-14 ימים קדימה
+            DateTime end = currentDate.AddDays(s_rand.Next(1, 60));   // סיום בין 1 ל-14 ימים קדימה
 
             s_dal.Call!.Create(new(0, (CallType)t, CallAddresses[i], callDescriptions[t], Calllatitude[i], Calllongitude[i], start, end));
         }

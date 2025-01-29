@@ -111,9 +111,9 @@
 
                     <Label Grid.Row="3" Grid.Column="0" Content="Phone:" />
                 <xctk:WatermarkTextBox Grid.Row="3" Grid.Column="1" 
-Text="{Binding CurrentVolunteer.PhoneNumber, Mode=TwoWay}" 
-MaxLength="10" Watermark="10 numbers starting whit 0"
-ToolTip="Enter a phone number in the format 0xxxxxxxxx" />
+              Text="{Binding CurrentVolunteer.PhoneNumber, Mode=TwoWay}" 
+               MaxLength="10" Watermark="10 numbers starting whit 0"
+               ToolTip="Enter a phone number in the format 0xxxxxxxxx" />
 
                 <Label Grid.Row="4" Grid.Column="0" Content="Email:" />
                 <xctk:WatermarkTextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentVolunteer.Email, Mode=TwoWay}" Watermark="For exemple: user@gmail.com" />
