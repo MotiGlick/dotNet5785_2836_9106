@@ -10,7 +10,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="Auto"/>
             <!-- חצי שמאלי: תיאור קריאה ורשימה -->
             <ColumnDefinition Width="30*"/>
             <!-- חצי ימני: המפה -->
