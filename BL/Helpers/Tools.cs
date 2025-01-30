@@ -69,17 +69,57 @@ internal static class Tools
     }
 
 
-
-
-
-/// <summary>
-/// Checks whether a given address exists by attempting to retrieve its coordinates.
-/// </summary>
-/// <param name="address">The address to validate.</param>
-/// <returns>True if the address exists; otherwise, false.</returns>
-public static async Task<bool> AddressExists(string address)//#
+    public static double[]? GetCoordinates2(string address)
     {
-        double[]? coordinates = await GetCoordinates(address);
+        string baseUrl = "https://nominatim.openstreetmap.org/search";
+        string requestUrl = $"{baseUrl}?q={Uri.EscapeDataString(address)}&format=json&addressdetails=1";
+
+        using (HttpClient client = new HttpClient())
+        {
+            // הוספת User-Agent לבקשה (נדרש על ידי OpenStreetMap)
+            client.DefaultRequestHeaders.Add("User-Agent", "YourAppName");
+
+            HttpResponseMessage response =  client.GetAsync(requestUrl).Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"Error: {response.StatusCode}, {response.ReasonPhrase}");
+                return null;
+            }
+
+            string jsonResponse =  response.Content.ReadAsStringAsync().Result;
+
+            using (JsonDocument document = JsonDocument.Parse(jsonResponse))
+            {
+                JsonElement root = document.RootElement;
+
+                if (root.GetArrayLength() == 0)
+                {
+                    Console.WriteLine("No results found for the given address.");
+                    return null;
+                }
+
+                JsonElement firstResult = root[0];
+                double latitude = double.Parse(firstResult.GetProperty("lat").GetString());
+                double longitude = double.Parse(firstResult.GetProperty("lon").GetString());
+
+                return new double[] { latitude, longitude };
+            }
+        }
+    }
+
+
+
+
+
+    /// <summary>
+    /// Checks whether a given address exists by attempting to retrieve its coordinates.
+    /// </summary>
+    /// <param name="address">The address to validate.</param>
+    /// <returns>True if the address exists; otherwise, false.</returns>
+    public static bool AddressExists(string address)//#
+    {
+        double[]? coordinates =  GetCoordinates2(address);
         return coordinates != null;
     }
 

@@ -78,7 +78,7 @@ internal class CallImplementation : BlApi.ICall
     /// </summary>
     /// <param name="doCall">The call object to update.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    private static async Task updateCoordinatesForCall(DO.Call doCall, string address)
+    private  async Task updateCoordinatesForCall(DO.Call doCall, string address)
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
         // חישוב קואורדינטות

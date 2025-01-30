@@ -70,7 +70,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
         }
 
     }
-    private static async Task updateCoordinatesForVolunteer(DO.Volunteer doVolunteer, string address)
+    private async Task updateCoordinatesForVolunteer(DO.Volunteer doVolunteer, string address)
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
         // חישוב קואורדינטות
