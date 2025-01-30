@@ -28,6 +28,7 @@ namespace PL.Volunteer
         public CallTreatmentWindow(int id)
         {
             this.UserId = id;
+            CurrentVolunteer = s_bl.Volunteer.Read(id);
             InitializeComponent();
         }
         int UserId { get; set; }
@@ -74,20 +75,57 @@ namespace PL.Volunteer
         }
 
 
+
+
+        /// <summary>
+        /// The currently edited volunteer.
+        /// </summary>
+        public BO.Volunteer? CurrentVolunteer
+        {
+            get { return (BO.Volunteer?)GetValue(CurrentVolunteerProperty); }
+            set { SetValue(CurrentVolunteerProperty, value); }
+        }
+
+
+        /// <summary>
+        /// Dependency property for the CurrentVolunteer object.
+        /// </summary>
+        public static readonly DependencyProperty CurrentVolunteerProperty =
+            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(CallTreatmentWindow), new PropertyMetadata(null));
+
+
+
+        private volatile DispatcherOperation? _firstObserverOperation = null; //stage 7
+        private volatile DispatcherOperation? _secondeObserverOperation = null; //stage 7
+        /// <summary>
+        /// Updates the CurrentVolunteer by getting the data from the business logic layer.
+        /// </summary>
+        private void VolunteerObserver()
+        {
+            if (_firstObserverOperation is null || _firstObserverOperation.Status == DispatcherOperationStatus.Completed)
+                _firstObserverOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    int id = CurrentVolunteer!.Id;
+                    CurrentVolunteer = null;
+                    CurrentVolunteer = s_bl.Volunteer.Read(id);
+                });
+
+        }
+
         private void queryOpenCallsList()
         => OpenCallsList = (typeOfCall == BO.CallType.No_Filter) ?
           s_bl?.Call.GetOpenCallsForVolunteer(UserId, null, null)! : s_bl?.Call.GetOpenCallsForVolunteer(UserId, typeOfCall, null)!;
 
 
 
-        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+
         /// <summary>
         /// Observes changes to the call list and updates the screen.
         /// </summary>
         private void CallListObserver()
         {
-            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
-                _observerOperation = Dispatcher.BeginInvoke(() => queryOpenCallsList());
+            if (_secondeObserverOperation is null || _secondeObserverOperation.Status == DispatcherOperationStatus.Completed)
+                _secondeObserverOperation = Dispatcher.BeginInvoke(() => queryOpenCallsList());
         }
 
 
