@@ -29,7 +29,7 @@ internal static class Tools
 
 
 
-    public static double[]? GetCoordinates(string address)
+    public static async Task<double[]?> GetCoordinates(string address)
     {
         string baseUrl = "https://nominatim.openstreetmap.org/search";
         string requestUrl = $"{baseUrl}?q={Uri.EscapeDataString(address)}&format=json&addressdetails=1";
@@ -39,7 +39,7 @@ internal static class Tools
             // הוספת User-Agent לבקשה (נדרש על ידי OpenStreetMap)
             client.DefaultRequestHeaders.Add("User-Agent", "YourAppName");
 
-            HttpResponseMessage response = client.GetAsync(requestUrl).Result;
+            HttpResponseMessage response = await client.GetAsync(requestUrl);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -47,7 +47,7 @@ internal static class Tools
                 return null;
             }
 
-            string jsonResponse = response.Content.ReadAsStringAsync().Result;
+            string jsonResponse = await response.Content.ReadAsStringAsync();
 
             using (JsonDocument document = JsonDocument.Parse(jsonResponse))
             {
@@ -77,9 +77,9 @@ internal static class Tools
 /// </summary>
 /// <param name="address">The address to validate.</param>
 /// <returns>True if the address exists; otherwise, false.</returns>
-public static bool AddressExists(string address)//#
+public static async Task<bool> AddressExists(string address)//#
     {
-        double[]? coordinates = GetCoordinates(address);
+        double[]? coordinates = await GetCoordinates(address);
         return coordinates != null;
     }
 
@@ -89,9 +89,9 @@ public static bool AddressExists(string address)//#
     /// <param name="address">The address to retrieve latitude for.</param>
     /// <returns>The latitude as a double.</returns>
     /// <exception cref="Exception">Thrown if the address cannot be resolved.</exception>
-    public static double GetLatitude(string address)//#
+    public static async Task<double> GetLatitude(string address)//#
     {
-        double[]? coordinates = GetCoordinates(address);
+        double[]? coordinates = await GetCoordinates(address);
         return coordinates![0];
     }
 
@@ -102,9 +102,9 @@ public static bool AddressExists(string address)//#
     /// <param name="address">The address to retrieve longitude for.</param>
     /// <returns>The longitude as a double.</returns>
     /// <exception cref="Exception">Thrown if the address cannot be resolved.</exception>
-    public static double GetLongitude(string address)//#
+    public static async Task<double> GetLongitude(string address)//#
     {
-        double[]? coordinates = GetCoordinates(address);
+        double[]? coordinates = await GetCoordinates(address);
         return coordinates![1];
     }
 

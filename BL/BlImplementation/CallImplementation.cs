@@ -39,18 +39,25 @@ internal class CallImplementation : BlApi.ICall
         {
 
             if (CallManager.LogicalCheck(boCall))
+            {
+                DO.Call doCall = new(
+                boCall.Id,
+                (DO.CallType)boCall.CallType,
+                boCall.Address,
+                boCall.Description,
+                null, // Latitude - ייחושב בהמשך
+                null, // Longitude - ייחושב בהמשך
+                boCall.OpeningTime,
+                boCall.MaxTime
+            );
                 lock (AdminManager.BlMutex) //stage 7
-                    _dal.Call.Create(
-                    new(
-                    boCall.Id,
-                    (DO.CallType)boCall.CallType,
-                    boCall.Address,
-                    boCall.Description,
-                    Tools.GetLatitude(boCall.Address),
-                    Tools.GetLongitude(boCall.Address),
-                    boCall.OpeningTime,
-                    boCall.MaxTime
-                    ));
+                {
+                    _dal.Call.Create(doCall);
+                }
+                _ = updateCoordinatesForCall(doCall, boCall.Address);
+            }
+            
+
             CallManager.Observers.NotifyListUpdated(); //stage 5
 
         }
@@ -66,6 +73,25 @@ internal class CallImplementation : BlApi.ICall
 
 
     }
+    /// <summary>
+    /// Asynchronously updates the coordinates of a call after retrieving them from an external service.
+    /// </summary>
+    /// <param name="doCall">The call object to update.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    private static async Task updateCoordinatesForCall(DO.Call doCall, string address)
+    {
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+        // חישוב קואורדינטות
+        double? latitude = await Tools.GetLatitude(address);
+        double? longitude = await Tools.GetLongitude(address);
+
+        doCall = doCall with { Latitude = latitude, Longitude = longitude };
+        lock (AdminManager.BlMutex) //stage 7
+            _dal.Call.Update(doCall);
+
+        CallManager.Observers.NotifyListUpdated();
+    }
+
 
 
     /// <summary>
@@ -451,21 +477,39 @@ internal class CallImplementation : BlApi.ICall
         try
         {
             // Validate the call using the LogicalCheck method from CallManager
-            if (CallManager.LogicalCheck(boCall))       
+            if (CallManager.LogicalCheck(boCall))
+            {
+                //throw new BO.BlNotValidException("Call is not valid");
+               DO.Call doCall = new(
+               boCall.Id,
+               (DO.CallType)boCall.CallType,
+               boCall.Address,
+               boCall.Description,
+               null, // Latitude - ייחושב בהמשך
+               null, // Longitude - ייחושב בהמשך
+               boCall.OpeningTime,
+               boCall.MaxTime
+           );
+                lock (AdminManager.BlMutex) //stage 7
+                {
+                    _dal.Call.Update(doCall);
+                }
+                _ = updateCoordinatesForCall(doCall, boCall.Address);
                 // Update the call in the data layer
-                lock (AdminManager.BlMutex) // stage 7
-                    _dal.Call.Update(
-                    new
-                    (
-                       boCall.Id,
-                       (DO.CallType)boCall.CallType,
-                       boCall.Address,
-                       boCall.Description,
-                       Tools.GetLatitude(boCall.Address),
-                       Tools.GetLongitude(boCall.Address),
-                       boCall.OpeningTime,
-                       boCall.MaxTime
-                    ));
+                //lock (AdminManager.BlMutex) // stage 7
+                //    _dal.Call.Update(
+                //    new
+                //    (
+                //       boCall.Id,
+                //       (DO.CallType)boCall.CallType,
+                //       boCall.Address,
+                //       boCall.Description,
+                //       Tools.GetLatitude(boCall.Address),
+                //       Tools.GetLongitude(boCall.Address),
+                //       boCall.OpeningTime,
+                //       boCall.MaxTime
+                //    ));
+            }
             CallManager.Observers.NotifyItemUpdated(boCall.Id);  //stage 5
             CallManager.Observers.NotifyListUpdated();  //stage 5
 
