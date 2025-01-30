@@ -47,8 +47,8 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                         Email = boVolunteer.Email,
                         pasword = boVolunteer.Password,
                         AddressVolunteer = boVolunteer.Address,
-                        Latitude = boVolunteer.Address == "" ? null : Tools.GetLatitude(boVolunteer.Address),
-                        Longitude = boVolunteer.Address == "" ? null : Tools.GetLongitude(boVolunteer.Address),
+                        Latitude = null,
+                        Longitude = null,
                         maximumDistace = boVolunteer.MaximumDistance,
                         duty = (DO.job)boVolunteer.Duty,
                         IsActive = boVolunteer.IsActive,
@@ -56,7 +56,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                     };
                 lock (AdminManager.BlMutex) //stage 7
                     _dal.Volunteer.Create(doVolunteer);
-
+                _ = updateCoordinatesForVolunteer(doVolunteer, boVolunteer.Address);
                 VolunteerManager.Observers.NotifyListUpdated(); //stage 5 
 
             }
@@ -70,7 +70,19 @@ internal class VolunteerImplementation : BlApi.IVolunteer
         }
 
     }
+    private static async Task updateCoordinatesForVolunteer(DO.Volunteer doVolunteer, string address)
+    {
+        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+        // חישוב קואורדינטות
+        double? latitude = await Tools.GetLatitude(address);
+        double? longitude = await Tools.GetLongitude(address);
 
+        doVolunteer = doVolunteer with { Latitude = latitude, Longitude = longitude };
+        lock (AdminManager.BlMutex) //stage 7
+            _dal.Volunteer.Update(doVolunteer);
+
+        CallManager.Observers.NotifyListUpdated();
+    }
 
     /// <summary>
     /// Deletes a volunteer if they are eligible to be deleted, based on their assignments and current status.
@@ -279,8 +291,8 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                         Email = boVolunteer.Email,
                         pasword = boVolunteer.Password,
                         AddressVolunteer = boVolunteer.Address,
-                        Latitude = boVolunteer.Address == "" ? null : Tools.GetLatitude(boVolunteer.Address),
-                        Longitude = boVolunteer.Address == "" ? null : Tools.GetLongitude(boVolunteer.Address),
+                        Latitude = null,
+                        Longitude = null,
                         maximumDistace = boVolunteer.MaximumDistance,
                         duty = (DO.job)boVolunteer.Duty,
                         IsActive = boVolunteer.IsActive,
@@ -291,6 +303,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                 {// אם הוא מנהל 
                     lock (AdminManager.BlMutex) // stage 7
                         _dal.Volunteer.Update(newDoVolunteer);
+                    _ = updateCoordinatesForVolunteer(newDoVolunteer, boVolunteer.Address);
                     VolunteerManager.Observers.NotifyItemUpdated(newDoVolunteer.Id);  //stage 5
                     VolunteerManager.Observers.NotifyListUpdated();  //stage 5
                 }
@@ -300,6 +313,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                     {
                         lock (AdminManager.BlMutex) // stage 7
                             _dal.Volunteer.Update(newDoVolunteer);
+                        _ = updateCoordinatesForVolunteer(newDoVolunteer, boVolunteer.Address);
                         VolunteerManager.Observers.NotifyItemUpdated(newDoVolunteer.Id);  //stage 5
                         VolunteerManager.Observers.NotifyListUpdated();  //stage 5
                     }
@@ -307,6 +321,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
                     {
                         lock (AdminManager.BlMutex) // stage 7
                             _dal.Volunteer.Update(newDoVolunteer);// אם הוא לא מנסה לעדכן את תפקיד 
+                        _ = updateCoordinatesForVolunteer(newDoVolunteer, boVolunteer.Address);
                         VolunteerManager.Observers.NotifyItemUpdated(newDoVolunteer.Id);  //stage 5
                         VolunteerManager.Observers.NotifyListUpdated();  //stage 5
                     }
