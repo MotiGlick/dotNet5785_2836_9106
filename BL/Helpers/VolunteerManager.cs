@@ -1,7 +1,9 @@
 ﻿
 
+using BlImplementation;
 using BO;
 using DalApi;
+using DO;
 using System.Net;
 using System.Numerics;
 using System.Text.RegularExpressions;
@@ -56,7 +58,7 @@ internal class VolunteerManager
 
             return true;
         }
-         
+
     }
     /// <summary>
     /// A method that checks the logical correctness of all values.
@@ -65,7 +67,7 @@ internal class VolunteerManager
     /// <returns></returns>
     public static bool logicCheckToVolunteer(BO.Volunteer volunteer)
     {
-        lock (AdminManager.BlMutex) //stage 7
+       // lock (AdminManager.BlMutex) //stage 7
         {
             if (!Tools.IsPasswordGood(volunteer.Password))
                 throw new BO.BlNotValidException("Password too weak \nThe password must contain an uppercase letter, a lowercase letter and 6 digits ");
@@ -84,7 +86,7 @@ internal class VolunteerManager
 
             return true;
         }
-         
+
     }
     /// <summary>
     /// A method that checks whether the ID card is valid
@@ -190,7 +192,7 @@ internal class VolunteerManager
                 status = CallManager.GetCallStatus(relatedCall.Id)
             };
         }
-        
+
     }
 
     /// <summary>
@@ -206,7 +208,7 @@ internal class VolunteerManager
             int sum = assignments.Count(a => a.type == DO.CallClosureType.HandledOnTime);
             return sum;
         }
-   
+
     }
     /// <summary>
     /// Retrieves the total number of calls canceled by the volunteer themselves.
@@ -221,7 +223,7 @@ internal class VolunteerManager
             int sum = assignments.Count(a => a.type == DO.CallClosureType.SelfCancellation);
             return sum;
         }
-           
+
     }
     /// <summary>
     /// Retrieves the total number of expired calls associated with a volunteer.
@@ -236,7 +238,7 @@ internal class VolunteerManager
             int sum = assignments.Count(a => a.type == DO.CallClosureType.ExpiredCancellation);
             return sum;
         }
-           
+
     }
     /// <summary>
     /// A function that receives an id if there is no call in its handling - will return a value of None, otherwise it will return the CallType
@@ -264,7 +266,7 @@ internal class VolunteerManager
             var call = _dal.Call.Read(currentAssignment.CallId);
             return call != null ? (BO.CallType)call.type : BO.CallType.None;
         }
-       
+
     }
     /// <summary>
     /// Returns the CallId of the most recent open or active call for a given volunteer.
@@ -292,7 +294,7 @@ internal class VolunteerManager
             // If an active assignment exists, return its CallId
             return currentAssignment.CallId;
         }
-             
+
     }
     /// <summary>
     /// Determines whether a volunteer can be deleted based on their current and past assignments.
@@ -321,7 +323,7 @@ internal class VolunteerManager
             // אם לא נמצאו משימות פעילה, אפשר למחוק
             return true;
         }
-             
+
     }
 
 
@@ -330,53 +332,61 @@ internal class VolunteerManager
 
     internal static void SimulateVolunteers() //stage 7
     {
+        CallImplementation cImplementation = new();
         Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
 
-        LinkedList<int> volunteersToUpdate = new(); //stage 7
+        //LinkedList<int> volunteersToUpdate = new();
         List<DO.Volunteer> doVolunteersList;
 
-        lock (AdminManager.BlMutex) //stage 7
-            doVolunteersList = _dal.Volunteer.ReadAll(st => st.IsActive == true).ToList();
+        // lock (AdminManager.BlMutex)
+        doVolunteersList = _dal.Volunteer.ReadAll(v => v.IsActive == true).ToList();
 
         foreach (var doVolunteer in doVolunteersList)
         {
-          
-            int studentId = 0;
-            lock (AdminManager.BlMutex) //stage 7
+
+            int VolunteerId = 0;
+            //lock (AdminManager.BlMutex) //stage 7
             {
-                BO.CallInProgress? studentYear = CreateCallInProgress(doVolunteer.Id);
+                BO.CallInProgress? currentCall = CreateCallInProgress(doVolunteer.Id);
+                IEnumerable<OpenCallInList> OpenCalls;
+                lock (AdminManager.BlMutex) //stage 7
+                    OpenCalls = cImplementation.GetOpenCallsForVolunteer(doVolunteer.Id, null, null).ToList();
 
-                //the above method, includes network requests to compute the distances
-                //between courses address and current student address
-                //these network requests are done synchronically
-                var coursesNotRegistered = CallManager.GetUnRegisteredCoursesForStudent(doVolunteer.Id, studentYear);
 
-                int cntNotRegCourses = coursesNotRegistered.Count();
-                if (studentYear == null)
+
+                int cntOpenCalls = OpenCalls.Count();
+                if (currentCall == null && cntOpenCalls > 0)
                 {
-                    int courseId = coursesNotRegistered.Skip(s_rand.Next(0, cntNotRegCourses)).First()!.Id;
-                    CallManager.chusing(doVolunteer.Id, courseId);
-                    studentId = doVolunteer.Id;
-                }
+                    int callId;
 
-                //simulate setting grade of course for selected student
-                var coursesRegistered =
-                    _dal.Call.ReadAll(course => LinkManager.IsStudentLinkedToCourse(doVolunteer.Id, course.Id) && course.InYear == (DO.Year)studentYear);
-                int cntRegCourses = coursesRegistered.Count();
-                if (cntRegCourses != 0)
+                    callId = OpenCalls.Skip(s_rand.Next(0, cntOpenCalls)).First()!.Id;
+                    if (CallManager.GetCallStatus(callId) == BO.StatusOfCall.Open)
+                        cImplementation.ChoosingCallForHandling(doVolunteer.Id, callId);
+                    VolunteerId = doVolunteer.Id;
+
+                }
+                else if (currentCall != null)
                 {
-                    int courseId = coursesRegistered.Skip(s_rand.Next(0, cntRegCourses)).First()!.Id;
-                    LinkManager.UpdateCourseGradeForStudent(doVolunteer.Id, courseId, Math.Round(s_rand.NextDouble() * 100, 2));
-                    studentId = doVolunteer.Id;
-                }
+                    if (CallManager.GetCallStatus(currentCall.CallId) == BO.StatusOfCall.InProgress)
+                    {
 
-                if (studentId != 0)
-                    volunteersToUpdate.AddLast(doVolunteer.Id);
+                         // cImplementation.EndHandling(doVolunteer.Id, currentCall.CallId);
+
+                    }
+                    else
+                    {
+
+                       // cImplementation.CancelHandling(doVolunteer.Id, currentCall.CallId);
+
+                    }
+                }
+               // if (VolunteerId != 0)
+                    //volunteersToUpdate.AddLast(doVolunteer.Id);
             } //lock
         }
 
-        foreach (int id in volunteersToUpdate)
-            Observers.NotifyItemUpdated(id);
+        //foreach (int id in volunteersToUpdate)
+        //    Observers.NotifyItemUpdated(id);
     }
 
 }

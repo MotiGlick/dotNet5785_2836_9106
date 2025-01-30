@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Volunteer
 {
@@ -62,15 +63,21 @@ namespace PL.Volunteer
             queryCallsList();
         }
 
+
+
+
+        private volatile DispatcherOperation? _firstObserverOperation = null; //stage 7
+        private volatile DispatcherOperation? _secondeObserverOperation = null; //stage 7
         private void statusFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            queryCallsList();
+            if (_firstObserverOperation is null || _firstObserverOperation.Status == DispatcherOperationStatus.Completed)
+                _firstObserverOperation = Dispatcher.BeginInvoke(() =>queryCallsList());
         }
 
         private void CallListObserver()
         {
-            queryCallsList();
+            if (_secondeObserverOperation is null || _secondeObserverOperation.Status == DispatcherOperationStatus.Completed)
+                _secondeObserverOperation = Dispatcher.BeginInvoke(() => queryCallsList());
         }
 
       

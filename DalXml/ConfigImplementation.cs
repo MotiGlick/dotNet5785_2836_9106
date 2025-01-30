@@ -12,9 +12,9 @@ internal class ConfigImplementation : IConfig
     /// </summary>
     public DateTime Clock
     {
-        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
+        //[MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         get => Config.Clock;
-        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
+       // [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         set => Config.Clock = value;
     }
 
@@ -37,7 +37,7 @@ internal class ConfigImplementation : IConfig
     /// <summary>
     /// Resets the configuration to its default state.
     /// </summary>
-    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
+    //[MethodImpl(MethodImplOptions.Synchronized)] //stage 7
     public void Reset()
     {
         Config.Reset();
@@ -49,9 +49,9 @@ internal class ConfigImplementation : IConfig
     
     public TimeSpan RiskRange
     {
-        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
+        //[MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         get => Config.RiskRange;
-        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
+       // [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         set => Config.RiskRange = value;
     }
 }

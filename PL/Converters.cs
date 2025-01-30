@@ -101,7 +101,7 @@ public class BooleanToWidthConverter : IValueConverter
         if (value is BO.CallInProgress call)
         {
             
-            return call != null ? 980 : 600;
+            return call != null ? 1100 : 600;
         }
 
        
@@ -290,5 +290,33 @@ public class IdToEmptyStringConverter : IValueConverter
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
         return value;
+    }
+}
+
+
+public class ArrayCountConverter : IValueConverter
+{
+    static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        try
+        {
+            int index = (int)value;
+            if (value is BO.StatusOfCall status)
+            {
+
+                return s_bl.Call.CallsAmount()[index];
+            }
+        }
+        catch (Exception)
+        {
+            return 0;
+        }
+        return 0;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

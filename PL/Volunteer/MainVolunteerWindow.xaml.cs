@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Volunteer
 {
@@ -88,36 +89,37 @@ namespace PL.Volunteer
             DependencyProperty.Register("CurrentCall", typeof(BO.Call), typeof(MainVolunteerWindow), new PropertyMetadata(null));
 
 
-        /// <summary>
-        /// Represents the volunteer's  duty.
-        /// </summary>
-        //public BO.job duty { get; set; } = BO.job.volunteer;
-
-        ///// <summary>
-        ///// Represents the distance type for the volunteer.
-        ///// </summary>
-        //public BO.DistanceType distanceType { get; set; } = BO.DistanceType.car;
+        private volatile DispatcherOperation? _firstObserverOperation = null; //stage 7
+        private volatile DispatcherOperation? _secondeObserverOperation = null; //stage 7
 
         /// <summary>
         /// Updates the CurrentVolunteer by getting the data from the business logic layer.
         /// </summary>
         private void VolunteerObserver()
         {
-
-            int id = CurrentVolunteer!.Id;
-            CurrentVolunteer = null;
-            CurrentVolunteer = s_bl.Volunteer.Read(id);
+            if (_firstObserverOperation is null || _firstObserverOperation.Status == DispatcherOperationStatus.Completed)
+                _firstObserverOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    int id = CurrentVolunteer!.Id;
+                    CurrentVolunteer = null;
+                    CurrentVolunteer = s_bl.Volunteer.Read(id);
+                });
 
         }
         private void CallObserver()
         {
-
-            int id = CurrentCall!.Id;
-            CurrentCall = null;
-            CurrentCall = s_bl.Call.GetCallDetails(id);
+            if (_secondeObserverOperation is null || _secondeObserverOperation.Status == DispatcherOperationStatus.Completed)
+                _secondeObserverOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    int id = CurrentCall!.Id;
+                    CurrentCall = null;
+                    CurrentCall = s_bl.Call.GetCallDetails(id);
+                });
 
         }
-        
+
+
+
         /// <summary>
         /// Event handler for when the window is loaded.
         /// Adds an observer to the volunteer's updates.
@@ -189,7 +191,7 @@ namespace PL.Volunteer
             {
                 try
                 {
-                   
+
                     s_bl.Call.CancelHandling(CurrentVolunteer.Id, CurrentVolunteer.CallInProgress.Id);
                     MessageBox.Show("Call cenceled successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -203,7 +205,7 @@ namespace PL.Volunteer
 
         private void btnEndCall_Click(object sender, RoutedEventArgs e)
         {
-            var result=MessageBox.Show("Are you sure you want to end the call?", "Confirm End", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var result = MessageBox.Show("Are you sure you want to end the call?", "Confirm End", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
                 try

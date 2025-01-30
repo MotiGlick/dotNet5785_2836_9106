@@ -76,12 +76,13 @@
         <!-- Define Rows and Columns -->
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>
-        
             <!-- Header -->
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.6*"/>
             <!-- Main Content -->
-            <RowDefinition Height="0.9*"/>
-            <!-- Footer -->
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="0.04*"/>
+
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -105,16 +106,16 @@
                 <!-- System Clock Display -->
                 <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10">
                     <!-- Static Label -->
-                    <Label Content="{Binding CurrentTime}" FontWeight="Bold" FontSize="20" Foreground="White" Margin="5" HorizontalAlignment="Center"/>
+                    <Label Content="{Binding CurrentTime, Mode=TwoWay}" FontWeight="Bold" FontSize="20" Foreground="White" Margin="5" HorizontalAlignment="Center"/>
                 </StackPanel>
 
                 <!-- Clock Adjustment Buttons -->
                 <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5">
-                    <Button Content="Add One Minute" Margin="0,5" Click="btnAddOneMinute_Click" />
-                    <Button Content="Add One Hour" Margin="0,5" Click="btnAddOneHour_Click" />
-                    <Button Content="Add One Day" Margin="0,5" Click="btnAddOneDay_Click"/>
-                    <Button Content="Add One Month" Margin="0,5" Click="btnAddOneMonth_Click"/>
-                    <Button Content="Add One Year" Margin="0,5" Click="btnAddOneYear_Click"/>
+                    <Button Content="Add One Minute" Margin="0,5" Click="btnAddOneMinute_Click"  IsEnabled="{Binding  btIsActive }"/>
+                    <Button Content="Add One Hour" Margin="0,5" Click="btnAddOneHour_Click"  IsEnabled="{Binding  btIsActive }" />
+                    <Button Content="Add One Day" Margin="0,5" Click="btnAddOneDay_Click"  IsEnabled="{Binding  btIsActive }"/>
+                    <Button Content="Add One Month" Margin="0,5" Click="btnAddOneMonth_Click"  IsEnabled="{Binding  btIsActive }"/>
+                    <Button Content="Add One Year" Margin="0,5" Click="btnAddOneYear_Click"  IsEnabled="{Binding  btIsActive }"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -123,9 +124,10 @@
         <Grid Grid.Row="1" Grid.Column="1" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-              
+
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+
                 <!-- Buttons -->
             </Grid.RowDefinitions>
 
@@ -133,28 +135,99 @@
             <StackPanel Grid.Row="0" Margin="5">
                 <!-- Display and Edit Configuration Variable -->
                 <Label Content="Configuration Variable" FontSize="17" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
-          
+
             </StackPanel>
             <Grid Grid.Row="1" Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-               
+
                 <TextBox Text="{Binding CurrentRiskRange}" Grid.Column="1" Margin="20,5" HorizontalAlignment="Stretch" Height="Auto"/>
                 <Button Content="Update Risk Range" Grid.Column="0" Width="150" Margin="10,5,0,5" Click="btnUpdateRiskRange_Click"/>
             </Grid>
+
 
             <!-- Action Buttons -->
             <StackPanel Grid.Row="2" Orientation="Vertical" Margin="5">
                 <Button Content="Handle Volunteers" Margin="0,5" Click="btnShowVolunteerList_Click" Height="30" />
                 <Button Content="Handle Calls" Margin="0,5" Click="btnShowCallList_Click"  Height="30"/>
-                <Button Content="Initialize Database" Margin="0,5" Click="btnInitializeDatabase_Click"  Height="30"/>
-                <Button Content="Reset Database" Margin="0,5" Click="btnResetDatabase_Click"  Height="30"/>
+                <Button Content="Initialize Database" Margin="0,5" Click="btnInitializeDatabase_Click"  Height="30" IsEnabled="{Binding  btIsActive , Mode=TwoWay}"/>
+                <Button Content="Reset Database" Margin="0,5" Click="btnResetDatabase_Click"  Height="30" IsEnabled="{Binding  btIsActive , Mode=TwoWay}"/>
             </StackPanel>
         </Grid>
+        <!-- DataGrid with Border and Title -->
+        <GroupBox Header="Statuses of the Calls" 
+          Grid.Row="3" Grid.Column="2" 
+          Margin="20"
+                  Height="Auto"
+          BorderBrush="#FF6C757D" 
+          BorderThickness="2" 
+          Padding="10" 
+          Background="DarkSlateGray" 
+          Foreground="White">
+            <DataGrid 
+        Foreground="#2C3E50"
+        ItemsSource="{Binding Source={StaticResource StatusOfCallCollectionKey}}"
+        BorderBrush="#FF6C757D" 
+        BorderThickness="1" 
+        GridLinesVisibility="Horizontal"
+        AlternatingRowBackground="#F8F9FA"
+        AutoGenerateColumns="False" SelectionChanged="DataGrid_SelectionChanged">
+                <DataGrid.Columns>
+                    <!-- טור ראשון -->
+                    <DataGridTextColumn Header="Status" Binding="{Binding}" Width="*" />
 
-       
+                    <!-- טור שני -->
+                    <DataGridTemplateColumn Header="Count" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource ArrayCountConverterKey}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+
+        <!-- Simulator Area --> 
+        <GroupBox Header="Simulator" Grid.Row="3" Grid.Column="0"  Margin="10" BorderBrush="#FFD61C69" BorderThickness="2" Padding="10" Background="#2C3E50" Foreground="White">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+
+                    <RowDefinition Height="Auto"/>
+                    <!-- Button Row -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- TextBlock and TextBox Row -->
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="5" HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- TextBlock -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- TextBox -->
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Button -->
+                    </Grid.ColumnDefinitions>
+
+
+
+                    <TextBox Text="{Binding Interval}" IsEnabled="{Binding  btIsActive , Mode=TwoWay}" 
+             Foreground="#FF000FFF" FontSize="14"  BorderBrush="#FF6C757D"  BorderThickness="2" 
+             HorizontalAlignment="Left" VerticalAlignment="Center" Height="40" Width="90" 
+             Grid.Column="2" />
+
+                    <Button Content="{Binding btSimlatorText, Mode=TwoWay}"
+            Height="60" Width="120" Click="btnSimulator_Click" 
+            HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1"/>
+                </Grid>
+            </Grid>
+        </GroupBox>
+
     </Grid>
 </Window>
 

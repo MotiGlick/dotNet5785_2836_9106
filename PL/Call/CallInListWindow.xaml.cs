@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Call
 {
@@ -25,14 +26,16 @@ namespace PL.Call
 
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        public CallInListWindow(int managerId = 0)
+        public CallInListWindow(int managerId = 0, BO.StatusOfCall? status = null)
         {
 
             this.ManagerId = managerId;
+            this.Status = status;
             InitializeComponent();
         }
         int ManagerId { get; set; }
 
+        BO.StatusOfCall? Status { get; set; }
 
         public BO.CallInList? SelectedCall { get; set; }
 
@@ -58,10 +61,14 @@ namespace PL.Call
         private void queryCallsListByType() => CallsList = (callTypeFilter == BO.CallType.No_Filter) ?
             s_bl?.Call.GetCallList(null, null, orderCallsList)! : s_bl?.Call.GetCallList(CallInListField.CallType, callTypeFilter, orderCallsList)!;
 
-        private void queryCallsListByStatus() => CallsList = (statusFilter == BO.StatusOfCall.No_Filter) ?
-            s_bl?.Call.GetCallList(null, null, orderCallsList)! : s_bl?.Call.GetCallList(CallInListField.status, statusFilter, orderCallsList)!;
-
-
+        private void queryCallsListByStatus()
+        {
+            if (Status == null)
+                CallsList = (statusFilter == BO.StatusOfCall.No_Filter) ?
+                s_bl?.Call.GetCallList(null, null, orderCallsList)! : s_bl?.Call.GetCallList(CallInListField.status, statusFilter, orderCallsList)!;
+            else
+                CallsList = s_bl?.Call.GetCallList(CallInListField.status, Status, orderCallsList)!;
+        }
 
         private void callTypeFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -76,10 +83,16 @@ namespace PL.Call
         }
 
 
+        private volatile DispatcherOperation? _firstObserverOperation = null; //stage 7
+        private volatile DispatcherOperation? _secondeObserverOperation = null; //stage 7
         private void CallListObserver()
         {
-            queryCallsListByType();
-            queryCallsListByStatus();
+            if (_firstObserverOperation is null || _firstObserverOperation.Status == DispatcherOperationStatus.Completed)
+                _firstObserverOperation = Dispatcher.BeginInvoke(() => queryCallsListByType());
+
+            if (_secondeObserverOperation is null || _secondeObserverOperation.Status == DispatcherOperationStatus.Completed)
+                _secondeObserverOperation = Dispatcher.BeginInvoke(() => queryCallsListByStatus());
+
         }
         //  => queryCallsList();
 

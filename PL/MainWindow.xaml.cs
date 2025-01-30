@@ -1,4 +1,5 @@
-﻿using PL.Call;
+﻿using BlApi;
+using PL.Call;
 using PL.Volunteer;
 using System.Media;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL
 {
@@ -21,23 +23,55 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
+
+        public int[] CallsAmount
+        {
+            get { return (int[])GetValue(CallsAmountProperty); }
+            set { SetValue(CallsAmountProperty, value); }
+        }
+        public static readonly DependencyProperty CallsAmountProperty =
+            DependencyProperty.Register("CallsAmount", typeof(int[]), typeof(MainWindow));
+
         int UserId { get; set; }
         public MainWindow(int userId)
-        {
+        {   
             InitializeComponent();
             UserId = userId;
         }
+        
         // Observer for clock updates
+
+        private volatile DispatcherOperation? _firstObserverOperation = null; //stage 7
+        private volatile DispatcherOperation? _secondObserverOperation = null; //stage 7
+        private volatile DispatcherOperation? _thirdObserverOperation = null; //stage 7
         private void ClockObserver()
         {
-            CurrentTime = s_bl.Admin.GetClock();
+
+            if (_firstObserverOperation is null || _firstObserverOperation.Status == DispatcherOperationStatus.Completed)
+                _firstObserverOperation = Dispatcher.BeginInvoke(() =>
+                { CurrentTime = s_bl.Admin.GetClock(); });
+
         }
 
         // Observer for configuration updates
         private void ConfigObserver()
         {
-            MaxYearRange = s_bl.Admin.GetMaxRange();
+
+            if (_secondObserverOperation is null || _secondObserverOperation.Status == DispatcherOperationStatus.Completed)
+                _secondObserverOperation = Dispatcher.BeginInvoke(() =>
+                { MaxYearRange = s_bl.Admin.GetMaxRange(); });
         }
+
+
+        private void CallsAmountObserver()
+        {
+
+            if (_thirdObserverOperation is null || _thirdObserverOperation.Status == DispatcherOperationStatus.Completed)
+                _thirdObserverOperation = Dispatcher.BeginInvoke(() =>
+                { CallsAmount = s_bl.Call.CallsAmount(); });
+        }
+
+
 
         public DateTime CurrentTime
         {
@@ -103,9 +137,10 @@ namespace PL
         {
             CurrentTime = s_bl.Admin.GetClock();
             MaxYearRange = s_bl.Admin.GetMaxRange();
+      
             s_bl.Admin.AddClockObserver(ClockObserver);
             s_bl.Admin.AddConfigObserver(ConfigObserver);
-            
+            s_bl.Call.AddObserver(CallsAmountObserver);
 
         }
 
@@ -116,6 +151,13 @@ namespace PL
 
             // Remove configuration observer
             s_bl.Admin.RemoveConfigObserver(ConfigObserver);
+
+           s_bl.Call.RemoveObserver(CallsAmountObserver);
+
+            if (IsSimlatorRuning)
+            {
+                s_bl.Admin.StopSimulator(); //stage 7
+            }
         }
 
         private void btnInitializeDatabase_Click(object sender, RoutedEventArgs e)
@@ -206,5 +248,88 @@ namespace PL
         {
             new CallInListWindow(UserId).Show();
         }
+
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var dataGrid = sender as DataGrid;
+
+            // בדיקה שה-DataGrid תקין ושה-SelectedItem לא ריק
+            if (dataGrid?.SelectedItem is BO.StatusOfCall selectedStatus)
+            {
+                // פתיחת חלון חדש עם המידע שנבחר
+                new CallInListWindow(UserId, selectedStatus).Show();
+            }
+
+        
+            //if (dataGrid != null)
+            //{
+            //    dataGrid.SelectedItem = null;
+            //}
+           
+        }
+        #region Simulator
+
+
+
+        public int Interval
+        {
+            get { return (int)GetValue(IntervalProperty); }
+            set { SetValue(IntervalProperty, value); }
+        }
+        public static readonly DependencyProperty IntervalProperty =
+            DependencyProperty.Register("Interval", typeof(int), typeof(MainWindow), new FrameworkPropertyMetadata(1000));
+
+
+
+        public bool IsSimlatorRuning
+        {
+            get { return (bool)GetValue(IsSimlatorRuningProperty); }
+            set { SetValue(IsSimlatorRuningProperty, value); }
+        }
+        public static readonly DependencyProperty IsSimlatorRuningProperty =
+            DependencyProperty.Register("IsSimlatorRuning", typeof(bool), typeof(MainWindow), new FrameworkPropertyMetadata(false));
+
+        public bool btIsActive
+        {
+            get { return (bool)GetValue(btIsActiveProperty); }
+            set { SetValue(btIsActiveProperty, value); }
+        }
+        public static readonly DependencyProperty btIsActiveProperty =
+            DependencyProperty.Register("btIsActive", typeof(bool), typeof(MainWindow), new FrameworkPropertyMetadata(true));
+
+
+
+        public string btSimlatorText
+        {
+            get { return (string)GetValue(btSimlatorTextProperty); }
+            set { SetValue(btSimlatorTextProperty, value); }
+        }
+        public static readonly DependencyProperty btSimlatorTextProperty =
+            DependencyProperty.Register("btSimlatorText", typeof(string), typeof(MainWindow), new FrameworkPropertyMetadata("Start simulator"));
+
+
+        private void btnSimulator_Click(object sender, RoutedEventArgs e)
+        {
+            if(!IsSimlatorRuning)
+            {
+                IsSimlatorRuning=true;
+                btIsActive=false;   
+                s_bl.Admin.StartSimulator(Interval); //stage 7
+                btSimlatorText = "Stop simulator";
+            }
+            else           
+            {
+                IsSimlatorRuning = false;
+                btIsActive = true;
+                s_bl.Admin.StopSimulator(); //stage 7
+                btSimlatorText = "Start simulator";
+
+            }
+ 
+        }
+
+        #endregion Simulator
+
     }
 } 
