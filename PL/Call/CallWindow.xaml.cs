@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Call
 {
@@ -67,7 +68,7 @@ namespace PL.Call
         {
             get { return (BO.Call?)GetValue(CurrentCallProperty); }
             set { SetValue(CurrentCallProperty, value); }
-            
+
         }
 
         /// <summary>
@@ -77,12 +78,17 @@ namespace PL.Call
             DependencyProperty.Register("CurrentCall", typeof(BO.Call), typeof(CallWindow), new PropertyMetadata(null));
 
 
+
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
         private void Callbserver()
         {
-
-            int id = CurrentCall!.Id;
-            CurrentCall = null;
-            CurrentCall = s_bl.Call.GetCallDetails(id);
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    int id = CurrentCall!.Id;
+                    CurrentCall = null;
+                    CurrentCall = s_bl.Call.GetCallDetails(id);
+                });
 
         }
 
@@ -92,9 +98,9 @@ namespace PL.Call
         /// </summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-           
-                s_bl.Call.AddObserver(CurrentCall!.Id, Callbserver);
-            
+
+            s_bl.Call.AddObserver(CurrentCall!.Id, Callbserver);
+
         }
 
         /// <summary>
@@ -155,13 +161,13 @@ namespace PL.Call
                 return false;
             }
 
-           
+
             if (CurrentCall!.Description != "" && double.TryParse(CurrentCall.Description, out double e))
             {
                 MessageBox.Show("Description cannot be a number!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-           
+
 
             return true;
 

@@ -1,5 +1,6 @@
 ﻿
 
+using BlImplementation;
 using BO;
 using DalApi;
 using DO;
@@ -202,7 +203,7 @@ internal class AssignmentManager
     /// <returns>The ID of the last volunteer.</returns>
     public static int? GetLastVolunteerId(int doCallId)//#
     {
-        lock (AdminManager.BlMutex) //stage 7
+        //lock (AdminManager.BlMutex) //stage 7
         {
             var assignments = GetCallAssignList(doCallId);
             if (assignments == null || !assignments.Any())
@@ -249,6 +250,12 @@ internal class AssignmentManager
     //    return GetCallAssignList(doCallId).OrderByDescending(Assin => Assin.HndalStartTime).First();
 
     //}
+
+
+
+
+
+
 
 
 

@@ -31,7 +31,7 @@ internal class CallImplementation : BlApi.ICall
     /// </summary>
     /// <param name="boCall">The call object to be added.</param>
     /// <exception cref="Exception">Thrown if the call is invalid or already exists.</exception>
-    public void AddCall(BO.Call boCall)//#
+    public void AddCall(BO.Call boCall)
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
 
@@ -118,6 +118,9 @@ internal class CallImplementation : BlApi.ICall
 
     }
 
+
+
+
     /// <summary>
     /// Cancels the handling of a call by a volunteer.
     /// Allows self or manager cancellation of an assignment if valid.
@@ -125,7 +128,7 @@ internal class CallImplementation : BlApi.ICall
     /// <param name="volunteerId">ID of the volunteer attempting the cancellation.</param>
     /// <param name="assignmentId">ID of the assignment to cancel.</param>
     /// <exception cref="Exception">Thrown if the volunteer cannot cancel the assignment.</exception>
-    public void CancelHandling(int volunteerId, int assignmentId)//#
+    public void CancelHandling(int volunteerId, int assignmentId)
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
 
@@ -177,9 +180,9 @@ internal class CallImplementation : BlApi.ICall
     /// <param name="volunteerId">ID of the volunteer choosing the call.</param>
     /// <param name="callId">ID of the call to assign.</param>
     /// <exception cref="Exception">Thrown if the call is not open or open-at-risk.</exception>
-    public void ChoosingCallForHandling(int volunteerId, int callId)//#
+    public void ChoosingCallForHandling(int volunteerId, int callId)
     {
-        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+        //AdminManager.ThrowOnSimulatorIsRunning();//stage 7
 
         DO.Volunteer doVolunteer;
         lock (AdminManager.BlMutex) //stage 7
@@ -198,9 +201,9 @@ internal class CallImplementation : BlApi.ICall
             lock (AdminManager.BlMutex) //stage 7
                 _dal.Assignment.Create(new(0, callId, volunteerId, AdminManager.Now, null, null));
 
+            VolunteerManager.Observers.NotifyItemUpdated(volunteerId); //stage 6
             CallManager.Observers.NotifyItemUpdated(callId); //stage 5
             BO.Call doCaljl = GetCallDetails(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId}  does not exists");
-            VolunteerManager.Observers.NotifyItemUpdated(volunteerId); //stage 6
             CallManager.Observers.NotifyListUpdated(); //stage 6
         }
 
@@ -215,7 +218,7 @@ internal class CallImplementation : BlApi.ICall
     /// </summary>
     /// <param name="callId">ID of the call to delete.</param>
     /// <exception cref="Exception">Thrown if the call cannot be deleted due to assignments or status.</exception>
-    public void DeleteCall(int callId)//#
+    public void DeleteCall(int callId)
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
 
@@ -245,9 +248,9 @@ internal class CallImplementation : BlApi.ICall
     /// <param name="volunteerId">ID of the volunteer ending the handling.</param>
     /// <param name="assignmentId">ID of the assignment to end.</param>
     /// <exception cref="Exception">Thrown if the volunteer is not authorized to end the assignment.</exception>
-    public void EndHandling(int volunteerId, int assignmentId)//#
+    public void EndHandling(int volunteerId, int assignmentId)
     {
-        AdminManager.ThrowOnSimulatorIsRunning();//stage 7 
+        //AdminManager.ThrowOnSimulatorIsRunning();//stage 7 
 
         DO.Volunteer doVolunteer;
         lock (AdminManager.BlMutex) //stage 7
@@ -291,10 +294,10 @@ internal class CallImplementation : BlApi.ICall
     /// <param name="callId">ID of the call to retrieve.</param>
     /// <returns>The call details.</returns>
     /// <exception cref="Exception">Thrown if the call does not exist.</exception>
-    public BO.Call GetCallDetails(int callId)//#
+    public BO.Call GetCallDetails(int callId)
     {
 
-        AdminManager.ThrowOnSimulatorIsRunning();//stage 7 
+        // AdminManager.ThrowOnSimulatorIsRunning();//stage 7 
         DO.Call doCall;
         lock (AdminManager.BlMutex) //stage 7
             doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist");//Exception
@@ -466,10 +469,9 @@ internal class CallImplementation : BlApi.ICall
     /// </summary>
     /// <param name="boCall">The updated call information.</param>
     /// <exception cref="Exception">Thrown if the call is invalid or already exists.</exception>
-    public void UpdateCallDetails(BO.Call boCall)//#
+    public void UpdateCallDetails(BO.Call boCall)
     {
         AdminManager.ThrowOnSimulatorIsRunning();//stage 7
-
 
         try
         {
