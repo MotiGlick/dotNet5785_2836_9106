@@ -74,7 +74,7 @@ internal class CallImplementation : BlApi.ICall
     /// <returns>An array where each index represents a call type and its count.</returns>
     public int[] CallsAmount()//#
     {
-        AdminManager.ThrowOnSimulatorIsRunning();//stage 7
+        //AdminManager.ThrowOnSimulatorIsRunning();//stage 7
         lock (AdminManager.BlMutex) //stage 7
         {
             // יצירת מערך בגודל Enum
@@ -86,6 +86,7 @@ internal class CallImplementation : BlApi.ICall
             {
                 result[(int)group.Key] = group.Count();
             }
+            CallManager.Observers.NotifyListUpdated(); //stage 5
 
             return result;
         }

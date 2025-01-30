@@ -4,6 +4,7 @@ using BlImplementation;
 using BO;
 using DalApi;
 using DO;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Numerics;
 using System.Text.RegularExpressions;
@@ -67,7 +68,7 @@ internal class VolunteerManager
     /// <returns></returns>
     public static bool logicCheckToVolunteer(BO.Volunteer volunteer)
     {
-       // lock (AdminManager.BlMutex) //stage 7
+        // lock (AdminManager.BlMutex) //stage 7
         {
             if (!Tools.IsPasswordGood(volunteer.Password))
                 throw new BO.BlNotValidException("Password too weak \nThe password must contain an uppercase letter, a lowercase letter and 6 digits ");
@@ -328,66 +329,86 @@ internal class VolunteerManager
 
 
     private static readonly Random s_rand = new();
+
     private static int s_simulatorCounter = 0;
 
-    internal static void SimulateVolunteers() //stage 7
+
+    internal static void SimulateVolunteers()
     {
         CallImplementation cImplementation = new();
         Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
 
-        //LinkedList<int> volunteersToUpdate = new();
         List<DO.Volunteer> doVolunteersList;
+        lock (AdminManager.BlMutex)
+            doVolunteersList = _dal.Volunteer.ReadAll(v => v.IsActive).ToList();
 
-        // lock (AdminManager.BlMutex)
-        doVolunteersList = _dal.Volunteer.ReadAll(v => v.IsActive == true).ToList();
+        List<int> volunteersToUpdate = new();
 
         foreach (var doVolunteer in doVolunteersList)
         {
-
-            int VolunteerId = 0;
-            //lock (AdminManager.BlMutex) //stage 7
+            try
             {
-                BO.CallInProgress? currentCall = CreateCallInProgress(doVolunteer.Id);
-                IEnumerable<OpenCallInList> OpenCalls;
-                lock (AdminManager.BlMutex) //stage 7
-                    OpenCalls = cImplementation.GetOpenCallsForVolunteer(doVolunteer.Id, null, null).ToList();
+                BO.CallInProgress? currentCall;
+                lock (AdminManager.BlMutex)
+                    currentCall = CreateCallInProgress(doVolunteer.Id);
 
-
-
-                int cntOpenCalls = OpenCalls.Count();
-                if (currentCall == null && cntOpenCalls > 0)
+                if (currentCall == null)
                 {
-                    int callId;
+                    List<OpenCallInList> openCalls;
+                   // lock (AdminManager.BlMutex)
+                        openCalls = cImplementation.GetOpenCallsForVolunteer(doVolunteer.Id, null, null).ToList();
 
-                    callId = OpenCalls.Skip(s_rand.Next(0, cntOpenCalls)).First()!.Id;
-                    if (CallManager.GetCallStatus(callId) == BO.StatusOfCall.Open)
-                        cImplementation.ChoosingCallForHandling(doVolunteer.Id, callId);
-                    VolunteerId = doVolunteer.Id;
-
-                }
-                else if (currentCall != null)
-                {
-                    if (CallManager.GetCallStatus(currentCall.CallId) == BO.StatusOfCall.InProgress)
+                    if (openCalls.Count > 0 && s_rand.Next(100) < 20) // הסתברות של 20%
                     {
-
-                         // cImplementation.EndHandling(doVolunteer.Id, currentCall.CallId);
-
-                    }
-                    else
-                    {
-
-                       // cImplementation.CancelHandling(doVolunteer.Id, currentCall.CallId);
-
+                        int callId;
+                        //lock (AdminManager.BlMutex)
+                        {
+                            callId = openCalls[s_rand.Next(openCalls.Count)].Id;
+                            if (CallManager.GetCallStatus(callId) != BO.StatusOfCall.Open)
+                                continue;
+                            cImplementation.ChoosingCallForHandling(doVolunteer.Id, callId);
+                        }
+                        volunteersToUpdate.Add(doVolunteer.Id);
                     }
                 }
-               // if (VolunteerId != 0)
-                    //volunteersToUpdate.AddLast(doVolunteer.Id);
-            } //lock
+                else
+                {
+                  //  lock (AdminManager.BlMutex)
+                    {
+                        if (CallManager.GetCallStatus(currentCall.CallId) != BO.StatusOfCall.InProgress)
+                            continue;
+
+                        if (ShouldEndCall(currentCall))
+                            cImplementation.EndHandling(doVolunteer.Id, currentCall.Id);
+                        else if (s_rand.Next(100) < 10) // הסתברות של 10% לביטול
+                            cImplementation.CancelHandling(doVolunteer.Id, currentCall.Id);
+                    }
+                    volunteersToUpdate.Add(doVolunteer.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                continue;
+            }
         }
 
-        //foreach (int id in volunteersToUpdate)
-        //    Observers.NotifyItemUpdated(id);
+        CallManager.Observers.NotifyListUpdated();
+        foreach (int id in volunteersToUpdate)
+            Observers.NotifyItemUpdated(id);
     }
+
+    private static bool ShouldEndCall(BO.CallInProgress call)
+    {
+        TimeSpan duration = AdminManager.Now - call.HndalStartTime;
+        double estimatedTime = CalculateEstimatedTime(call);
+        return duration.TotalMinutes >= estimatedTime;
+    }
+
+    private static double CalculateEstimatedTime(BO.CallInProgress call)
+    {
+        return call.DistanceFromVolunteer * 0.5 + s_rand.Next(5, 15);
+    }
+
 
 }
 
