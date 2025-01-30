@@ -35,8 +35,8 @@ internal class CallManager
         if (boCall.Address.Length < 5 || boCall.Address.Length > 100)
             throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
 
-        if (!Tools.AddressExists(boCall.Address))
-            throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
+        //if (!Tools.AddressExists(boCall.Address))
+        //    throw new BO.BlNotValidException("Invalid address.\nThe address format is incorrect.\nPlease use the following format:\n street name street number, city name.\nFor example: Dizengoff 99, Tel Aviv.");
 
         if (boCall.MaxTime != null)
             if (boCall.MaxTime <= boCall.OpeningTime)
