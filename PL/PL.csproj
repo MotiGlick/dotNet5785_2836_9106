@@ -35,4 +35,10 @@
     </Resource>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="api_key.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

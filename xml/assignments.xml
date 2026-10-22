@@ -301,8 +301,8 @@
     <CallId>42</CallId>
     <VolunteerId>37625904</VolunteerId>
     <AssignmentTime>2025-01-28T16:13:38</AssignmentTime>
-    <AssignmentTotalTime>2025-02-28T16:13:38</AssignmentTotalTime>
-    <Type></Type>
+    <AssignmentTotalTime>2025-02-01T18:13:38</AssignmentTotalTime>
+    <Type>HandledOnTime</Type>
   </Assignment>
   <Assignment>
     <Id>48</Id>
@@ -359,5 +359,13 @@
     <AssignmentTime>2025-01-18T16:13:38</AssignmentTime>
     <AssignmentTotalTime>2025-01-18T16:13:38</AssignmentTotalTime>
     <Type></Type>
+  </Assignment>
+  <Assignment>
+    <Id>55</Id>
+    <CallId>1</CallId>
+    <VolunteerId>242339900</VolunteerId>
+    <AssignmentTime>2025-02-02T10:53:38</AssignmentTime>
+    <AssignmentTotalTime>2025-02-03T20:13:38</AssignmentTotalTime>
+    <Type>HandledOnTime</Type>
   </Assignment>
 </Assignments>

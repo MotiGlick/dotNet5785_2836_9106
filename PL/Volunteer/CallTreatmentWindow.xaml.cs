@@ -167,13 +167,47 @@ namespace PL.Volunteer
 
             if (!string.IsNullOrEmpty(originAddress) && !string.IsNullOrEmpty(destinationAddress))
             {
-                // יצירת HTML מותאם אישית
+                string apiKey = "";
+                string configPath = "api_key.txt";
+
+                // 1. קריאת הקובץ אם הוא קיים
+                if (System.IO.File.Exists(configPath))
+                {
+                    apiKey = System.IO.File.ReadAllText(configPath).Trim();
+                }
+
+                // 2. טיפול אלגנטי במקרה שאין מפתח או שהמפתח לא תקין (כמו "xscd")
+                if (string.IsNullOrEmpty(apiKey) || !apiKey.StartsWith("AIza"))
+                {
+                    string noKeyHtml = @"
+                <html>
+                <body style='display:flex; justify-content:center; align-items:center; height:100vh; background-color:#f8d7da; color:#721c24; font-family:Arial;'>
+                    <div style='text-align:center;'>
+                        <h2>Google Maps Disabled</h2>
+                        <p>API Key is missing or invalid.</p>
+                        <p>Please add a valid Google Maps API Key to <b>api_key.txt</b>.</p>
+                    </div>
+                </body>
+                </html>";
+
+                    string errorFilePath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "map_error.html");
+                    System.IO.File.WriteAllText(errorFilePath, noKeyHtml);
+
+                    if (MapBrowser != null)
+                    {
+                        await MapBrowser.EnsureCoreWebView2Async();
+                        MapBrowser.Source = new Uri(errorFilePath);
+                    }
+                    return; 
+                }
+
+               
                 string mapHtml = $@"
 <!DOCTYPE html>
 <html>
 <head>
     <title>Custom Google Map</title>
-    <script src='https://maps.googleapis.com/maps/api/js?key=***API_KEY_REMOVED***&libraries=places,directions'></script>
+    <script src='https://maps.googleapis.com/maps/api/js?key={apiKey}&libraries=places,directions'></script>
     <style>
         #map {{
             height: 100%;
